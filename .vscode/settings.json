@@ -13,7 +13,6 @@
         "**/*.unityproj": true,
         "**/*.dll": true,
         "**/*.meta": true,
-        "**/*.csproj": true,
         "build/": true,
         "Build/": true,
         "Library/": true,
