@@ -130,7 +130,9 @@ GameObject:
   - component: {fileID: 31717883}
   - component: {fileID: 31717886}
   - component: {fileID: 31717885}
+  - component: {fileID: 31717887}
   - component: {fileID: 31717884}
+  - component: {fileID: 31717888}
   m_Layer: 0
   m_Name: Third Person Aim Camera
   m_TagString: Untagged
@@ -240,6 +242,36 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!114 &31717887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31717882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4afa82ae3200b82408d605c3dbdd1e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damping: 5
+--- !u!114 &31717888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31717882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a076c17fe76165e4f8ed21498b877bf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Easing: 0
+  Modifiers: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &338392090
 GameObject:
   m_ObjectHideFlags: 0
@@ -786,7 +818,7 @@ MonoBehaviour:
   _sprintSpeed: 15
   _inputVector: {x: 0, y: 0, z: 0}
   _movementVector: {x: 0, y: 0, z: 0}
-  _isSneaking: 0
+  _isCrouching: 0
   _isSprinting: 0
   _normalizeMovement: 0
   _jumpHeight: 5
