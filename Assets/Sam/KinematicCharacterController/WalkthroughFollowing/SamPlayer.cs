@@ -1,65 +1,115 @@
 using System.Linq;
 using KinematicCharacterController.Examples;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
-public class SamPlayer : MonoBehaviour
+namespace SDK
 {
-    public ExampleCharacterCamera OrbitCamera;
-    public Transform CameraFollowPoint;
-    public SamCharacterController Character;
 
-    private Vector3 _lookInputVector = Vector3.zero;
-
-    private void Start()
+    [System.Serializable]
+    public struct FMouseInputs
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        public InputActionReference mouseLookAction;
+        public InputActionReference mouseZoomAction;
+        public InputActionReference mouseLeftClickAction;
+        public InputActionReference mouseRightClickAction;
+        public Vector2 mouseSensitivity;
+        public bool useRawInput;
 
-        // Tell camera to follow transform
-        OrbitCamera.SetFollowTransform(CameraFollowPoint);
-
-        // Ignore the character's collider(s) for camera obstruction checks
-        OrbitCamera.IgnoredColliders = Character.GetComponentsInChildren<Collider>().ToList();
+        // Constructor
+        public FMouseInputs(InputActionReference mouseLookAction, InputActionReference mouseZoomAction, InputActionReference mouseLeftClickAction, InputActionReference mouseRightClickAction, Vector2 mouseSensitivity, bool useRawInput)
+        {
+            this.mouseLookAction = mouseLookAction;
+            this.mouseZoomAction = mouseZoomAction;
+            this.mouseLeftClickAction = mouseLeftClickAction;
+            this.mouseRightClickAction = mouseRightClickAction;
+            this.mouseSensitivity = mouseSensitivity = new Vector2(200, 200);
+            this.useRawInput = useRawInput = true;
+        }
     }
 
-    private void Update()
+    public class SamPlayer : MonoBehaviour
     {
-        if (Input.GetMouseButtonDown(0))
+        public FMouseInputs mouseInputs;
+
+        public ExampleCharacterCamera OrbitCamera;
+        public Transform CameraFollowPoint;
+        public SamCharacterController Character;
+
+        private void Start()
         {
             Cursor.lockState = CursorLockMode.Locked;
+
+            // Tell camera to follow transform
+            OrbitCamera.SetFollowTransform(CameraFollowPoint);
+
+            // Ignore the character's collider(s) for camera obstruction checks
+            OrbitCamera.IgnoredColliders.Clear();
+            OrbitCamera.IgnoredColliders.AddRange(Character.GetComponentsInChildren<Collider>());
         }
-    }
 
-    private void LateUpdate()
-    {
-        HandleCameraInput();
-    }
-
-    private void HandleCameraInput()
-    {
-        // Create the look input vector for the camera
-        float mouseLookAxisUp = Input.GetAxisRaw("Mouse Y");
-        float mouseLookAxisRight = Input.GetAxisRaw("Mouse X");
-        _lookInputVector = new Vector3(mouseLookAxisRight, mouseLookAxisUp, 0f);
-
-        // Prevent moving the camera while the cursor isn't locked
-        if (Cursor.lockState != CursorLockMode.Locked)
+        private void Update()
         {
-            _lookInputVector = Vector3.zero;
+            if (mouseInputs.mouseLeftClickAction.action.triggered)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+
+            HandleCharacterInput();
         }
 
-        // Input for zooming the camera (disabled in WebGL because it can cause problems)
-        float scrollInput = -Input.GetAxis("Mouse ScrollWheel");
+        private void LateUpdate()
+        {
+            HandleCameraInput();
+        }
+
+        private void HandleCameraInput()
+        {
+            // Create the look input vector for the camera
+            float mouseLookAxisUp = mouseInputs.mouseLookAction.action.ReadValue<Vector2>().y * (mouseInputs.mouseSensitivity.y / 25);
+            float mouseLookAxisRight = mouseInputs.mouseLookAction.action.ReadValue<Vector2>().x * (mouseInputs.mouseSensitivity.x / 25);
+            Vector3 _lookInputVector = mouseInputs.useRawInput ? new Vector3(mouseLookAxisRight, mouseLookAxisUp, 0f) : new Vector3(mouseLookAxisRight, mouseLookAxisUp, 0f) * Time.deltaTime;
+
+            // Prevent moving the camera while the cursor isn't locked
+            if (Cursor.lockState != CursorLockMode.Locked)
+            {
+                _lookInputVector = Vector3.zero;
+            }
+
+            // Input for zooming the camera (disabled in WebGL because it can cause problems)
+            float scrollInput = -mouseInputs.mouseZoomAction.action.ReadValue<Vector2>().y;
 #if UNITY_WEBGL
         scrollInput = 0f;
 #endif
 
-        // Apply inputs to the camera
-        OrbitCamera.UpdateWithInput(Time.deltaTime, scrollInput, _lookInputVector);
+            // Apply inputs to the camera
+            OrbitCamera.UpdateWithInput(Time.deltaTime, scrollInput, _lookInputVector);
 
-        // Handle toggling zoom level
-        if (Input.GetMouseButtonDown(1))
+            // Handle toggling zoom level
+            if (mouseInputs.mouseRightClickAction.action.triggered && mouseInputs.mouseRightClickAction.action.ReadValue<float>() > 0)
+            {
+                OrbitCamera.TargetDistance = (OrbitCamera.TargetDistance == 0f) ? OrbitCamera.DefaultDistance : 0f;
+            }
+        }
+
+        private void HandleCharacterInput()
         {
-            OrbitCamera.TargetDistance = (OrbitCamera.TargetDistance == 0f) ? OrbitCamera.DefaultDistance : 0f;
+            FPlayerInputs characterInputs = new FPlayerInputs();
+
+            // Build the CharacterInputs struct
+            // characterInputs.moveInputAction = Input.GetAxisRaw(VerticalInput);
+            // characterInputs.MoveAxisRight = Input.GetAxisRaw(HorizontalInput);
+            characterInputs.cameraRotation = OrbitCamera.Transform.rotation;
+
+            // Apply inputs to character
+            Character.SetInputs(ref characterInputs);
         }
     }
+
+    /*
+        public static bool GetButton(this InputAction action) => action.ReadValue<float>() > 0;
+        public static bool GetButtonDown(this InputAction action) => action.triggered && action.ReadValue<float>() > 0;
+        public static bool GetButtonUp(this InputAction action) => action.triggered && action.ReadValue<float>() == 0;
+    */
 }

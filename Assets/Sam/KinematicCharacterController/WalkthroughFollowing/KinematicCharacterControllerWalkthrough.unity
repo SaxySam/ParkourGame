@@ -678,6 +678,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8130247595d5d7f42990b14ab087363f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mouseInputs:
+    mouseLookAction: {fileID: -5630151704836100654, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
+    mouseZoomAction: {fileID: -4550399336469681767, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
+    mouseLeftClickAction: {fileID: 5835440882025673642, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
+    mouseRightClickAction: {fileID: -3951302409888629992, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
+    mouseSensitivity: {x: 200, y: 200}
+    useRawInput: 0
   OrbitCamera: {fileID: 539730258}
   CameraFollowPoint: {fileID: 838493729}
   Character: {fileID: 1245593813}
@@ -727,7 +734,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ac3652b30aff264787183c90ff42ba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInputs:
+    moveInputAction: {fileID: -1680190386980627800, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
+    jumpInputAction: {fileID: -2099379676528639254, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
+    sprintInputAction: {fileID: -7471211009204490832, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
+    crouchInputAction: {fileID: 7040659881675835329, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
+    cameraRotation: {x: 0, y: 0, z: 0, w: 0}
   Motor: {fileID: 1245593814}
+  MaxStableMoveSpeed: 10
+  StableMovementSharpness: 15
+  OrientationSharpness: 10
+  MaxAirMoveSpeed: 10
+  AirAccelerationSpeed: 5
+  Drag: 0.1
+  RotationObstruction: 0
+  Gravity: {x: 0, y: -30, z: 0}
+  MeshRoot: {fileID: 1272690285}
 --- !u!114 &1245593814
 MonoBehaviour:
   m_ObjectHideFlags: 0
