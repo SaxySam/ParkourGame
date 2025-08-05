@@ -3,6 +3,7 @@ using KinematicCharacterController.Examples;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using KinematicCharacterController;
 
 namespace SDK
 {
@@ -36,6 +37,8 @@ namespace SDK
         public ExampleCharacterCamera OrbitCamera;
         public Transform CameraFollowPoint;
         public SamCharacterController Character;
+
+        [SerializeField] private InputActionReference moveAxisAction;
 
         private void Start()
         {
@@ -98,8 +101,7 @@ namespace SDK
             FPlayerInputs characterInputs = new FPlayerInputs();
 
             // Build the CharacterInputs struct
-            // characterInputs.moveInputAction = Input.GetAxisRaw(VerticalInput);
-            // characterInputs.MoveAxisRight = Input.GetAxisRaw(HorizontalInput);
+            characterInputs.moveInputAction = moveAxisAction;
             characterInputs.cameraRotation = OrbitCamera.Transform.rotation;
 
             // Apply inputs to character

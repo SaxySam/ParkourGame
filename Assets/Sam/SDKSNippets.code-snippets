@@ -13,25 +13,25 @@
     "Public Field": {
         "scope": "csharp",
         "prefix": "Public",
-        "body": "public ${1:type} ${2:name};",
+        "body": "public ${1:type} ${2:name};${0}",
         "description": "Public Field"
     },
     "Public Hidden Field": {
         "scope": "csharp",
         "prefix": "PublicHidden",
-        "body": "[HideInInspector] public ${1:type} ${2:name};",
+        "body": "[HideInInspector] public ${1:type} ${2:name};${0}",
         "description": "Public Hidden Field"
     },
     "Internal (Namespace Public) Field": {
         "scope": "csharp",
         "prefix": "Internal",
-        "body": "internal ${1:type} ${2:name};",
+        "body": "internal ${1:type} ${2:name};${0}",
         "description": "Public Field"
     },
     "Serialized Private Field": {
         "scope": "csharp",
         "prefix": "SPriv",
-        "body": "[SerializeField] private ${1:type} _${2:name};",
+        "body": "[SerializeField] private ${1:type} _${2:name};${0}",
         "description": "Serialized Private Field"
     },
     "Debug Log": {
@@ -44,7 +44,7 @@
         "scope": "csharp",
         "prefix": "SPrivAccessor",
         "body": [
-            "[SerializeField] private ${1:type} _${2:name};",
+            "[SerializeField] private ${1:type} _${2:name};${0}",
             "public ${1:type} ${2:name} => _${2:name};",
         ],
         "description": "A serialized private field with an accessor"
@@ -53,7 +53,7 @@
         "scope": "csharp",
         "prefix": "SPrivAccessGet",
         "body": [
-            "[SerializeField] private ${1:type} _${2:name};",
+            "[SerializeField] private ${1:type} _${2:name};${0}",
             "public ${1:type} ${2:name}",
             "{",
             "    get => _${2:name};",
@@ -85,12 +85,12 @@
             "",
             "private void OnCreate()",
             "{",
-            "    ",
+            "    $1",
             "}",
             "",
             "private void OnDestroy()",
             "{",
-            "    ",
+            "    $2",
             "}",
             "",
             "#endregion"
@@ -173,6 +173,7 @@
             "{",
             "    public ${2:type} ${3:name};",
             "    ",
+            "    $LINE_COMMENT Constructor",
             "    public ${1:StructName}(${2:type} ${3:name})",
             "    {",
             "        this.${3:name} = ${3:name};",
