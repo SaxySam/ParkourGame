@@ -72,7 +72,7 @@ namespace SDK
 
         private void Update()
         {
-            if (mouseInputs.mouseLeftClickAction.action.triggered)
+            if (mouseInputs.mouseLeftClickAction.action.triggered  && mouseInputs.mouseLeftClickAction.action.ReadValue<float>() > 0)
             {
                 Cursor.lockState = CursorLockMode.Locked;
             }
@@ -116,12 +116,18 @@ namespace SDK
 
         private void HandleCharacterInput()
         {
-            FPlayerInputs characterInputs = new FPlayerInputs();
-
             // Build the CharacterInputs struct
-            characterInputs.moveAxisForward = playerInputActions.moveInputAction.action.ReadValue<Vector2>().y;
-            characterInputs.moveAxisRight = playerInputActions.moveInputAction.action.ReadValue<Vector2>().x;
-            characterInputs.cameraRotation = OrbitCamera.Transform.rotation;
+            FPlayerInputs characterInputs = new()
+            {
+                moveAxisForward = playerInputActions.moveInputAction.action.ReadValue<Vector2>().y,
+
+                moveAxisRight = playerInputActions.moveInputAction.action.ReadValue<Vector2>().x,
+
+                cameraRotation = OrbitCamera.Transform.rotation,
+
+                jumpDown = playerInputActions.jumpInputAction.action.triggered && playerInputActions.jumpInputAction.action.ReadValue<float>() > 0
+
+            };
 
             // Apply inputs to character
             Character.SetInputs(ref characterInputs);
@@ -129,8 +135,8 @@ namespace SDK
     }
 
     /*
-        public static bool GetButton(this InputAction action) => action.ReadValue<float>() > 0;
-        public static bool GetButtonDown(this InputAction action) => action.triggered && action.ReadValue<float>() > 0;
-        public static bool GetButtonUp(this InputAction action) => action.triggered && action.ReadValue<float>() == 0;
+        public static bool GetKey/GetButton(this InputAction action) => action.ReadValue<float>() > 0;
+        public static bool GetKeyDown/GetButtonDown(this InputAction action) => action.triggered && action.ReadValue<float>() > 0;
+        public static bool GetKeyUp/GetButtonUp(this InputAction action) => action.triggered && action.ReadValue<float>() == 0;
     */
 }

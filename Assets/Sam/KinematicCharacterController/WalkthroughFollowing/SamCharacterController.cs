@@ -4,18 +4,19 @@ using UnityEngine.InputSystem;
 
 namespace SDK
 {
-    [System.Serializable]
     public struct FPlayerInputs
     {
         public float moveAxisForward;
         public float moveAxisRight;
         public Quaternion cameraRotation;
+        public bool jumpDown;
 
-        public FPlayerInputs(float moveAxisForward, float moveAxisRight, Quaternion cameraRotation)
+        public FPlayerInputs(float moveAxisForward, float moveAxisRight, Quaternion cameraRotation, bool jumpDown)
         {
             this.moveAxisForward = moveAxisForward;
             this.moveAxisRight = moveAxisRight;
             this.cameraRotation = cameraRotation;
+            this.jumpDown = jumpDown;
         }
     }
 
@@ -35,13 +36,29 @@ namespace SDK
         public float AirAccelerationSpeed = 5f;
         public float Drag = 0.1f;
 
+        [Header("Jumping")]
+        public bool AllowJumpingWhenSliding = false;
+        public bool AllowDoubleJump = false;
+        public bool AllowWallJump = false;
+        public float JumpSpeed = 10f;
+        public float JumpPreGroundingGraceTime = 0f;
+        public float JumpPostGroundingGraceTime = 0f;
+
         [Header("Misc")]
-        public bool RotationObstruction;
         public Vector3 Gravity = new Vector3(0, -30f, 0);
         public Transform MeshRoot;
 
         private Vector3 _moveInputVector;
         private Vector3 _lookInputVector;
+        private bool _jumpRequested = false;
+        private bool _jumpConsumed = false;
+        private bool _jumpedThisFrame = false;
+        private float _timeSinceJumpRequested = Mathf.Infinity;
+        private float _timeSinceLastAbleToJump = 0f;
+        private bool _doubleJumpConsumed = false;
+        private bool _canWallJump = false;
+        private Vector3 _wallJumpNormal;
+
         private void Start()
         {
             // Assign to motor
@@ -64,6 +81,13 @@ namespace SDK
             // Move and look inputs
             _moveInputVector = cameraPlanarRotation * moveInputVector;
             _lookInputVector = cameraPlanarDirection;
+
+            // Jumping input
+            if (inputs.jumpDown)
+            {
+                _timeSinceJumpRequested = 0f;
+                _jumpRequested = true;
+            }
         }
 
         public void BeforeCharacterUpdate(float deltaTime)
@@ -123,11 +147,89 @@ namespace SDK
                 // Drag
                 currentVelocity *= (1f / (1f + (Drag * deltaTime)));
             }
+
+            // Handle jumping
+            _jumpedThisFrame = false;
+            _timeSinceJumpRequested += deltaTime;
+            if (_jumpRequested)
+            {
+                // Handle double jump
+                if (AllowDoubleJump)
+                {
+                    if (_jumpConsumed && !_doubleJumpConsumed && (AllowJumpingWhenSliding ? !Motor.GroundingStatus.FoundAnyGround : !Motor.GroundingStatus.IsStableOnGround))
+                    {
+                        Motor.ForceUnground(0.1f);
+
+                        // Add to the return velocity and reset jump state
+                        currentVelocity += (Motor.CharacterUp * JumpSpeed) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+                        _jumpRequested = false;
+                        _doubleJumpConsumed = true;
+                        _jumpedThisFrame = true;
+                    }
+                }
+
+                // See if we actually are allowed to jump
+                if (_canWallJump
+                    ||(!_jumpConsumed
+                    && ((AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround)
+                    || _timeSinceLastAbleToJump <= JumpPostGroundingGraceTime)))
+                {
+                    // Calculate jump direction before ungrounding
+                    Vector3 jumpDirection = Motor.CharacterUp;
+                    if (_canWallJump)
+                    {
+                        jumpDirection = _wallJumpNormal;
+                    }
+                    else if (Motor.GroundingStatus.FoundAnyGround && !Motor.GroundingStatus.IsStableOnGround)
+                    {
+                        jumpDirection = Motor.GroundingStatus.GroundNormal;
+                    }
+
+                    // Makes the character skip ground probing/snapping on its next update. 
+                    // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
+                    Motor.ForceUnground(0.1f);
+
+                    // Add to the return velocity and reset jump state
+                    currentVelocity += (jumpDirection * JumpSpeed) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+                    _jumpRequested = false;
+                    _jumpConsumed = true;
+                    _jumpedThisFrame = true;
+                }
+                
+                // Reset wall jump
+                _canWallJump = false;
+            }
         }
 
         public void AfterCharacterUpdate(float deltaTime)
         {
             // This is called after the motor has finished everything in its update
+
+            // Handle jump-related values
+            {
+                // Handle jumping pre-ground grace period
+                if (_jumpRequested && _timeSinceJumpRequested > JumpPreGroundingGraceTime)
+                {
+                    _jumpRequested = false;
+                }
+
+                // Handle jumping while sliding
+                if (AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround)
+                {
+                    // If we're on a ground surface, reset jumping values
+                    if (!_jumpedThisFrame)
+                    {
+                        _doubleJumpConsumed = false;
+                        _jumpConsumed = false;
+                    }
+                    _timeSinceLastAbleToJump = 0f;
+                }
+                else
+                {
+                    // Keep track of time since we were last able to jump (for grace period)
+                    _timeSinceLastAbleToJump += deltaTime;
+                }
+            }
         }
 
         public bool IsColliderValidForCollisions(Collider coll)
@@ -144,16 +246,25 @@ namespace SDK
         public void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
         {
             // This is called when the motor's movement logic detects a hit
+            // We can wall jump only if we are not stable on ground and are moving against an obstruction
+            if (AllowWallJump && !Motor.GroundingStatus.IsStableOnGround && !hitStabilityReport.IsStable)
+            {
+                _canWallJump = true;
+                _wallJumpNormal = hitNormal;
+            }
+        }
+        public void PostGroundingUpdate(float deltaTime)
+        {
+            // This is called after the motor has finished its ground probing, but before PhysicsMover/Velocity/etc.... handling
+        }
+
+        public void AddVelocity(Vector3 velocity)
+        {
         }
 
         public void ProcessHitStabilityReport(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, Vector3 atCharacterPosition, Quaternion atCharacterRotation, ref HitStabilityReport hitStabilityReport)
         {
             // This is called after every hit detected in the motor, to give you a chance to modify the HitStabilityReport any way you want
-        }
-
-        public void PostGroundingUpdate(float deltaTime)
-        {
-            // This is called after the motor has finished its ground probing, but before PhysicsMover/Velocity/etc.... handling
         }
 
         public void OnDiscreteCollisionDetected(Collider hitCollider)

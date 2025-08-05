@@ -1035,6 +1035,7 @@ MonoBehaviour:
     moveAxisForward: 0
     moveAxisRight: 0
     cameraRotation: {x: 0, y: 0, z: 0, w: 0}
+    jumpDown: 0
   Motor: {fileID: 1245593814}
   MaxStableMoveSpeed: 10
   StableMovementSharpness: 15
@@ -1042,7 +1043,11 @@ MonoBehaviour:
   MaxAirMoveSpeed: 10
   AirAccelerationSpeed: 5
   Drag: 0.1
-  RotationObstruction: 0
+  AllowJumpingWhenSliding: 1
+  AllowDoubleJump: 0
+  JumpSpeed: 10
+  JumpPreGroundingGraceTime: 0
+  JumpPostGroundingGraceTime: 0
   Gravity: {x: 0, y: -30, z: 0}
   MeshRoot: {fileID: 1272690285}
 --- !u!114 &1245593814
