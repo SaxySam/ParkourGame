@@ -9,7 +9,7 @@ namespace SDK
 {
 
     [System.Serializable]
-    public struct FMouseInputs
+    public struct FMouseInputActions
     {
         public InputActionReference mouseLookAction;
         public InputActionReference mouseZoomAction;
@@ -19,7 +19,7 @@ namespace SDK
         public bool useRawInput;
 
         // Constructor
-        public FMouseInputs(InputActionReference mouseLookAction, InputActionReference mouseZoomAction, InputActionReference mouseLeftClickAction, InputActionReference mouseRightClickAction, Vector2 mouseSensitivity, bool useRawInput)
+        public FMouseInputActions(InputActionReference mouseLookAction, InputActionReference mouseZoomAction, InputActionReference mouseLeftClickAction, InputActionReference mouseRightClickAction, Vector2 mouseSensitivity, bool useRawInput)
         {
             this.mouseLookAction = mouseLookAction;
             this.mouseZoomAction = mouseZoomAction;
@@ -30,15 +30,33 @@ namespace SDK
         }
     }
 
+    [System.Serializable]
+    public struct FPlayerInputActions
+    {
+        public InputActionReference moveInputAction;
+        public InputActionReference jumpInputAction;
+        public InputActionReference sprintInputAction;
+        public InputActionReference crouchInputAction;
+
+        // Constructor
+        public FPlayerInputActions(InputActionReference moveInputAction, InputActionReference jumpInputAction, InputActionReference sprintInputAction, InputActionReference crouchInputAction, Quaternion cameraRotation)
+        {
+            this.moveInputAction = moveInputAction;
+            this.jumpInputAction = jumpInputAction;
+            this.sprintInputAction = sprintInputAction;
+            this.crouchInputAction = crouchInputAction;
+        }
+    }
+
     public class SamPlayer : MonoBehaviour
     {
-        public FMouseInputs mouseInputs;
+        public FMouseInputActions mouseInputs;
+        public FPlayerInputActions playerInputActions;
 
         public ExampleCharacterCamera OrbitCamera;
         public Transform CameraFollowPoint;
         public SamCharacterController Character;
 
-        [SerializeField] private InputActionReference moveAxisAction;
 
         private void Start()
         {
@@ -101,7 +119,8 @@ namespace SDK
             FPlayerInputs characterInputs = new FPlayerInputs();
 
             // Build the CharacterInputs struct
-            characterInputs.moveInputAction = moveAxisAction;
+            characterInputs.moveAxisForward = playerInputActions.moveInputAction.action.ReadValue<Vector2>().y;
+            characterInputs.moveAxisRight = playerInputActions.moveInputAction.action.ReadValue<Vector2>().x;
             characterInputs.cameraRotation = OrbitCamera.Transform.rotation;
 
             // Apply inputs to character

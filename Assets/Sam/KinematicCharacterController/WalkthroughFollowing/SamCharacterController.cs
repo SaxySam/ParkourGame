@@ -4,23 +4,17 @@ using UnityEngine.InputSystem;
 
 namespace SDK
 {
-
     [System.Serializable]
     public struct FPlayerInputs
     {
-        public InputActionReference moveInputAction;
-        public InputActionReference jumpInputAction;
-        public InputActionReference sprintInputAction;
-        public InputActionReference crouchInputAction;
+        public float moveAxisForward;
+        public float moveAxisRight;
         public Quaternion cameraRotation;
 
-        // Constructor
-        public FPlayerInputs(InputActionReference moveInputAction, InputActionReference jumpInputAction, InputActionReference sprintInputAction, InputActionReference crouchInputAction, Quaternion cameraRotation)
+        public FPlayerInputs(float moveAxisForward, float moveAxisRight, Quaternion cameraRotation)
         {
-            this.moveInputAction = moveInputAction;
-            this.jumpInputAction = jumpInputAction;
-            this.sprintInputAction = sprintInputAction;
-            this.crouchInputAction = crouchInputAction;
+            this.moveAxisForward = moveAxisForward;
+            this.moveAxisRight = moveAxisRight;
             this.cameraRotation = cameraRotation;
         }
     }
@@ -57,8 +51,7 @@ namespace SDK
         public void SetInputs(ref FPlayerInputs inputs)
         {
             // Clamp input
-
-            Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(inputs.moveInputAction.action.ReadValue<Vector2>().x, 0f, inputs.moveInputAction.action.ReadValue<Vector2>().y), 1f);
+            Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(inputs.moveAxisRight, 0f, inputs.moveAxisForward), 1f);
 
             // Calculate camera direction and rotation on the character plane
             Vector3 cameraPlanarDirection = Vector3.ProjectOnPlane(inputs.cameraRotation * Vector3.forward, Motor.CharacterUp).normalized;
