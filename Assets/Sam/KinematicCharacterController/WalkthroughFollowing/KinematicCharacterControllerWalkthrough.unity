@@ -1204,6 +1204,7 @@ MonoBehaviour:
   OrbitCamera: {fileID: 539730258}
   CameraFollowPoint: {fileID: 838493729}
   Character: {fileID: 1245593813}
+  inputVector: {x: 0, y: 0, z: 0}
 --- !u!4 &1214885051
 Transform:
   m_ObjectHideFlags: 0
@@ -1229,8 +1230,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1245593816}
   - component: {fileID: 1245593815}
-  - component: {fileID: 1245593814}
   - component: {fileID: 1245593813}
+  - component: {fileID: 1245593814}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -1263,6 +1264,7 @@ MonoBehaviour:
   JumpSpeed: 10
   JumpPreGroundingGraceTime: 0
   JumpPostGroundingGraceTime: 0
+  OrientTowardsGravity: 1
   Gravity: {x: 0, y: -30, z: 0}
   MeshRoot: {fileID: 1272690285}
 --- !u!114 &1245593814

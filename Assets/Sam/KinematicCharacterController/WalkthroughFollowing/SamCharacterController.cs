@@ -49,6 +49,7 @@ namespace SDK
         public float JumpPostGroundingGraceTime = 0f;
 
         [Header("Misc")]
+        public bool OrientTowardsGravity = true;
         public Vector3 Gravity = new Vector3(0, -30f, 0);
         public Transform MeshRoot;
 
@@ -129,6 +130,12 @@ namespace SDK
 
                 // Set the current rotation (which will be used by the KinematicCharacterMotor)
                 currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
+            }
+
+            if (OrientTowardsGravity)
+            {
+                // Rotate from current up to invert gravity
+                currentRotation = Quaternion.FromToRotation((currentRotation * Vector3.up), -Gravity) * currentRotation;
             }
         }
 
