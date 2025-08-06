@@ -170,9 +170,9 @@ namespace SDK
 
                 // See if we actually are allowed to jump
                 if (_canWallJump
-                    ||(!_jumpConsumed
-                    && ((AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround)
-                    || _timeSinceLastAbleToJump <= JumpPostGroundingGraceTime)))
+                        ||(!_jumpConsumed
+                        && ((AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround)
+                        || _timeSinceLastAbleToJump <= JumpPostGroundingGraceTime)))
                 {
                     // Calculate jump direction before ungrounding
                     Vector3 jumpDirection = Motor.CharacterUp;
@@ -255,7 +255,25 @@ namespace SDK
         }
         public void PostGroundingUpdate(float deltaTime)
         {
-            // This is called after the motor has finished its ground probing, but before PhysicsMover/Velocity/etc.... handling
+            // Handle landing and leaving ground
+            if (Motor.GroundingStatus.IsStableOnGround && !Motor.LastGroundingStatus.IsStableOnGround)
+            {
+                OnLanded();
+            }
+            else if (!Motor.GroundingStatus.IsStableOnGround && Motor.LastGroundingStatus.IsStableOnGround)
+            {
+                OnLeaveStableGround();
+            }
+        }
+
+        protected void OnLanded()
+        {
+            Debug.Log("Landed");
+        }
+
+        protected void OnLeaveStableGround()
+        {
+            Debug.Log("Left ground");
         }
 
         public void AddVelocity(Vector3 velocity)
