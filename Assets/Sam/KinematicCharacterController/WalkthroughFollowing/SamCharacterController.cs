@@ -10,13 +10,17 @@ namespace SDK
         public float moveAxisRight;
         public Quaternion cameraRotation;
         public bool jumpDown;
+        public bool crouchDown;
+        public bool crouchUp;
 
-        public FPlayerInputs(float moveAxisForward, float moveAxisRight, Quaternion cameraRotation, bool jumpDown)
+        public FPlayerInputs(float moveAxisForward, float moveAxisRight, Quaternion cameraRotation, bool jumpDown, bool crouchDown, bool crouchUp)
         {
             this.moveAxisForward = moveAxisForward;
             this.moveAxisRight = moveAxisRight;
             this.cameraRotation = cameraRotation;
             this.jumpDown = jumpDown;
+            this.crouchDown = crouchDown;
+            this.crouchUp = crouchUp;
         }
     }
 
@@ -48,6 +52,7 @@ namespace SDK
         public Vector3 Gravity = new Vector3(0, -30f, 0);
         public Transform MeshRoot;
 
+        private Collider[] _probedColliders = new Collider[8];
         private Vector3 _moveInputVector;
         private Vector3 _lookInputVector;
         private bool _jumpRequested = false;
@@ -58,6 +63,9 @@ namespace SDK
         private bool _doubleJumpConsumed = false;
         private bool _canWallJump = false;
         private Vector3 _wallJumpNormal;
+        private Vector3 _internalVelocityAdd = Vector3.zero;
+        private bool _shouldBeCrouching = false;
+        private bool _isCrouching = false;
 
         private void Start()
         {
@@ -87,6 +95,23 @@ namespace SDK
             {
                 _timeSinceJumpRequested = 0f;
                 _jumpRequested = true;
+            }
+
+            // Crouching input
+            if (inputs.crouchDown)
+            {
+                _shouldBeCrouching = true;
+
+                if (!_isCrouching)
+                {
+                    _isCrouching = true;
+                    Motor.SetCapsuleDimensions(0.5f, 1f, 0.5f);
+                    MeshRoot.localScale = new Vector3(1f, 0.5f, 1f);
+                }
+            }
+            else if (inputs.crouchUp)
+            {
+                _shouldBeCrouching = false;
             }
         }
 
@@ -170,7 +195,7 @@ namespace SDK
 
                 // See if we actually are allowed to jump
                 if (_canWallJump
-                        ||(!_jumpConsumed
+                        || (!_jumpConsumed
                         && ((AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround)
                         || _timeSinceLastAbleToJump <= JumpPostGroundingGraceTime)))
                 {
@@ -195,9 +220,16 @@ namespace SDK
                     _jumpConsumed = true;
                     _jumpedThisFrame = true;
                 }
-                
+
                 // Reset wall jump
                 _canWallJump = false;
+            }
+
+            // Take into account additive velocity
+            if (_internalVelocityAdd.sqrMagnitude > 0f)
+            {
+                currentVelocity += _internalVelocityAdd;
+                _internalVelocityAdd = Vector3.zero;
             }
         }
 
@@ -228,6 +260,27 @@ namespace SDK
                 {
                     // Keep track of time since we were last able to jump (for grace period)
                     _timeSinceLastAbleToJump += deltaTime;
+                }
+            }
+            
+            // Handle uncrouching
+            if (_isCrouching && !_shouldBeCrouching)
+            {
+                // Do an overlap test with the character's standing height to see if there are any obstructions
+                Motor.SetCapsuleDimensions(0.5f, 2f, 1f);
+                if (Motor.CharacterCollisionsOverlap(
+                        Motor.TransientPosition,
+                        Motor.TransientRotation,
+                        _probedColliders) > 0)
+                {
+                    // If obstructions, just stick to crouching dimensions
+                    Motor.SetCapsuleDimensions(0.5f, 1f, 0.5f);
+                }
+                else
+                {
+                    // If no obstructions, uncrouch
+                    MeshRoot.localScale = new Vector3(1f, 1f, 1f);
+                    _isCrouching = false;
                 }
             }
         }
@@ -268,16 +321,17 @@ namespace SDK
 
         protected void OnLanded()
         {
-            Debug.Log("Landed");
+            Debug.Log("<b><color=cyan>Landed</b>");
         }
 
         protected void OnLeaveStableGround()
         {
-            Debug.Log("Left ground");
+            Debug.Log("<b><color=red>Left ground</b>");
         }
 
         public void AddVelocity(Vector3 velocity)
         {
+            _internalVelocityAdd += velocity;
         }
 
         public void ProcessHitStabilityReport(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, Vector3 atCharacterPosition, Quaternion atCharacterRotation, ref HitStabilityReport hitStabilityReport)

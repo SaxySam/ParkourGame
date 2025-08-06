@@ -14,16 +14,18 @@ namespace SDK
         public InputActionReference mouseLookAction;
         public InputActionReference mouseZoomAction;
         public InputActionReference mouseLeftClickAction;
+        public InputActionReference mouseMiddleClickAction;
         public InputActionReference mouseRightClickAction;
         public Vector2 mouseSensitivity;
         public bool useRawInput;
 
         // Constructor
-        public FMouseInputActions(InputActionReference mouseLookAction, InputActionReference mouseZoomAction, InputActionReference mouseLeftClickAction, InputActionReference mouseRightClickAction, Vector2 mouseSensitivity, bool useRawInput)
+        public FMouseInputActions(InputActionReference mouseLookAction, InputActionReference mouseZoomAction, InputActionReference mouseLeftClickAction, InputActionReference mouseMiddleClickAction, InputActionReference mouseRightClickAction, Vector2 mouseSensitivity, bool useRawInput)
         {
             this.mouseLookAction = mouseLookAction;
             this.mouseZoomAction = mouseZoomAction;
             this.mouseLeftClickAction = mouseLeftClickAction;
+            this.mouseMiddleClickAction = mouseMiddleClickAction;
             this.mouseRightClickAction = mouseRightClickAction;
             this.mouseSensitivity = mouseSensitivity = new Vector2(200, 200);
             this.useRawInput = useRawInput = true;
@@ -56,7 +58,7 @@ namespace SDK
         public ExampleCharacterCamera OrbitCamera;
         public Transform CameraFollowPoint;
         public SamCharacterController Character;
-
+        public Vector3 inputVector = Vector3.zero;
 
         private void Start()
         {
@@ -125,12 +127,29 @@ namespace SDK
 
                 cameraRotation = OrbitCamera.Transform.rotation,
 
-                jumpDown = playerInputActions.jumpInputAction.action.triggered && playerInputActions.jumpInputAction.action.ReadValue<float>() > 0
+                jumpDown = playerInputActions.jumpInputAction.action.triggered && playerInputActions.jumpInputAction.action.ReadValue<float>() > 0,
+
+                //TODO Needs refactoring for New Input System
+
+                // crouchDown = playerInputActions.crouchInputAction.action.triggered && playerInputActions.crouchInputAction.action.ReadValue<float>() > 0,
+
+                // crouchUp = playerInputActions.crouchInputAction.action.triggered && playerInputActions.crouchInputAction.action.ReadValue<float>() == 0,
+
+                crouchDown = Input.GetKeyDown(KeyCode.C),
+                
+                crouchUp = Input.GetKeyUp(KeyCode.C),
 
             };
 
             // Apply inputs to character
             Character.SetInputs(ref characterInputs);
+
+            // Apply impulse
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                Character.Motor.ForceUnground(0.1f);
+                Character.AddVelocity(Vector3.one * 10f);
+            }
         }
     }
 
