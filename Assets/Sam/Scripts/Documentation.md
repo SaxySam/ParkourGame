@@ -1,0 +1,1 @@
+[Character Controller Package Documentation](https://docs.unity3d.com/Packages/com.unity.charactercontroller@1.2/manual/index.html)

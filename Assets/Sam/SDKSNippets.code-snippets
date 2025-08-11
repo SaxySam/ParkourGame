@@ -1,0 +1,307 @@
+{
+    // Place your global snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body, and
+    // description. Add comma-separated IDs of the languages where the snippet is applicable in the scope field. If scope
+    // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+    // used to trigger the snippet, and the body will be expanded and inserted. Possible variables are:
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+    // Placeholders with the same IDs are connected.
+    //
+    // Kahu Interactive code snippets.
+    // Made by Oliver Coates.
+    // Modified by Samuel Kennedy
+    //
+    "Public Field": {
+        "scope": "csharp",
+        "prefix": "Public",
+        "body": "public ${1:type} ${2:name};${0}",
+        "description": "Public Field"
+    },
+    "Public Hidden Field": {
+        "scope": "csharp",
+        "prefix": "PublicHidden",
+        "body": "[HideInInspector] public ${1:type} ${2:name};${0}",
+        "description": "Public Hidden Field"
+    },
+    "Internal (Namespace Public) Field": {
+        "scope": "csharp",
+        "prefix": "Internal",
+        "body": "internal ${1:type} ${2:name};${0}",
+        "description": "Public Field"
+    },
+    "Serialized Private Field": {
+        "scope": "csharp",
+        "prefix": "SPriv",
+        "body": "[SerializeField] private ${1:type} _${2:name};${0}",
+        "description": "Serialized Private Field"
+    },
+    "Debug Log": {
+        "scope": "csharp",
+        "prefix": "DLog",
+        "body": "Debug.${1|Log,LogWarning,LogError|}($\"${2}\");${0}",
+        "description": "Debug Log selection with string insertion"
+    },
+    "Serialized Private Field With Read-Only Accessor": {
+        "scope": "csharp",
+        "prefix": "SPrivAccessor",
+        "body": [
+            "[SerializeField] private ${1:type} _${2:name};${0}",
+            "public ${1:type} ${2:name} => _${2:name};",
+        ],
+        "description": "A serialized private field with an accessor"
+    },
+    "Serialized Private Field With Setter Accessor": {
+        "scope": "csharp",
+        "prefix": "SPrivAccessGet",
+        "body": [
+            "[SerializeField] private ${1:type} _${2:name};${0}",
+            "public ${1:type} ${2:name}",
+            "{",
+            "    get => _${2:name};",
+            "    private set => _${2:name} = value;",
+            "}"
+        ],
+        "description": "A serialized private field with an accessor"
+    },
+    "Header with 10pt Space": {
+        "scope": "csharp",
+        "prefix": "Header",
+        "body": [
+            "[Header(\"$1\")]${0}",
+            "[Space(10)]"
+        ],
+        "description": "A header with a separator"
+    },
+    "ScriptableObjectHeader": {
+        "scope": "csharp",
+        "prefix": "SOHeader",
+        "body": "[CreateAssetMenu(fileName = \"${1:objectName}\", menuName = \"${2:path}\", order = 1)]${0}",
+        "description": "Scriptable object header"
+    },
+    "Initialisation & Destruction Functions": {
+        "scope": "csharp",
+        "prefix": "InitAndDestroy",
+        "body": [
+            "#region Initialisation & Destruction",
+            "",
+            "private void OnCreate()",
+            "{",
+            "    $1",
+            "}",
+            "",
+            "private void OnDestroy()",
+            "{",
+            "    $2",
+            "}",
+            "",
+            "#endregion"
+        ],
+        "description": "OnCreate() and OnDestroy() functions wrapped within a region."
+    },
+    "On Trigger Enter, Stay, and Exit Functions": {
+        "scope": "csharp",
+        "prefix": "OnTrigger",
+        "body": [
+            "#region On Trigger",
+            "",
+            "$LINE_COMMENT OnTriggerEnter",
+            "private void OnTriggerEnter(Collider ${1:triggerName})",
+            "{",
+            "    $2",
+            "}",
+            "",
+            "$LINE_COMMENT OnTriggerStay",
+            "private void OnTriggerStay(Collider ${1:triggerName})",
+            "{",
+            "    $3",
+            "}",
+            "",
+            "$LINE_COMMENT OnTriggerExit",
+            "private void OnTriggerExit(Collider ${1:triggerName})",
+            "{",
+            "    $4",
+            "}",
+            "",
+            "#endregion"
+        ],
+        "description": "OnTriggerEnter, OnTriggerStay, and OnTriggerExit"
+    },
+    "On Collision Enter, Stay, and Exit Functions": {
+        "scope": "csharp",
+        "prefix": "OnCollision",
+        "body": [
+            "#region On Collision",
+            "",
+            "$LINE_COMMENT OnCollisionEnter",
+            "private void OnCollisionEnter(Collision ${1:collisionName})",
+            "{",
+            "    $2",
+            "}",
+            "",
+            "$LINE_COMMENT OnCollisionStay",
+            "private void OnCollisionStay(Collision ${1:collisionName})",
+            "{",
+            "    $3",
+            "}",
+            "",
+            "$LINE_COMMENT OnCollisionExit",
+            "private void OnCollisionExit(Collision ${1:collisionName})",
+            "{",
+            "    $4",
+            "}",
+            "",
+            "#endregion"
+        ],
+        "description": "OnCollisionEnter, OnCollisionStay, and OnCollisionExit"
+    },
+    "Enum Template with Cases": {
+        "scope": "csharp",
+        "prefix": "Enum",
+        "body": [
+            "public enum ${1:EnumName}",
+            "{",
+            "    ${2:FirstValue} = ${3:1},",
+            "    ${4:SecondValue} = ${5:2},",
+            "}$0"
+        ],
+        "description": "Creates a prefilled Enum"
+    },
+    "Struct Template with Constructor": {
+        "scope": "csharp",
+        "prefix": "Struct",
+        "body": [
+            "public struct ${1:StructName}",
+            "{",
+            "    public ${2:type} ${3:name};",
+            "    ",
+            "    $LINE_COMMENT Constructor",
+            "    public ${1:StructName}(${2:type} ${3:name})",
+            "    {",
+            "        this.${3:name} = ${3:name};",
+            "    }",
+            "}$0"
+        ],
+        "description": "Creates a prefilled Enum"
+    },
+    "Do-Once Bool Switch": {
+        "scope": "csharp",
+        "prefix": "DoOnce",
+        "body": [
+            "static bool ${1:isDone} = ${2|false,true|};",
+            "if (${1:isDone} == ${2|false,true|});",
+            "{",
+            "    ${1:isDone} = !${1:isDone};",
+            "}"
+        ],
+        "description": "Creates a DoOnce bool switch"
+    },
+    "Switch Statement with 'default' Case": {
+        "scope": "csharp",
+        "prefix": "Switch",
+        "body": [
+            "switch (${1:enumInstance})",
+            "{",
+            "    case ${2:EnumName.Value}:",
+            "        $3",
+            "        break;",
+            "    case ${2:EnumName.Value}:",
+            "        $0",
+            "        break;",
+            "    default:",
+            "        break;",
+            "}"
+        ],
+        "description": "Creates a Template Switch Statement"
+    },
+    "'StartCoroutine' function call": {
+        "scope": "csharp",
+        "prefix": "StartCoroutine",
+        "body": [
+            "StartCoroutine(${1:CoroutineName}());$0"
+        ],
+        "description": "Full Auto-Syntaxed StartCoroutine function call"
+    },
+    "Enumerator with 'WaitForSeconds(1)' call": {
+        "scope": "csharp",
+        "prefix": "Enumerator, IEnumerator",
+        "body": [
+            "public IEnumerator ${1:CoroutineName}()",
+            "{",
+            "    yield return new WaitForSeconds(1);",
+            "}"
+        ],
+        "description": "Enumerator with an autofilled one-second delay"
+    },
+    "For Loop": {
+        "scope": "csharp",
+        "prefix": "For, For Loop, Loop",
+        "body": [
+            "for (int ${1:i} = 0; ${1:i}i < ${2:length}; ${1:i}++)",
+            "{",
+            "    $0",
+            "}",
+        ],
+        "description": "For-loop using int 'i'"
+    },
+    "Reverse For-Loop": {
+        "scope": "csharp",
+        "prefix": "Forr, Reverse, ReverseFor, Reverse For",
+        "body": [
+            "for (int ${1:i} = ${2:length} - 1; ${1:i} >= 0 ; ${1:i}--)",
+            "{",
+            "    $0",
+            "}"
+        ],
+        "description": "Reverse For-loop using int 'i'"
+    },
+    "For-Each Loop": {
+        "scope": "csharp",
+        "prefix": "ForEach, For Each, Each",
+        "body": [
+            "foreach (${1:var} ${2:item} in ${3:collection})",
+            "{",
+            "    $0",
+            "}",
+        ],
+        "description": "For-Each loop using int 'var'"
+    },
+    "While Loop": {
+        "scope": "csharp",
+        "prefix": "While",
+        "body": [
+            "while (${1|false,true|})",
+            "{",
+            "    $0",
+            "}",
+        ],
+        "description": "While loop using 'true'"
+    },
+    "If-ElseIf-Else Loop": {
+        "scope": "csharp",
+        "prefix": "If, Else, IfElse, ElseIf, Else If, If Else",
+        "body": [
+            "if (${1|false,true|})",
+            "{",
+            "    $0",
+            "}",
+            "else if ${2|false,true|}",
+            "{",
+            "    ",
+            "}",
+            "else",
+            "{",
+            "    ",
+            "}"
+        ],
+        "description": "If, Else If, Else logic"
+    },
+    "C# Doc String": {
+        "scope": "csharp",
+        "prefix": "Doc, DocString, Doc String",
+        "body": [
+            "/// <summary>",
+            "/// (${1|Class,Method,Enum,Struct,Function|}) <c>${2:'FunctionName'}</c> ${3:Does 'X' Docstring Description}.$0",
+            "/// </summary>"
+        ],
+        "description": "Template DocString for C#"
+    },
+}
