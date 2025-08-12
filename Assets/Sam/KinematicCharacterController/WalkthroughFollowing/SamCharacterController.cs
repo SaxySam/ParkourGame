@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using KinematicCharacterController;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -27,7 +28,6 @@ namespace SDK
     public class SamCharacterController : MonoBehaviour, ICharacterController
     {
         public FPlayerInputs playerInputs;
-
         public KinematicCharacterMotor Motor;
 
         [Header("Stable Movement")]
@@ -52,6 +52,7 @@ namespace SDK
         public bool OrientTowardsGravity = true;
         public Vector3 Gravity = new Vector3(0, -30f, 0);
         public Transform MeshRoot;
+        public List<Collider> IgnoredColliders = new List<Collider>();
 
         private Collider[] _probedColliders = new Collider[8];
         private Vector3 _moveInputVector;
@@ -295,6 +296,10 @@ namespace SDK
         public bool IsColliderValidForCollisions(Collider coll)
         {
             // This is called after when the motor wants to know if the collider can be collided with (or if we just go through it)
+            if (IgnoredColliders.Contains(coll))
+            {
+                return false;
+            }
             return true;
         }
 
