@@ -1416,15 +1416,15 @@ MonoBehaviour:
   maxAirMoveSpeed: 10
   airAccelerationSpeed: 5
   drag: 0.1
-  allowJumpingWhenSliding: 0
-  allowWallJump: 0
+  allowJumpingWhenSliding: 1
+  allowWallJump: 1
   allowDoubleJump: 0
   jumpUpSpeed: 10
   jumpScalableForwardSpeed: 0.5
   jumpPreGroundingGraceTime: 0
   jumpPostGroundingGraceTime: 0
   gravity: {x: 0, y: -30, z: 0}
-  bonusOrientationMethod: 1
+  bonusOrientationMethod: 2
   bonusOrientationSharpness: 10
   meshRoot: {fileID: 1272690285}
   cameraFollowPoint: {fileID: 838493729}
