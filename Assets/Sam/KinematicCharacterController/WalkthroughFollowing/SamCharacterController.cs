@@ -1,6 +1,9 @@
 using KinematicCharacterController;
+using Unity.Cinemachine;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
 
 namespace SDK
 {
@@ -29,6 +32,8 @@ namespace SDK
         public FPlayerInputs playerInputs;
 
         public KinematicCharacterMotor Motor;
+
+        private PlayerInputActions _PlayerInput;
 
         [Header("Stable Movement")]
         public float MaxStableMoveSpeed = 10f;
@@ -68,38 +73,61 @@ namespace SDK
         private bool _shouldBeCrouching = false;
         private bool _isCrouching = false;
 
+        [SerializeField] private CinemachineCamera _PlayerWalkCam;
+
+        private InputAction _Move;
+        private InputAction _Jump;
+        private InputAction _Crouch;
+
+        private void Awake()
+        {
+            _PlayerInput = new PlayerInputActions();
+        }
+
+        private void OnEnable()
+        {
+            _Move = _PlayerInput.Player.Move;
+            _Move.Enable();
+            _Move.performed += Move;
+            _Move.canceled += Move;
+
+            _Jump = _PlayerInput.Player.Jump;
+            _Jump.Enable();
+            _Jump.performed += Jump;
+
+            _Crouch = _PlayerInput.Player.Crouch;
+            _Crouch.Enable();
+            _Crouch.performed += Crouch;
+
+
+
+
+
+
+        }
+        private void OnDisable()
+        {
+            _Move.Disable();
+            _Move.performed -= Move;
+            _Move.canceled -= Move;
+
+            _Jump.Disable();
+            _Jump.performed -= Jump;
+
+            _Crouch.Disable();
+            _Crouch.performed -= Crouch;
+
+        }
         private void Start()
         {
             // Assign to motor
             Motor.CharacterController = this;
         }
 
-        public void SetInputs(ref FPlayerInputs inputs)
+        private void Crouch(InputAction.CallbackContext context)
         {
-            // Clamp input
-            Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(inputs.moveAxisRight, 0f, inputs.moveAxisForward), 1f);
-
-            // Calculate camera direction and rotation on the character plane
-            Vector3 cameraPlanarDirection = Vector3.ProjectOnPlane(inputs.cameraRotation * Vector3.forward, Motor.CharacterUp).normalized;
-            if (cameraPlanarDirection.sqrMagnitude == 0f)
-            {
-                cameraPlanarDirection = Vector3.ProjectOnPlane(inputs.cameraRotation * Vector3.up, Motor.CharacterUp).normalized;
-            }
-            Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, Motor.CharacterUp);
-
-            // Move and look inputs
-            _moveInputVector = cameraPlanarRotation * moveInputVector;
-            _lookInputVector = cameraPlanarDirection;
-
-            // Jumping input
-            if (inputs.jumpDown)
-            {
-                _timeSinceJumpRequested = 0f;
-                _jumpRequested = true;
-            }
-
             // Crouching input
-            if (inputs.crouchDown)
+            if (!_shouldBeCrouching)
             {
                 _shouldBeCrouching = true;
 
@@ -110,10 +138,44 @@ namespace SDK
                     MeshRoot.localScale = new Vector3(1f, 0.5f, 1f);
                 }
             }
-            else if (inputs.crouchUp)
+            else 
             {
                 _shouldBeCrouching = false;
             }
+        }
+
+        private void Jump(InputAction.CallbackContext context)
+        {
+
+            _timeSinceJumpRequested = 0f;
+            _jumpRequested = true;
+        }
+
+        private void Move(InputAction.CallbackContext context)
+        {
+            // Clamp input
+            Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(_Move.ReadValue<Vector2>().x, 0f, _Move.ReadValue<Vector2>().y), 1f);
+
+            Quaternion cameraRotation = _PlayerWalkCam.transform.rotation;
+
+            // Calculate camera direction and rotation on the character plane
+            Vector3 cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.forward, Motor.CharacterUp).normalized;
+            if (cameraPlanarDirection.sqrMagnitude == 0f)
+            {
+                cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.up, Motor.CharacterUp).normalized;
+            }
+            Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, Motor.CharacterUp);
+
+            // Move and look inputs
+            _moveInputVector = cameraPlanarRotation * moveInputVector;
+            _lookInputVector = cameraPlanarDirection;
+        }   
+
+
+        public void SetInputs(ref FPlayerInputs inputs)
+        {
+           
+        
         }
 
         public void BeforeCharacterUpdate(float deltaTime)
