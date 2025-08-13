@@ -14,11 +14,13 @@ namespace SDK
     {
         Default,
     }
+
     public enum EOrientationMethod
     {
         TowardsCamera,
         TowardsMovement,
     }
+
     public enum EBonusOrientationMethod
     {
         None,
@@ -26,7 +28,6 @@ namespace SDK
         TowardsGroundSlopeAndGravity,
     }
     
-
     public struct FPlayerInputs
     {
         public InputAction lookAction;
@@ -207,24 +208,25 @@ namespace SDK
                 }
             }
         }
+        
         private void Look(InputAction.CallbackContext context)
         {
             switch (currentCharacterState)
             {
                 case ECharacterState.Default:
-                {
-                    Quaternion cameraRotation = playerThirdPersonCamera.transform.rotation;
-
-                    // Calculate camera direction and rotation on the character plane
-                    cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.forward, motor.CharacterUp).normalized;
-                    if (cameraPlanarDirection.sqrMagnitude == 0f)
                     {
-                        cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.up, motor.CharacterUp).normalized;
-                    }
+                        Quaternion cameraRotation = playerThirdPersonCamera.transform.rotation;
 
-                    cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, motor.CharacterUp);
-                    break;
-                }
+                        // Calculate camera direction and rotation on the character plane
+                        cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.forward, motor.CharacterUp).normalized;
+                        if (cameraPlanarDirection.sqrMagnitude == 0f)
+                        {
+                            cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.up, motor.CharacterUp).normalized;
+                        }
+
+                        cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, motor.CharacterUp);
+                        break;
+                    }
             }
         }
 
@@ -279,12 +281,12 @@ namespace SDK
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
+
         private void Exit(InputAction.CallbackContext context)
         {
             Cursor.lockState = CursorLockMode.None;
         }
         
-
         public void BeforeCharacterUpdate(float deltaTime)
         {
             // This is called before the motor does anything
@@ -614,6 +616,7 @@ namespace SDK
                 }
             }
         }
+        
         public void PostGroundingUpdate(float deltaTime)
         {
             // Handle landing and leaving ground

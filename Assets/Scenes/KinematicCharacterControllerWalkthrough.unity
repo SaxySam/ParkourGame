@@ -1567,8 +1567,8 @@ GameObject:
   - component: {fileID: 1536669738}
   - component: {fileID: 1536669737}
   - component: {fileID: 1536669736}
-  - component: {fileID: 1536669735}
   - component: {fileID: 1536669740}
+  - component: {fileID: 1536669735}
   - component: {fileID: 1536669733}
   - component: {fileID: 1536669732}
   m_Layer: 0
@@ -1758,11 +1758,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1536669730}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 126893bb4e706224798b24e363115236, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b6a0daf518d7f54f913855065b51001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mover: {fileID: 1536669735}
-  director: {fileID: 1536669733}
+  Mover: {fileID: 1536669735}
+  Director: {fileID: 1536669733}
 --- !u!1 &1653093820
 GameObject:
   m_ObjectHideFlags: 0
