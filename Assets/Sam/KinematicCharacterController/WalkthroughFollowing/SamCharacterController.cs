@@ -13,6 +13,17 @@ namespace SDK
     {
         Default,
     }
+    public enum EOrientationMethod
+    {
+        TowardsCamera,
+        TowardsMovement,
+    }
+    public enum EBonusOrientationMethod
+    {
+        None,
+        TowardsGravity,
+        TowardsGroundSlopeAndGravity,
+    }
 
     public struct FPlayerInputs
     {
@@ -43,6 +54,7 @@ namespace SDK
         public float MaxStableMoveSpeed = 10f;
         public float StableMovementSharpness = 15;
         public float OrientationSharpness = 10;
+        public EOrientationMethod OrientationMethod = EOrientationMethod.TowardsCamera;
 
         [Header("Air Movement")]
         public float MaxAirMoveSpeed = 10f;
@@ -53,15 +65,23 @@ namespace SDK
         public bool AllowJumpingWhenSliding = false;
         public bool AllowDoubleJump = false;
         public bool AllowWallJump = false;
-        public float JumpSpeed = 10f;
+        public float JumpUpSpeed = 10f;
+        public float JumpScalableForwardSpeed = 10f;
         public float JumpPreGroundingGraceTime = 0f;
         public float JumpPostGroundingGraceTime = 0f;
 
-        [Header("Misc")]
-        public ECharacterState CurrentCharacterState { get; private set; }
-        public Transform MeshRoot;
-        public bool OrientTowardsGravity = true;
+        [Header("Gravity")]
+        
         public Vector3 Gravity = new(0, -30f, 0);
+        public EBonusOrientationMethod BonusOrientationMethod = EBonusOrientationMethod.TowardsGravity;
+        public float BonusOrientationSharpness = 10;
+
+        [Header("Misc")]
+        public Transform MeshRoot;
+        public Transform CameraFollowPoint;
+        public ECharacterState CurrentCharacterState { get; private set; }
+        public float CrouchedCapsuleHeight = 1f;
+        public bool useFramePerfectRotation = false;
         public List<Collider> IgnoredColliders = new();
 
         private Collider[] _probedColliders = new Collider[8];
@@ -93,7 +113,7 @@ namespace SDK
             OnStateEnter(newState, tmpInitialState);
         }
 
-                /// <summary>
+        /// <summary>
         /// Event when entering a state
         /// </summary>
         public void OnStateEnter(ECharacterState state, ECharacterState fromState)
@@ -140,7 +160,16 @@ namespace SDK
                 {
                     // Move and look inputs
                     _moveInputVector = cameraPlanarRotation * moveInputVector;
-                    _lookInputVector = cameraPlanarDirection;
+
+                    switch (OrientationMethod)
+                    {
+                        case EOrientationMethod.TowardsCamera:
+                            _lookInputVector = cameraPlanarDirection;
+                            break;
+                        case EOrientationMethod.TowardsMovement:
+                            _lookInputVector = _moveInputVector.normalized;
+                            break;
+                    }
 
                     // Jumping input
                     if (inputs.jumpDown)
@@ -157,7 +186,7 @@ namespace SDK
                         if (!_isCrouching)
                         {
                             _isCrouching = true;
-                            Motor.SetCapsuleDimensions(0.5f, 1f, 0.5f);
+                            Motor.SetCapsuleDimensions(0.5f, CrouchedCapsuleHeight, CrouchedCapsuleHeight * 0.5f);
                             MeshRoot.localScale = new Vector3(1f, 0.5f, 1f);
                         }
                     }
@@ -171,33 +200,85 @@ namespace SDK
             }
         }
 
+        public void PostInputUpdate(float deltaTime, Vector3 cameraForward)
+        {
+            if (useFramePerfectRotation)
+            {
+                _lookInputVector = Vector3.ProjectOnPlane(cameraForward, Motor.CharacterUp);
+
+                Quaternion newRotation = default;
+                HandleRotation(ref newRotation, deltaTime);
+                MeshRoot.rotation = newRotation;
+            }
+        }
+
+        private void HandleRotation(ref Quaternion rot, float deltaTime)
+        {
+            if (_lookInputVector != Vector3.zero)
+            {
+                rot = Quaternion.LookRotation(_lookInputVector, Motor.CharacterUp);
+            }
+        }
+
         public void BeforeCharacterUpdate(float deltaTime)
         {
             // This is called before the motor does anything
         }
+
 
         public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
         {
             switch (CurrentCharacterState)
             {
                 case ECharacterState.Default:
-                {
-                    if (_lookInputVector != Vector3.zero && OrientationSharpness > 0f)
                     {
-                        // Smoothly interpolate from current to target look direction
-                        Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
+                        if (_lookInputVector != Vector3.zero && OrientationSharpness > 0f)
+                        {
+                            // Smoothly interpolate from current to target look direction
+                            Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
 
-                        // Set the current rotation (which will be used by the KinematicCharacterMotor)
-                        currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
-                    }
+                            // Set the current rotation (which will be used by the KinematicCharacterMotor)
+                            currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
+                        }
 
-                    if (OrientTowardsGravity)
-                    {
-                        // Rotate from current up to invert gravity
-                        currentRotation = Quaternion.FromToRotation((currentRotation * Vector3.up), -Gravity) * currentRotation;
+                        Vector3 currentUp = (currentRotation * Vector3.up);
+                        if (BonusOrientationMethod == EBonusOrientationMethod.TowardsGravity)
+                        {
+                            // Rotate from current up to invert gravity
+                            Vector3 smoothedGravityDir = Vector3.Slerp(currentUp, -Gravity.normalized, 1 - Mathf.Exp(-BonusOrientationSharpness * deltaTime));
+                            currentRotation = Quaternion.FromToRotation(currentUp, smoothedGravityDir) * currentRotation;
+                        }
+                        else if (BonusOrientationMethod == EBonusOrientationMethod.TowardsGroundSlopeAndGravity)
+                        {
+                            if (Motor.GroundingStatus.IsStableOnGround)
+                            {
+                                Vector3 initialCharacterBottomHemiCenter = Motor.TransientPosition + (currentUp * Motor.Capsule.radius);
+
+                                Vector3 smoothedGroundNormal = Vector3.Slerp(Motor.CharacterUp, Motor.GroundingStatus.GroundNormal, 1 - Mathf.Exp(-BonusOrientationSharpness * deltaTime));
+                                currentRotation = Quaternion.FromToRotation(currentUp, smoothedGroundNormal) * currentRotation;
+
+                                // Move the position to create a rotation around the bottom hemi center instead of around the pivot
+                                Motor.SetTransientPosition(initialCharacterBottomHemiCenter + (currentRotation * Vector3.down * Motor.Capsule.radius));
+                            }
+                            else
+                            {
+                                Vector3 smoothedGravityDir = Vector3.Slerp(currentUp, -Gravity.normalized, 1 - Mathf.Exp(-BonusOrientationSharpness * deltaTime));
+                                currentRotation = Quaternion.FromToRotation(currentUp, smoothedGravityDir) * currentRotation;
+                            }
+                        }
+                        else
+                        {
+                            Vector3 smoothedGravityDir = Vector3.Slerp(currentUp, Vector3.up, 1 - Mathf.Exp(-BonusOrientationSharpness * deltaTime));
+                            currentRotation = Quaternion.FromToRotation(currentUp, smoothedGravityDir) * currentRotation;
+                        }
+
+                        if (useFramePerfectRotation)
+                        {
+                            HandleRotation(ref currentRotation, deltaTime);
+                        }
+
+                        break;
                     }
-                    break;
-                }
             }
         }
 
@@ -222,6 +303,7 @@ namespace SDK
                         // Smooth movement Velocity
                         currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1 - Mathf.Exp(-StableMovementSharpness * deltaTime));
                     }
+                    //Air Moveement
                     else
                     {
                         // Add move input
@@ -245,7 +327,7 @@ namespace SDK
 
                         // Drag
                         currentVelocity *= (1f / (1f + (Drag * deltaTime)));
-                    }
+                        }
 
                     // Handle jumping
                     _jumpedThisFrame = false;
@@ -260,7 +342,7 @@ namespace SDK
                                 Motor.ForceUnground(0.1f);
 
                                 // Add to the return velocity and reset jump state
-                                currentVelocity += (Motor.CharacterUp * JumpSpeed) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+                                currentVelocity += (Motor.CharacterUp * JumpUpSpeed) - Vector3.Project(currentVelocity, Motor.CharacterUp);
                                 _jumpRequested = false;
                                 _doubleJumpConsumed = true;
                                 _jumpedThisFrame = true;
@@ -289,7 +371,8 @@ namespace SDK
                             Motor.ForceUnground(0.1f);
 
                             // Add to the return velocity and reset jump state
-                            currentVelocity += (jumpDirection * JumpSpeed) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+                            currentVelocity += (jumpDirection * JumpUpSpeed) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+                            currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
                             _jumpRequested = false;
                             _jumpConsumed = true;
                             _jumpedThisFrame = true;
@@ -372,6 +455,12 @@ namespace SDK
         public bool IsColliderValidForCollisions(Collider coll)
         {
             // This is called after when the motor wants to know if the collider can be collided with (or if we just go through it)
+            
+            if (IgnoredColliders.Count == 0)
+            {
+                return true;
+            }
+
             if (IgnoredColliders.Contains(coll))
             {
                 return false;

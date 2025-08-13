@@ -56,7 +56,6 @@ namespace SDK
         public FPlayerInputActions playerInputActions;
 
         public ExampleCharacterCamera OrbitCamera;
-        public Transform CameraFollowPoint;
         public SamCharacterController Character;
         public Vector3 inputVector = Vector3.zero;
 
@@ -65,7 +64,7 @@ namespace SDK
             Cursor.lockState = CursorLockMode.Locked;
 
             // Tell camera to follow transform
-            OrbitCamera.SetFollowTransform(CameraFollowPoint);
+            OrbitCamera.SetFollowTransform(Character.CameraFollowPoint);
 
             // Ignore the character's collider(s) for camera obstruction checks
             OrbitCamera.IgnoredColliders.Clear();
