@@ -2,10 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using KinematicCharacterController;
-using KinematicCharacterController.Examples;
-using Unity.VisualScripting;
+using Unity.Cinemachine;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
 
 namespace SDK
 {
@@ -24,37 +25,45 @@ namespace SDK
         TowardsGravity,
         TowardsGroundSlopeAndGravity,
     }
+    
 
     public struct FPlayerInputs
     {
-        public float moveAxisForward;
-        public float moveAxisRight;
-        public Quaternion cameraRotation;
-        public bool jumpDown;
-        public bool crouchDown;
-        public bool crouchUp;
+        public InputAction lookAction;
+        public InputAction moveAction;
+        public InputAction jumpAction;
+        public InputAction crouchAction;
+        public InputAction lockMouseAction;
+        public InputAction exitMouseAction;
 
-        public FPlayerInputs(float moveAxisForward, float moveAxisRight, Quaternion cameraRotation, bool jumpDown, bool crouchDown, bool crouchUp)
+        private FPlayerInputs(InputAction lookAction, InputAction moveAction, InputAction jumpAction, InputAction crouchAction, InputAction lockMouseAction, InputAction exitMouseAction)
         {
-            this.moveAxisForward = moveAxisForward;
-            this.moveAxisRight = moveAxisRight;
-            this.cameraRotation = cameraRotation;
-            this.jumpDown = jumpDown;
-            this.crouchDown = crouchDown;
-            this.crouchUp = crouchUp;
+            this.lookAction = lookAction;
+            this.moveAction = moveAction;
+            this.jumpAction = jumpAction;
+            this.crouchAction = crouchAction;
+            this.lockMouseAction = lockMouseAction;
+            this.exitMouseAction = exitMouseAction;
         }
     }
 
     public class SamCharacterController : MonoBehaviour, ICharacterController
     {
-        public FPlayerInputs playerInputs;
-        public KinematicCharacterMotor motor;
+        private FPlayerInputs playerInputs;
+        private PlayerInputActions playerInputActions;
+        [SerializeField] private KinematicCharacterMotor motor;
 
         [Header("Stable Movement")]
         public float maxStableMoveSpeed = 10f;
         public float stableMovementSharpness = 15;
-        public float orientationSharpness = 10;
         public EOrientationMethod orientationMethod = EOrientationMethod.TowardsCamera;
+        public float TowardsCameraOrientationSharpness = 50;
+        public float TowardsMovementOrientationSharpness = 10;
+        [SerializeField] private CinemachineCamera playerThirdPersonCamera;
+
+        private Vector3 moveInputVector;
+        private Vector3 cameraPlanarDirection;
+        private Quaternion cameraPlanarRotation;
 
         [Header("Air Movement")]
         public float maxAirMoveSpeed = 10f;
@@ -71,7 +80,6 @@ namespace SDK
         public float jumpPostGroundingGraceTime = 0f;
 
         [Header("Gravity")]
-        
         public Vector3 gravity = new(0, -30f, 0);
         public EBonusOrientationMethod bonusOrientationMethod = EBonusOrientationMethod.TowardsGravity;
         public float bonusOrientationSharpness = 10;
@@ -99,12 +107,68 @@ namespace SDK
         private bool _shouldBeCrouching = false;
         private bool _isCrouching = false;
 
+        private void Awake()
+        {
+            playerInputActions = new PlayerInputActions();
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        private void OnEnable()
+        {
+            playerInputs.lookAction = playerInputActions.Player.Look;
+            playerInputs.lookAction.Enable();
+            playerInputs.lookAction.performed += Look;
+
+            playerInputs.moveAction = playerInputActions.Player.Move;
+            playerInputs.moveAction.Enable();
+            playerInputs.moveAction.performed += Move;
+            playerInputs.moveAction.canceled += Move;
+
+            playerInputs.jumpAction = playerInputActions.Player.Jump;
+            playerInputs.jumpAction.Enable();
+            playerInputs.jumpAction.performed += Jump;
+
+            playerInputs.crouchAction = playerInputActions.Player.Crouch;
+            playerInputs.crouchAction.Enable();
+            playerInputs.crouchAction.performed += Crouch;
+
+            playerInputs.lockMouseAction = playerInputActions.Player.LeftClick;
+            playerInputs.lockMouseAction.Enable();
+            playerInputs.lockMouseAction.performed += LockMouse;
+
+            playerInputs.exitMouseAction = playerInputActions.Player.Exit;
+            playerInputs.exitMouseAction.Enable();
+            playerInputs.exitMouseAction.performed += Exit;
+        }
+
+        private void OnDisable()
+        {
+            playerInputs.lookAction.Disable();
+            playerInputs.lookAction.performed -= Look;
+
+            playerInputs.moveAction.Disable();
+            playerInputs.moveAction.performed -= Move;
+            playerInputs.moveAction.canceled -= Move;
+
+            playerInputs.jumpAction.Disable();
+            playerInputs.jumpAction.performed -= Jump;
+
+            playerInputs.crouchAction.Disable();
+            playerInputs.crouchAction.performed -= Crouch;
+
+            playerInputs.lockMouseAction.Disable();
+            playerInputs.lockMouseAction.performed -= LockMouse;
+
+            playerInputs.exitMouseAction.Disable();
+            playerInputs.exitMouseAction.performed -= Exit;
+        }
+        
         private void Start()
         {
             // Assign to motor
             motor.CharacterController = this;
         }
-
+        
         /// <summary>
         /// Handles movement state transitions and enter/exit callbacks
         /// </summary>
@@ -143,67 +207,87 @@ namespace SDK
                 }
             }
         }
-        
-        /// <summary>
-        /// This is called every frame by ExamplePlayer in order to tell the character what its inputs are
-        /// </summary>
-        public void SetInputs(ref FPlayerInputs inputs)
+        private void Look(InputAction.CallbackContext context)
         {
-            // Clamp input
-            Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(inputs.moveAxisRight, 0f, inputs.moveAxisForward), 1f);
-
-            // Calculate camera direction and rotation on the character plane
-            Vector3 cameraPlanarDirection = Vector3.ProjectOnPlane(inputs.cameraRotation * Vector3.forward, motor.CharacterUp).normalized;
-            if (cameraPlanarDirection.sqrMagnitude == 0f)
-            {
-                cameraPlanarDirection = Vector3.ProjectOnPlane(inputs.cameraRotation * Vector3.up, motor.CharacterUp).normalized;
-            }
-            Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, motor.CharacterUp);
-
             switch (currentCharacterState)
             {
                 case ECharacterState.Default:
+                {
+                    Quaternion cameraRotation = playerThirdPersonCamera.transform.rotation;
+
+                    // Calculate camera direction and rotation on the character plane
+                    cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.forward, motor.CharacterUp).normalized;
+                    if (cameraPlanarDirection.sqrMagnitude == 0f)
                     {
-                        // Move and look inputs
-                        _moveInputVector = cameraPlanarRotation * moveInputVector;
-
-                        switch (orientationMethod)
-                        {
-                            case EOrientationMethod.TowardsCamera:
-                                _lookInputVector = cameraPlanarDirection;
-                                break;
-                            case EOrientationMethod.TowardsMovement:
-                                _lookInputVector = _moveInputVector.normalized;
-                                break;
-                        }
-
-                        // Jumping input
-                        if (inputs.jumpDown)
-                        {
-                            _timeSinceJumpRequested = 0f;
-                            _jumpRequested = true;
-                        }
-
-                        // Crouching input
-                        if (inputs.crouchDown)
-                        {
-                            _shouldBeCrouching = true;
-
-                            if (!_isCrouching)
-                            {
-                                _isCrouching = true;
-                                motor.SetCapsuleDimensions(0.5f, crouchedCapsuleHeight, crouchedCapsuleHeight * 0.5f);
-                                meshRoot.localScale = new Vector3(1f, 0.5f, 1f);
-                            }
-                        }
-                        else if (inputs.crouchUp)
-                        {
-                            _shouldBeCrouching = false;
-                        }
-
-                        break;
+                        cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.up, motor.CharacterUp).normalized;
                     }
+
+                    cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, motor.CharacterUp);
+                    break;
+                }
             }
+        }
+
+        private void Move(InputAction.CallbackContext context)
+        {
+            // Clamp input
+            moveInputVector = Vector3.ClampMagnitude(new Vector3(playerInputs.moveAction.ReadValue<Vector2>().x, 0f, playerInputs.moveAction.ReadValue<Vector2>().y), 1f);
+        }
+
+        private void Jump(InputAction.CallbackContext context)
+        {
+            switch (currentCharacterState)
+            {
+                case ECharacterState.Default:
+                {
+                    _timeSinceJumpRequested = 0f;
+                    _jumpRequested = true;
+                    break;
+                }
+            }
+        }
+
+        private void Crouch(InputAction.CallbackContext context)
+        {
+            switch (currentCharacterState)
+            {
+                case ECharacterState.Default:
+                {
+                    // Crouching input
+                    if (!_shouldBeCrouching)
+                    {
+                        _shouldBeCrouching = true;
+
+                        if (!_isCrouching)
+                        {
+                            _isCrouching = true;
+                            motor.SetCapsuleDimensions(0.5f, crouchedCapsuleHeight, crouchedCapsuleHeight * 0.5f);
+                            meshRoot.localScale = new Vector3(1f, 0.5f, 1f);
+                        }
+                    }
+                    else
+                    {
+                        _shouldBeCrouching = false;
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        private void LockMouse(InputAction.CallbackContext context)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        private void Exit(InputAction.CallbackContext context)
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+        
+
+        public void BeforeCharacterUpdate(float deltaTime)
+        {
+            // This is called before the motor does anything
         }
 
         public void PostInputUpdate(float deltaTime, Vector3 cameraForward)
@@ -228,15 +312,6 @@ namespace SDK
 
         /// <summary>
         /// (Called by KinematicCharacterMotor during its update cycle)
-        /// This is called before the character begins its movement update
-        /// </summary>
-        public void BeforeCharacterUpdate(float deltaTime)
-        {
-            // This is called before the motor does anything
-        }
-
-        /// <summary>
-        /// (Called by KinematicCharacterMotor during its update cycle)
         /// This is where you tell your character what its rotation should be right now. 
         /// This is the ONLY place where you should set the character's rotation
         /// </summary>
@@ -246,13 +321,38 @@ namespace SDK
             {
                 case ECharacterState.Default:
                     {
-                        if (_lookInputVector != Vector3.zero && orientationSharpness > 0f)
-                        {
-                            // Smoothly interpolate from current to target look direction
-                            Vector3 smoothedLookInputDirection = Vector3.Slerp(motor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-orientationSharpness * deltaTime)).normalized;
+                        _moveInputVector = cameraPlanarRotation * moveInputVector;
 
-                            // Set the current rotation (which will be used by the KinematicCharacterMotor)
-                            currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, motor.CharacterUp);
+                        switch (orientationMethod)
+                        {
+                            case EOrientationMethod.TowardsCamera:
+                            {
+                                _lookInputVector = cameraPlanarDirection;
+
+                                if (_lookInputVector != Vector3.zero && TowardsCameraOrientationSharpness > 0f)
+                                {
+                                    // Smoothly interpolate from current to target look direction
+                                    Vector3 smoothedLookInputDirection = Vector3.Slerp(motor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-TowardsCameraOrientationSharpness * deltaTime)).normalized;
+
+                                    // Set the current rotation (which will be used by the KinematicCharacterMotor)
+                                    currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, motor.CharacterUp);
+                                }
+                                break;
+                            }
+                            case EOrientationMethod.TowardsMovement:
+                            {
+                                _lookInputVector = _moveInputVector.normalized;
+
+                                if (_lookInputVector != Vector3.zero && TowardsMovementOrientationSharpness > 0f)
+                                {
+                                    // Smoothly interpolate from current to target look direction
+                                    Vector3 smoothedLookInputDirection = Vector3.Slerp(motor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-TowardsMovementOrientationSharpness * deltaTime)).normalized;
+
+                                    // Set the current rotation (which will be used by the KinematicCharacterMotor)
+                                    currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, motor.CharacterUp);
+                                }
+                                break;
+                            }
                         }
 
                         Vector3 currentUp = (currentRotation * Vector3.up);
