@@ -74,7 +74,7 @@ namespace SDK
 
         private void Update()
         {
-            if (mouseInputs.mouseLeftClickAction.action.triggered  && mouseInputs.mouseLeftClickAction.action.ReadValue<float>() > 0)
+            if (mouseInputs.mouseLeftClickAction.action.triggered && mouseInputs.mouseLeftClickAction.action.ReadValue<float>() > 0)
             {
                 Cursor.lockState = CursorLockMode.Locked;
             }
