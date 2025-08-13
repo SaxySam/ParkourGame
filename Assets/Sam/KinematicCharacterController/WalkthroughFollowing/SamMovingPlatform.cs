@@ -8,16 +8,16 @@ using UnityEngine.Playables;
 namespace SDK
 {
 
-    public struct MyMovingPlatformState
+    public struct ESamMovingPlatformState
     {
-        public PhysicsMoverState MoverState;
-        public float DirectorTime;
+        public PhysicsMoverState moverState;
+        public float directorTime;
     }
     public class SamMovingPlatform : MonoBehaviour, IMoverController
     {
-        public PhysicsMover Mover;
+        public PhysicsMover mover;
 
-        public PlayableDirector Director;
+        public PlayableDirector director;
 
         private Transform _transform;
 
@@ -25,7 +25,7 @@ namespace SDK
         {
             _transform = this.transform;
 
-            Mover.MoverController = this;
+            mover.MoverController = this;
         }
 
         // This is called every FixedUpdate by our PhysicsMover in order to tell it what pose it should go to
@@ -50,8 +50,8 @@ namespace SDK
 
         public void EvaluateAtTime(double time)
         {
-            Director.time = time % Director.duration;
-            Director.Evaluate();
+            director.time = time % director.duration;
+            director.Evaluate();
         }
     }
 }

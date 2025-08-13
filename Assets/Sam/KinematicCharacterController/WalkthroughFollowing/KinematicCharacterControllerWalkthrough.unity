@@ -1350,7 +1350,7 @@ MonoBehaviour:
     mouseLookAction: {fileID: -5630151704836100654, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
     mouseZoomAction: {fileID: -4550399336469681767, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
     mouseLeftClickAction: {fileID: 5835440882025673642, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
-    mouseMiddleClickAction: {fileID: 0}
+    mouseMiddleClickAction: {fileID: 4615303030223943481, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
     mouseRightClickAction: {fileID: -3951302409888629992, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
     mouseSensitivity: {x: 300, y: 300}
     useRawInput: 0
@@ -1359,8 +1359,8 @@ MonoBehaviour:
     jumpInputAction: {fileID: -2099379676528639254, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
     sprintInputAction: {fileID: -7471211009204490832, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
     crouchInputAction: {fileID: 7040659881675835329, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
-  OrbitCamera: {fileID: 539730258}
-  Character: {fileID: 1245593813}
+  orbitCamera: {fileID: 539730258}
+  character: {fileID: 1245593813}
   inputVector: {x: 0, y: 0, z: 0}
 --- !u!4 &1214885051
 Transform:
@@ -1408,29 +1408,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ac3652b30aff264787183c90ff42ba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Motor: {fileID: 1245593814}
-  MaxStableMoveSpeed: 10
-  StableMovementSharpness: 15
-  OrientationSharpness: 10
-  OrientationMethod: 1
-  MaxAirMoveSpeed: 10
-  AirAccelerationSpeed: 5
-  Drag: 0.1
-  AllowJumpingWhenSliding: 1
-  AllowDoubleJump: 0
-  AllowWallJump: 1
-  JumpUpSpeed: 10
-  JumpScalableForwardSpeed: 0.5
-  JumpPreGroundingGraceTime: 0
-  JumpPostGroundingGraceTime: 0
-  Gravity: {x: 0, y: -30, z: 0}
-  BonusOrientationMethod: 1
-  BonusOrientationSharpness: 20
-  MeshRoot: {fileID: 1272690285}
-  CameraFollowPoint: {fileID: 838493729}
-  CrouchedCapsuleHeight: 1
+  motor: {fileID: 1245593814}
+  maxStableMoveSpeed: 10
+  stableMovementSharpness: 15
+  orientationSharpness: 10
+  orientationMethod: 1
+  maxAirMoveSpeed: 10
+  airAccelerationSpeed: 5
+  drag: 0.1
+  allowJumpingWhenSliding: 0
+  allowWallJump: 0
+  allowDoubleJump: 0
+  jumpUpSpeed: 10
+  jumpScalableForwardSpeed: 0.5
+  jumpPreGroundingGraceTime: 0
+  jumpPostGroundingGraceTime: 0
+  gravity: {x: 0, y: -30, z: 0}
+  bonusOrientationMethod: 1
+  bonusOrientationSharpness: 10
+  meshRoot: {fileID: 1272690285}
+  cameraFollowPoint: {fileID: 838493729}
+  crouchedCapsuleHeight: 1
   useFramePerfectRotation: 0
-  IgnoredColliders:
+  ignoredColliders:
   - {fileID: 638035488}
 --- !u!114 &1245593814
 MonoBehaviour:
@@ -2164,8 +2164,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 126893bb4e706224798b24e363115236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Mover: {fileID: 1536669735}
-  Director: {fileID: 1536669733}
+  mover: {fileID: 1536669735}
+  director: {fileID: 1536669733}
 --- !u!1 &1625667848
 GameObject:
   m_ObjectHideFlags: 0

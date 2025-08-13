@@ -55,8 +55,8 @@ namespace SDK
         public FMouseInputActions mouseInputs;
         public FPlayerInputActions playerInputActions;
 
-        public ExampleCharacterCamera OrbitCamera;
-        public SamCharacterController Character;
+        public ExampleCharacterCamera orbitCamera;
+        public SamCharacterController character;
         public Vector3 inputVector = Vector3.zero;
 
         private void Start()
@@ -64,11 +64,11 @@ namespace SDK
             Cursor.lockState = CursorLockMode.Locked;
 
             // Tell camera to follow transform
-            OrbitCamera.SetFollowTransform(Character.CameraFollowPoint);
+            orbitCamera.SetFollowTransform(character.cameraFollowPoint);
 
             // Ignore the character's collider(s) for camera obstruction checks
-            OrbitCamera.IgnoredColliders.Clear();
-            OrbitCamera.IgnoredColliders.AddRange(Character.GetComponentsInChildren<Collider>());
+            orbitCamera.IgnoredColliders.Clear();
+            orbitCamera.IgnoredColliders.AddRange(character.GetComponentsInChildren<Collider>());
         }
 
         private void Update()
@@ -106,12 +106,12 @@ namespace SDK
 #endif
 
             // Apply inputs to the camera
-            OrbitCamera.UpdateWithInput(Time.deltaTime, scrollInput, _lookInputVector);
+            orbitCamera.UpdateWithInput(Time.deltaTime, scrollInput, _lookInputVector);
 
             // Handle toggling zoom level
             if (mouseInputs.mouseRightClickAction.action.triggered && mouseInputs.mouseRightClickAction.action.ReadValue<float>() > 0)
             {
-                OrbitCamera.TargetDistance = (OrbitCamera.TargetDistance == 0f) ? OrbitCamera.DefaultDistance : 0f;
+                orbitCamera.TargetDistance = (orbitCamera.TargetDistance == 0f) ? orbitCamera.DefaultDistance : 0f;
             }
         }
 
@@ -124,7 +124,7 @@ namespace SDK
 
                 moveAxisRight = playerInputActions.moveInputAction.action.ReadValue<Vector2>().x,
 
-                cameraRotation = OrbitCamera.Transform.rotation,
+                cameraRotation = orbitCamera.Transform.rotation,
 
                 jumpDown = playerInputActions.jumpInputAction.action.triggered && playerInputActions.jumpInputAction.action.ReadValue<float>() > 0,
 
@@ -141,13 +141,13 @@ namespace SDK
             };
 
             // Apply inputs to character
-            Character.SetInputs(ref characterInputs);
+            character.SetInputs(ref characterInputs);
 
             // Apply impulse
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                Character.Motor.ForceUnground(0.1f);
-                Character.AddVelocity(Vector3.one * 10f);
+                character.motor.ForceUnground(0.1f);
+                character.AddVelocity(Vector3.one * 10f);
             }
         }
     }
