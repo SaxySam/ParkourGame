@@ -72,7 +72,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ac3652b30aff264787183c90ff42ba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  motor: {fileID: 277347096623532543}
+  kinematicMotor: {fileID: 277347096623532543}
+  <currentCharacterState>k__BackingField: 0
   maxStableMoveSpeed: 10
   stableMovementSharpness: 15
   orientationMethod: 1
