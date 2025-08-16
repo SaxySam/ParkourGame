@@ -13,7 +13,7 @@ namespace PhotoCamera
         public InputActionReference pauseAction;
         // public InputAction leftClick;
 
-        public RawImage rawImage;
+        // public RawImage rawImage;
 
         void TakePhoto()
         {
@@ -25,7 +25,7 @@ namespace PhotoCamera
             RenderTexture.active = null;
 
             // Outputs texture onto UI image
-            rawImage.texture = image;
+            // rawImage.texture = image;
         }
 
         void Update()
