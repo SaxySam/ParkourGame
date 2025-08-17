@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -5,15 +7,15 @@ using UnityEngine.UI;
 
 namespace PhotoCamera
 {
-
-    [RequireComponent(typeof(Camera))]
     public class PhotoCamera : MonoBehaviour
     {
         [SerializeField] private RenderTexture sourceTexture;
-        public InputActionReference pauseAction;
-        // public InputAction leftClick;
+        public InputActionReference cycleAction;
+        public InputActionReference takePhotoAction;
+        public PhotoImage photoImage;
 
-        // public RawImage rawImage;
+        // Display on screen
+        public RawImage rawImage;
 
         void TakePhoto()
         {
@@ -24,15 +26,31 @@ namespace PhotoCamera
             image.Apply();
             RenderTexture.active = null;
 
-            // Outputs texture onto UI image
-            // rawImage.texture = image;
+            // Saves image to file
+            photoImage.SaveNewPhoto(image);
         }
 
         void Update()
         {
-            if (pauseAction.action.IsPressed())
+            if (takePhotoAction.action.IsPressed())
             {
                 TakePhoto();
+            }
+
+            if (cycleAction.action.IsPressed())
+            {
+                List<Texture2D> images = photoImage.LoadAllPhotos();
+                StartCoroutine(CyclePhotos(images));
+            }
+
+        }
+
+        IEnumerator CyclePhotos(List<Texture2D> images)
+        {
+            foreach (Texture2D image in images)
+            {
+                rawImage.texture = image;
+                yield return new WaitForSeconds(7);
             }
         }
     }

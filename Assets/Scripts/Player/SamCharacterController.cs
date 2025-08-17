@@ -133,9 +133,11 @@ namespace SDK
             playerInputs.crouchAction.Enable();
             playerInputs.crouchAction.performed += Crouch;
 
-            playerInputs.lockMouseAction = playerInputActions.Player.LeftClick;
-            playerInputs.lockMouseAction.Enable();
-            playerInputs.lockMouseAction.performed += LockMouse;
+            // Removed for testing purposes
+            
+            // playerInputs.lockMouseAction = playerInputActions.Player.LeftClick;
+            // playerInputs.lockMouseAction.Enable();
+            // playerInputs.lockMouseAction.performed += LockMouse;
 
             playerInputs.exitMouseAction = playerInputActions.Player.Exit;
             playerInputs.exitMouseAction.Enable();
@@ -157,8 +159,10 @@ namespace SDK
             playerInputs.crouchAction.Disable();
             playerInputs.crouchAction.performed -= Crouch;
 
-            playerInputs.lockMouseAction.Disable();
-            playerInputs.lockMouseAction.performed -= LockMouse;
+            // Removed for testing purposes
+
+            // playerInputs.lockMouseAction.Disable();
+            // playerInputs.lockMouseAction.performed -= LockMouse;
 
             playerInputs.exitMouseAction.Disable();
             playerInputs.exitMouseAction.performed -= Exit;
