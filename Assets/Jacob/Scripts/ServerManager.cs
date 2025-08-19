@@ -18,5 +18,16 @@ namespace Networking
                 Debug.LogError("Could not find Network Manager Component");
             }
         }
+
+        public void DisplayClients()
+        {
+            if (NetworkManager.Singleton.IsServer)
+            {
+                foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList)
+                {
+                    Debug.Log("Client ID: " + client.ClientId);
+                }
+            }
+        }
     }
 }
