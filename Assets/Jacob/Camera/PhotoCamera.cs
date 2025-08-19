@@ -10,6 +10,7 @@ namespace PhotoCamera
     public class PhotoCamera : MonoBehaviour
     {
         [SerializeField] private RenderTexture sourceTexture;
+        public GameObject photoCamera;
         public InputActionReference cycleAction;
         public InputActionReference takePhotoAction;
         public PhotoImage photoImage;
@@ -32,7 +33,7 @@ namespace PhotoCamera
 
         void Update()
         {
-            if (takePhotoAction.action.IsPressed())
+            if (takePhotoAction.action.IsPressed() && photoCamera.activeSelf)
             {
                 TakePhoto();
             }
