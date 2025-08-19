@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.hwaet.projectcloner": "https://github.com/hwaet/UnityProjectCloner.git",
     "com.unity.cinemachine": "3.1.4",
     "com.unity.collab-proxy": "2.8.2",
     "com.unity.feature.development": "1.0.2",

@@ -1,19 +1,22 @@
 using UnityEngine;
 using Unity.Netcode;
 
-public class ServerManager : MonoBehaviour
+namespace Networking
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class ServerManager : MonoBehaviour
     {
-        if (NetworkManager.Singleton != null)
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        void Start()
         {
-            NetworkManager.Singleton.StartServer();
-            Debug.Log("Server Started");
-        }
-        else
-        {
-            Debug.LogError("Could not find Network Manager Component");
+            if (NetworkManager.Singleton != null)
+            {
+                NetworkManager.Singleton.StartServer();
+                Debug.Log("Server Started");
+            }
+            else
+            {
+                Debug.LogError("Could not find Network Manager Component");
+            }
         }
     }
 }
