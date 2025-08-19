@@ -41,6 +41,7 @@ namespace PhotoCamera
             if (cycleAction.action.IsPressed())
             {
                 List<Texture2D> images = photoImage.LoadAllPhotos();
+                StopCoroutine(CyclePhotos(images));
                 StartCoroutine(CyclePhotos(images));
             }
 
@@ -51,7 +52,7 @@ namespace PhotoCamera
             foreach (Texture2D image in images)
             {
                 rawImage.texture = image;
-                yield return new WaitForSeconds(7);
+                yield return new WaitForSeconds(5);
             }
         }
     }
