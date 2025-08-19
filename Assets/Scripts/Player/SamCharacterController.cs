@@ -12,20 +12,21 @@ namespace SDK
 {
     public enum ECharacterState
     {
-        Default,
+        ParkourMode = 0,
+        PhoneMode = 1
     }
 
     public enum EOrientationMethod
     {
-        TowardsCamera,
-        TowardsMovement,
+        TowardsCamera = 0,
+        TowardsMovement = 1,
     }
 
     public enum EBonusOrientationMethod
     {
-        None,
-        TowardsGravity,
-        TowardsGroundSlopeAndGravity,
+        None = 0,
+        TowardsGravity = 1,
+        TowardsGroundSlopeAndGravity = 2,
     }
     
     public struct FPlayerInputs
@@ -50,14 +51,15 @@ namespace SDK
 
     public class SamCharacterController : MonoBehaviour, ICharacterController
     {
+        [SerializeField] private KinematicCharacterMotor kinematicMotor;
+        [field: SerializeField] public ECharacterState currentCharacterState { get; private set; } = ECharacterState.ParkourMode;
         private FPlayerInputs playerInputs;
         private PlayerInputActions playerInputActions;
-        [SerializeField] private KinematicCharacterMotor motor;
 
         [Header("Stable Movement")]
         public float maxStableMoveSpeed = 10f;
         public float stableMovementSharpness = 15;
-        public EOrientationMethod orientationMethod = EOrientationMethod.TowardsCamera;
+        public EOrientationMethod orientationMethod = EOrientationMethod.TowardsMovement;
         public float TowardsCameraOrientationSharpness = 50;
         public float TowardsMovementOrientationSharpness = 10;
         [SerializeField] private CinemachineCamera playerThirdPersonCamera;
@@ -88,11 +90,11 @@ namespace SDK
         [Header("Misc")]
         public Transform meshRoot;
         public Transform cameraFollowPoint;
-        public ECharacterState currentCharacterState { get; private set; }
         public float crouchedCapsuleHeight = 1f;
         public bool useFramePerfectRotation = false;
         public List<Collider> ignoredColliders = new();
 
+        [Header("Privates")]
         private Collider[] _probedColliders = new Collider[8];
         private Vector3 _moveInputVector;
         private Vector3 _lookInputVector;
@@ -132,6 +134,7 @@ namespace SDK
             playerInputs.crouchAction = playerInputActions.Player.Crouch;
             playerInputs.crouchAction.Enable();
             playerInputs.crouchAction.performed += Crouch;
+            playerInputs.crouchAction.canceled += Crouch;
 
             // Removed for testing purposes
             
@@ -158,6 +161,7 @@ namespace SDK
 
             playerInputs.crouchAction.Disable();
             playerInputs.crouchAction.performed -= Crouch;
+            playerInputs.crouchAction.canceled -= Crouch;
 
             // Removed for testing purposes
 
@@ -168,10 +172,13 @@ namespace SDK
             playerInputs.exitMouseAction.performed -= Exit;
         }
         
+        /// <summary>
+        /// Start is called once before the first execution of Update after the MonoBehaviour is created
+        /// </summary>
         private void Start()
         {
             // Assign to motor
-            motor.CharacterController = this;
+            kinematicMotor.CharacterController = this;
         }
         
         /// <summary>
@@ -192,7 +199,7 @@ namespace SDK
         {
             switch (state)
             {
-                case ECharacterState.Default:
+                case ECharacterState.ParkourMode:
                 {
                     break;
                 }
@@ -206,7 +213,7 @@ namespace SDK
         {
             switch (state)
             {
-                case ECharacterState.Default:
+                case ECharacterState.ParkourMode:
                 {
                     break;
                 }
@@ -217,18 +224,18 @@ namespace SDK
         {
             switch (currentCharacterState)
             {
-                case ECharacterState.Default:
+                case ECharacterState.ParkourMode:
                     {
                         Quaternion cameraRotation = playerThirdPersonCamera.transform.rotation;
 
                         // Calculate camera direction and rotation on the character plane
-                        cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.forward, motor.CharacterUp).normalized;
+                        cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.forward, kinematicMotor.CharacterUp).normalized;
                         if (cameraPlanarDirection.sqrMagnitude == 0f)
                         {
-                            cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.up, motor.CharacterUp).normalized;
+                            cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.up, kinematicMotor.CharacterUp).normalized;
                         }
 
-                        cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, motor.CharacterUp);
+                        cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, kinematicMotor.CharacterUp);
                         break;
                     }
             }
@@ -244,7 +251,7 @@ namespace SDK
         {
             switch (currentCharacterState)
             {
-                case ECharacterState.Default:
+                case ECharacterState.ParkourMode:
                 {
                     _timeSinceJumpRequested = 0f;
                     _jumpRequested = true;
@@ -257,7 +264,7 @@ namespace SDK
         {
             switch (currentCharacterState)
             {
-                case ECharacterState.Default:
+                case ECharacterState.ParkourMode:
                 {
                     // Crouching input
                     if (!_shouldBeCrouching)
@@ -267,7 +274,7 @@ namespace SDK
                         if (!_isCrouching)
                         {
                             _isCrouching = true;
-                            motor.SetCapsuleDimensions(0.5f, crouchedCapsuleHeight, crouchedCapsuleHeight * 0.5f);
+                            kinematicMotor.SetCapsuleDimensions(0.5f, crouchedCapsuleHeight, crouchedCapsuleHeight * 0.5f);
                             meshRoot.localScale = new Vector3(1f, 0.5f, 1f);
                         }
                     }
@@ -300,7 +307,7 @@ namespace SDK
         {
             if (useFramePerfectRotation)
             {
-                _lookInputVector = Vector3.ProjectOnPlane(cameraForward, motor.CharacterUp);
+                _lookInputVector = Vector3.ProjectOnPlane(cameraForward, kinematicMotor.CharacterUp);
 
                 Quaternion newRotation = default;
                 HandleRotation(ref newRotation, deltaTime);
@@ -312,7 +319,7 @@ namespace SDK
         {
             if (_lookInputVector != Vector3.zero)
             {
-                rot = Quaternion.LookRotation(_lookInputVector, motor.CharacterUp);
+                rot = Quaternion.LookRotation(_lookInputVector, kinematicMotor.CharacterUp);
             }
         }
 
@@ -325,7 +332,7 @@ namespace SDK
         {
             switch (currentCharacterState)
             {
-                case ECharacterState.Default:
+                case ECharacterState.ParkourMode:
                     {
                         _moveInputVector = cameraPlanarRotation * moveInputVector;
 
@@ -338,10 +345,10 @@ namespace SDK
                                 if (_lookInputVector != Vector3.zero && TowardsCameraOrientationSharpness > 0f)
                                 {
                                     // Smoothly interpolate from current to target look direction
-                                    Vector3 smoothedLookInputDirection = Vector3.Slerp(motor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-TowardsCameraOrientationSharpness * deltaTime)).normalized;
+                                    Vector3 smoothedLookInputDirection = Vector3.Slerp(kinematicMotor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-TowardsCameraOrientationSharpness * deltaTime)).normalized;
 
                                     // Set the current rotation (which will be used by the KinematicCharacterMotor)
-                                    currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, motor.CharacterUp);
+                                    currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, kinematicMotor.CharacterUp);
                                 }
                                 break;
                             }
@@ -352,10 +359,10 @@ namespace SDK
                                 if (_lookInputVector != Vector3.zero && TowardsMovementOrientationSharpness > 0f)
                                 {
                                     // Smoothly interpolate from current to target look direction
-                                    Vector3 smoothedLookInputDirection = Vector3.Slerp(motor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-TowardsMovementOrientationSharpness * deltaTime)).normalized;
+                                    Vector3 smoothedLookInputDirection = Vector3.Slerp(kinematicMotor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-TowardsMovementOrientationSharpness * deltaTime)).normalized;
 
                                     // Set the current rotation (which will be used by the KinematicCharacterMotor)
-                                    currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, motor.CharacterUp);
+                                    currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, kinematicMotor.CharacterUp);
                                 }
                                 break;
                             }
@@ -370,15 +377,15 @@ namespace SDK
                         }
                         else if (bonusOrientationMethod == EBonusOrientationMethod.TowardsGroundSlopeAndGravity)
                         {
-                            if (motor.GroundingStatus.IsStableOnGround)
+                            if (kinematicMotor.GroundingStatus.IsStableOnGround)
                             {
-                                Vector3 initialCharacterBottomHemiCenter = motor.TransientPosition + (currentUp * motor.Capsule.radius);
+                                Vector3 initialCharacterBottomHemiCenter = kinematicMotor.TransientPosition + (currentUp * kinematicMotor.Capsule.radius);
 
-                                Vector3 smoothedGroundNormal = Vector3.Slerp(motor.CharacterUp, motor.GroundingStatus.GroundNormal, 1 - Mathf.Exp(-bonusOrientationSharpness * deltaTime));
+                                Vector3 smoothedGroundNormal = Vector3.Slerp(kinematicMotor.CharacterUp, kinematicMotor.GroundingStatus.GroundNormal, 1 - Mathf.Exp(-bonusOrientationSharpness * deltaTime));
                                 currentRotation = Quaternion.FromToRotation(currentUp, smoothedGroundNormal) * currentRotation;
 
                                 // Move the position to create a rotation around the bottom hemi center instead of around the pivot
-                                motor.SetTransientPosition(initialCharacterBottomHemiCenter + (currentRotation * Vector3.down * motor.Capsule.radius));
+                                kinematicMotor.SetTransientPosition(initialCharacterBottomHemiCenter + (currentRotation * Vector3.down * kinematicMotor.Capsule.radius));
                             }
                             else
                             {
@@ -404,25 +411,25 @@ namespace SDK
         
         /// <summary>
         /// (Called by KinematicCharacterMotor during its update cycle)
-        /// This is where you tell your character what its velocity should be right now. 
+        /// This is where you tell your character what its velocity should be right now.
         /// This is the ONLY place where you can set the character's velocity
         /// </summary>
         public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
         {
             switch (currentCharacterState)
             {
-                case ECharacterState.Default:
+                case ECharacterState.ParkourMode:
                     {
 
                         Vector3 targetMovementVelocity = Vector3.zero;
-                        if (motor.GroundingStatus.IsStableOnGround)
+                        if (kinematicMotor.GroundingStatus.IsStableOnGround)
                         {
                             // Reorient source velocity on current ground slope (this is because we don't want our smoothing to cause any velocity losses in slope changes)
-                            currentVelocity = motor.GetDirectionTangentToSurface(currentVelocity, motor.GroundingStatus.GroundNormal) * currentVelocity.magnitude;
+                            currentVelocity = kinematicMotor.GetDirectionTangentToSurface(currentVelocity, kinematicMotor.GroundingStatus.GroundNormal) * currentVelocity.magnitude;
 
                             // Calculate target velocity
-                            Vector3 inputRight = Vector3.Cross(_moveInputVector, motor.CharacterUp);
-                            Vector3 reorientedInput = Vector3.Cross(motor.GroundingStatus.GroundNormal, inputRight).normalized * _moveInputVector.magnitude;
+                            Vector3 inputRight = Vector3.Cross(_moveInputVector, kinematicMotor.CharacterUp);
+                            Vector3 reorientedInput = Vector3.Cross(kinematicMotor.GroundingStatus.GroundNormal, inputRight).normalized * _moveInputVector.magnitude;
                             targetMovementVelocity = reorientedInput * maxStableMoveSpeed;
 
                             // Smooth movement Velocity
@@ -437,9 +444,9 @@ namespace SDK
                                 targetMovementVelocity = _moveInputVector * maxAirMoveSpeed;
 
                                 // Prevent climbing on un-stable slopes with air movement
-                                if (motor.GroundingStatus.FoundAnyGround)
+                                if (kinematicMotor.GroundingStatus.FoundAnyGround)
                                 {
-                                    Vector3 perpenticularObstructionNormal = Vector3.Cross(Vector3.Cross(motor.CharacterUp, motor.GroundingStatus.GroundNormal), motor.CharacterUp).normalized;
+                                    Vector3 perpenticularObstructionNormal = Vector3.Cross(Vector3.Cross(kinematicMotor.CharacterUp, kinematicMotor.GroundingStatus.GroundNormal), kinematicMotor.CharacterUp).normalized;
                                     targetMovementVelocity = Vector3.ProjectOnPlane(targetMovementVelocity, perpenticularObstructionNormal);
                                 }
 
@@ -462,12 +469,12 @@ namespace SDK
                             // Handle double jump
                             if (allowDoubleJump)
                             {
-                                if (_jumpConsumed && !_doubleJumpConsumed && (allowJumpingWhenSliding ? !motor.GroundingStatus.FoundAnyGround : !motor.GroundingStatus.IsStableOnGround))
+                                if (_jumpConsumed && !_doubleJumpConsumed && (allowJumpingWhenSliding ? !kinematicMotor.GroundingStatus.FoundAnyGround : !kinematicMotor.GroundingStatus.IsStableOnGround))
                                 {
-                                    motor.ForceUnground(0.1f);
+                                    kinematicMotor.ForceUnground(0.1f);
 
                                     // Add to the return velocity and reset jump state
-                                    currentVelocity += (motor.CharacterUp * jumpUpSpeed) - Vector3.Project(currentVelocity, motor.CharacterUp);
+                                    currentVelocity += (kinematicMotor.CharacterUp * jumpUpSpeed) - Vector3.Project(currentVelocity, kinematicMotor.CharacterUp);
                                     _jumpRequested = false;
                                     _doubleJumpConsumed = true;
                                     _jumpedThisFrame = true;
@@ -477,26 +484,26 @@ namespace SDK
                             // See if we actually are allowed to jump
                             if (_canWallJump
                                     || (!_jumpConsumed
-                                    && ((allowJumpingWhenSliding ? motor.GroundingStatus.FoundAnyGround : motor.GroundingStatus.IsStableOnGround)
+                                    && ((allowJumpingWhenSliding ? kinematicMotor.GroundingStatus.FoundAnyGround : kinematicMotor.GroundingStatus.IsStableOnGround)
                                     || _timeSinceLastAbleToJump <= jumpPostGroundingGraceTime)))
                             {
                                 // Calculate jump direction before ungrounding
-                                Vector3 jumpDirection = motor.CharacterUp;
+                                Vector3 jumpDirection = kinematicMotor.CharacterUp;
                                 if (_canWallJump)
                                 {
                                     jumpDirection = _wallJumpNormal;
                                 }
-                                else if (motor.GroundingStatus.FoundAnyGround && !motor.GroundingStatus.IsStableOnGround)
+                                else if (kinematicMotor.GroundingStatus.FoundAnyGround && !kinematicMotor.GroundingStatus.IsStableOnGround)
                                 {
-                                    jumpDirection = motor.GroundingStatus.GroundNormal;
+                                    jumpDirection = kinematicMotor.GroundingStatus.GroundNormal;
                                 }
 
                                 // Makes the character skip ground probing/snapping on its next update. 
                                 // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
-                                motor.ForceUnground(0.1f);
+                                kinematicMotor.ForceUnground(0.1f);
 
                                 // Add to the return velocity and reset jump state
-                                currentVelocity += (jumpDirection * jumpUpSpeed) - Vector3.Project(currentVelocity, motor.CharacterUp);
+                                currentVelocity += (jumpDirection * jumpUpSpeed) - Vector3.Project(currentVelocity, kinematicMotor.CharacterUp);
                                 currentVelocity += (_moveInputVector * jumpScalableForwardSpeed);
                                 _jumpRequested = false;
                                 _jumpConsumed = true;
@@ -527,7 +534,7 @@ namespace SDK
         {
             switch (currentCharacterState)
             {
-                case ECharacterState.Default:
+                case ECharacterState.ParkourMode:
                     {
 
                         // Handle jump-related values
@@ -539,7 +546,7 @@ namespace SDK
                             }
 
                             // Handle jumping while sliding
-                            if (allowJumpingWhenSliding ? motor.GroundingStatus.FoundAnyGround : motor.GroundingStatus.IsStableOnGround)
+                            if (allowJumpingWhenSliding ? kinematicMotor.GroundingStatus.FoundAnyGround : kinematicMotor.GroundingStatus.IsStableOnGround)
                             {
                                 // If we're on a ground surface, reset jumping values
                                 if (!_jumpedThisFrame)
@@ -560,14 +567,14 @@ namespace SDK
                         if (_isCrouching && !_shouldBeCrouching)
                         {
                             // Do an overlap test with the character's standing height to see if there are any obstructions
-                            motor.SetCapsuleDimensions(0.5f, 2f, 1f);
-                            if (motor.CharacterCollisionsOverlap(
-                                    motor.TransientPosition,
-                                    motor.TransientRotation,
+                            kinematicMotor.SetCapsuleDimensions(0.5f, 2f, 1f);
+                            if (kinematicMotor.CharacterCollisionsOverlap(
+                                    kinematicMotor.TransientPosition,
+                                    kinematicMotor.TransientRotation,
                                     _probedColliders) > 0)
                             {
                                 // If obstructions, just stick to crouching dimensions
-                                motor.SetCapsuleDimensions(0.5f, 1f, 0.5f);
+                                kinematicMotor.SetCapsuleDimensions(0.5f, 1f, 0.5f);
                             }
                             else
                             {
@@ -609,9 +616,9 @@ namespace SDK
 
             switch (currentCharacterState)
             {
-                case ECharacterState.Default:
+                case ECharacterState.ParkourMode:
                 {
-                    if (allowWallJump && !motor.GroundingStatus.IsStableOnGround && !hitStabilityReport.IsStable)
+                    if (allowWallJump && !kinematicMotor.GroundingStatus.IsStableOnGround && !hitStabilityReport.IsStable)
                     {
                         _canWallJump = true;
                         _wallJumpNormal = hitNormal;
@@ -624,11 +631,11 @@ namespace SDK
         public void PostGroundingUpdate(float deltaTime)
         {
             // Handle landing and leaving ground
-            if (motor.GroundingStatus.IsStableOnGround && !motor.LastGroundingStatus.IsStableOnGround)
+            if (kinematicMotor.GroundingStatus.IsStableOnGround && !kinematicMotor.LastGroundingStatus.IsStableOnGround)
             {
                 OnLanded();
             }
-            else if (!motor.GroundingStatus.IsStableOnGround && motor.LastGroundingStatus.IsStableOnGround)
+            else if (!kinematicMotor.GroundingStatus.IsStableOnGround && kinematicMotor.LastGroundingStatus.IsStableOnGround)
             {
                 OnLeaveStableGround();
             }
@@ -648,7 +655,7 @@ namespace SDK
         {
             switch (currentCharacterState)
             {
-                case ECharacterState.Default:
+                case ECharacterState.ParkourMode:
                 {
                     _internalVelocityAdd += velocity;
                     break;
@@ -661,7 +668,7 @@ namespace SDK
             // This is called after every hit detected in the motor, to give you a chance to modify the HitStabilityReport any way you want
             switch (currentCharacterState)
             {
-                case ECharacterState.Default:
+                case ECharacterState.ParkourMode:
                 {
                     break;
                 }
