@@ -152,6 +152,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FpsSwitch"",
+                    ""type"": ""Button"",
+                    ""id"": ""36f8faff-e8a8-4672-b50c-21c7757d89b1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -636,6 +645,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad54780b-17a3-402a-b8f8-d0733c04cab2"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""FpsSwitch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1237,6 +1257,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_RightClick = m_Player.FindAction("RightClick", throwIfNotFound: true);
         m_Player_MiddleClick = m_Player.FindAction("MiddleClick", throwIfNotFound: true);
         m_Player_Exit = m_Player.FindAction("Exit", throwIfNotFound: true);
+        m_Player_FpsSwitch = m_Player.FindAction("FpsSwitch", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1330,6 +1351,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_RightClick;
     private readonly InputAction m_Player_MiddleClick;
     private readonly InputAction m_Player_Exit;
+    private readonly InputAction m_Player_FpsSwitch;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1348,6 +1370,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @RightClick => m_Wrapper.m_Player_RightClick;
         public InputAction @MiddleClick => m_Wrapper.m_Player_MiddleClick;
         public InputAction @Exit => m_Wrapper.m_Player_Exit;
+        public InputAction @FpsSwitch => m_Wrapper.m_Player_FpsSwitch;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1399,6 +1422,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Exit.started += instance.OnExit;
             @Exit.performed += instance.OnExit;
             @Exit.canceled += instance.OnExit;
+            @FpsSwitch.started += instance.OnFpsSwitch;
+            @FpsSwitch.performed += instance.OnFpsSwitch;
+            @FpsSwitch.canceled += instance.OnFpsSwitch;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1445,6 +1471,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Exit.started -= instance.OnExit;
             @Exit.performed -= instance.OnExit;
             @Exit.canceled -= instance.OnExit;
+            @FpsSwitch.started -= instance.OnFpsSwitch;
+            @FpsSwitch.performed -= instance.OnFpsSwitch;
+            @FpsSwitch.canceled -= instance.OnFpsSwitch;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1641,6 +1670,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnMiddleClick(InputAction.CallbackContext context);
         void OnExit(InputAction.CallbackContext context);
+        void OnFpsSwitch(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

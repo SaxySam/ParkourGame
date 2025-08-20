@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using KinematicCharacterController;
+using OpenCover.Framework.Model;
 using Unity.Cinemachine;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -37,8 +39,10 @@ namespace SDK
         public InputAction crouchAction;
         public InputAction lockMouseAction;
         public InputAction exitMouseAction;
+        public InputAction fpsSwitch;
+        
 
-        private FPlayerInputs(InputAction lookAction, InputAction moveAction, InputAction jumpAction, InputAction crouchAction, InputAction lockMouseAction, InputAction exitMouseAction)
+        private FPlayerInputs(InputAction lookAction, InputAction moveAction, InputAction jumpAction, InputAction crouchAction, InputAction lockMouseAction, InputAction exitMouseAction, InputAction fpsSwitch)
         {
             this.lookAction = lookAction;
             this.moveAction = moveAction;
@@ -46,6 +50,7 @@ namespace SDK
             this.crouchAction = crouchAction;
             this.lockMouseAction = lockMouseAction;
             this.exitMouseAction = exitMouseAction;
+            this.fpsSwitch = fpsSwitch;
         }
     }
 
@@ -62,7 +67,10 @@ namespace SDK
         public EOrientationMethod orientationMethod = EOrientationMethod.TowardsMovement;
         public float TowardsCameraOrientationSharpness = 50;
         public float TowardsMovementOrientationSharpness = 10;
+        [SerializeField] private CinemachineCamera playerCurrentCamera;
         [SerializeField] private CinemachineCamera playerThirdPersonCamera;
+        [SerializeField] private CinemachineCamera playerFirstPersonCamera;
+
 
         private Vector3 moveInputVector;
         private Vector3 cameraPlanarDirection;
@@ -143,6 +151,10 @@ namespace SDK
             playerInputs.exitMouseAction = playerInputActions.Player.Exit;
             playerInputs.exitMouseAction.Enable();
             playerInputs.exitMouseAction.performed += Exit;
+
+            playerInputs.fpsSwitch = playerInputActions.Player.FpsSwitch;
+            playerInputs.fpsSwitch.Enable();
+            playerInputs.fpsSwitch.performed += FpsSwitch;
         }
 
         private void OnDisable()
@@ -166,8 +178,11 @@ namespace SDK
 
             playerInputs.exitMouseAction.Disable();
             playerInputs.exitMouseAction.performed -= Exit;
+
+            playerInputs.fpsSwitch.Disable();
+            playerInputs.fpsSwitch.performed -= FpsSwitch;
         }
-        
+
         /// <summary>
         /// Start is called once before the first execution of Update after the MonoBehaviour is created
         /// </summary>
@@ -175,6 +190,7 @@ namespace SDK
         {
             // Assign to motor
             kinematicMotor.CharacterController = this;
+            playerCurrentCamera = playerThirdPersonCamera;
         }
         
         /// <summary>
@@ -215,6 +231,34 @@ namespace SDK
                 }
             }
         }
+
+        /// <summary>
+        /// event when switch to and from fps mode
+        /// </summary>
+        public void FpsSwitch(InputAction.CallbackContext context)
+        {
+            Debug.Log($"FpsSwitch Trigeered");
+            //swtich to first persion
+            if (playerCurrentCamera == playerThirdPersonCamera)
+            {
+                Debug.Log($"FpsSwitch to first persion");
+
+                playerCurrentCamera = playerFirstPersonCamera;
+                playerFirstPersonCamera.enabled = true;
+                playerThirdPersonCamera.enabled = false;
+            }
+            //switch to 3rd pirsion
+            else
+            {
+                Debug.Log($"FpsSwitch to third persion");
+
+                playerCurrentCamera = playerThirdPersonCamera;
+                playerThirdPersonCamera.enabled = true;
+                playerFirstPersonCamera.enabled = false;
+            }
+            
+            
+        }
         
         private void Look(InputAction.CallbackContext context)
         {
@@ -222,7 +266,7 @@ namespace SDK
             {
                 case ECharacterState.ParkourMode:
                     {
-                        Quaternion cameraRotation = playerThirdPersonCamera.transform.rotation;
+                        Quaternion cameraRotation = playerCurrentCamera.transform.rotation;
 
                         // Calculate camera direction and rotation on the character plane
                         cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.forward, kinematicMotor.CharacterUp).normalized;
