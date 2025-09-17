@@ -75,7 +75,9 @@ MonoBehaviour:
   kinematicMotor: {fileID: 277347096623532543}
   <currentCharacterState>k__BackingField: 0
   maxStableMoveSpeed: 10
-  stableMovementSharpness: 15
+  readjustmentSpeed: 0.1
+  accelerationRate: 5
+  groundMovementFriction: 15
   orientationMethod: 1
   TowardsCameraOrientationSharpness: 50
   TowardsMovementOrientationSharpness: 10
@@ -86,7 +88,7 @@ MonoBehaviour:
   allowJumpingWhenSliding: 1
   allowWallJump: 1
   allowDoubleJump: 0
-  jumpUpSpeed: 10
+  jumpScalableUpSpeed: 10
   jumpScalableForwardSpeed: 0.5
   jumpPreGroundingGraceTime: 0
   jumpPostGroundingGraceTime: 0
@@ -328,14 +330,14 @@ MonoBehaviour:
   Radius: 10
   Orbits:
     Top:
-      Radius: 3
+      Radius: 0.75
       Height: 5
     Center:
       Radius: 7
       Height: 2.25
     Bottom:
-      Radius: 3
-      Height: 0.1
+      Radius: 2
+      Height: -0.75
     SplineCurvature: 0.5
   RecenteringTarget: 2
   HorizontalAxis:

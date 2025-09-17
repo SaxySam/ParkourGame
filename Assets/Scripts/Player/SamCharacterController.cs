@@ -102,6 +102,7 @@ namespace SDK
         private Vector3 _moveInputVector;
         private Vector3 _lookInputVector;
         private float _linearSpeed;
+        private float _jumpUpSpeed;
         private bool _jumpRequested = false;
         private bool _jumpConsumed = false;
         private bool _jumpedThisFrame = false;
@@ -113,6 +114,7 @@ namespace SDK
         private Vector3 _internalVelocityAdd = Vector3.zero;
         private bool _shouldBeCrouching = false;
         private bool _isCrouching = false;
+        private float _holdDuration = 0f;
 
         private void Awake()
         {
@@ -134,7 +136,7 @@ namespace SDK
             playerInputs.jumpAction = playerInputActions.Player.Jump;
             playerInputs.jumpAction.Enable();
             playerInputs.jumpAction.performed += Jump;
-            playerInputs.jumpAction.canceled += Jump;
+            playerInputs.jumpAction.canceled += JumpCancelled;
 
             playerInputs.crouchAction = playerInputActions.Player.Crouch;
             playerInputs.crouchAction.Enable();
@@ -161,7 +163,6 @@ namespace SDK
 
             playerInputs.jumpAction.Disable();
             playerInputs.jumpAction.performed -= Jump;
-            playerInputs.jumpAction.canceled -= Jump;
 
             playerInputs.crouchAction.Disable();
             playerInputs.crouchAction.performed -= Crouch;
@@ -254,12 +255,21 @@ namespace SDK
             switch (currentCharacterState)
             {
                 case ECharacterState.ParkourMode:
-                {
-                    _timeSinceJumpRequested = 0f;
-                    _jumpRequested = true;
-                    break;
-                }
+                    {
+                        _jumpUpSpeed = jumpScalableUpSpeed;
+                        _timeSinceJumpRequested = 0f;
+                        _jumpRequested = true;
+                        break;
+                    }
             }
+            Debug.LogWarning($"Button Down!");
+        }
+
+        private void JumpCancelled(InputAction.CallbackContext context)
+        {
+            Debug.LogWarning($"Button Up! Duration: {_holdDuration}");
+            _jumpUpSpeed = jumpScalableUpSpeed * _holdDuration;
+            // _jumpConsumed = true;
         }
 
         private void Crouch(InputAction.CallbackContext context)
@@ -267,26 +277,26 @@ namespace SDK
             switch (currentCharacterState)
             {
                 case ECharacterState.ParkourMode:
-                {
-                    // Crouching input
-                    if (!_shouldBeCrouching)
                     {
-                        _shouldBeCrouching = true;
-
-                        if (!_isCrouching)
+                        // Crouching input
+                        if (!_shouldBeCrouching)
                         {
-                            _isCrouching = true;
-                            kinematicMotor.SetCapsuleDimensions(0.5f, crouchedCapsuleHeight, crouchedCapsuleHeight * 0.5f);
-                            meshRoot.localScale = new Vector3(1f, 0.5f, 1f);
-                        }
-                    }
-                    else
-                    {
-                        _shouldBeCrouching = false;
-                    }
+                            _shouldBeCrouching = true;
 
-                    break;
-                }
+                            if (!_isCrouching)
+                            {
+                                _isCrouching = true;
+                                kinematicMotor.SetCapsuleDimensions(0.5f, crouchedCapsuleHeight, crouchedCapsuleHeight * 0.5f);
+                                meshRoot.localScale = new Vector3(1f, 0.5f, 1f);
+                            }
+                        }
+                        else
+                        {
+                            _shouldBeCrouching = false;
+                        }
+
+                        break;
+                    }
             }
         }
 
@@ -422,6 +432,17 @@ namespace SDK
             {
                 case ECharacterState.ParkourMode:
                     {
+
+                        // if (playerInputs.jumpAction.WasPressedThisFrame())
+                        // {
+                        //     Debug.Log($"Pressed This Frame!");
+                        //     _holdDuration += Time.deltaTime;
+                        // }
+                        // else
+                        // {
+                        //     _holdDuration = 0;
+                        // }
+
                         Vector3 targetMovementVelocity = Vector3.zero;
                         if (kinematicMotor.GroundingStatus.IsStableOnGround)
                         {
@@ -485,7 +506,7 @@ namespace SDK
                                     kinematicMotor.ForceUnground(0.1f);
 
                                     // Add to the return velocity and reset jump state
-                                    currentVelocity += (kinematicMotor.CharacterUp * jumpScalableUpSpeed) - Vector3.Project(currentVelocity, kinematicMotor.CharacterUp);
+                                    currentVelocity += (kinematicMotor.CharacterUp * _jumpUpSpeed) - Vector3.Project(currentVelocity, kinematicMotor.CharacterUp);
                                     _jumpRequested = false;
                                     _doubleJumpConsumed = true;
                                     _jumpedThisFrame = true;
@@ -516,7 +537,7 @@ namespace SDK
 
                                 // Add to the return velocity and reset jump state
                                 //TODO Add short jumps based on how long the button has been held
-                                currentVelocity += (jumpDirection * jumpScalableUpSpeed) - Vector3.Project(currentVelocity, kinematicMotor.CharacterUp);
+                                currentVelocity += (jumpDirection * _jumpUpSpeed) - Vector3.Project(currentVelocity, kinematicMotor.CharacterUp);
                                 currentVelocity += _moveInputVector * jumpScalableForwardSpeed;
                                 _jumpRequested = false;
                                 _jumpConsumed = true;
