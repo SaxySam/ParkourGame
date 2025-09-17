@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using KinematicCharacterController;
 using Unity.Cinemachine;
 using Unity.Mathematics;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -58,6 +59,8 @@ namespace SDK
 
         [Header("Stable Movement")]
         public float maxStableMoveSpeed = 10f;
+        public float readjustmentSpeed = 0.1f;
+        public float accelerationRate = 5f;
         public float groundMovementFriction = 15;
         public EOrientationMethod orientationMethod = EOrientationMethod.TowardsMovement;
         public float TowardsCameraOrientationSharpness = 50;
@@ -98,6 +101,7 @@ namespace SDK
         private Collider[] _probedColliders = new Collider[8];
         private Vector3 _moveInputVector;
         private Vector3 _lookInputVector;
+        private float _linearSpeed;
         private bool _jumpRequested = false;
         private bool _jumpConsumed = false;
         private bool _jumpedThisFrame = false;
@@ -416,7 +420,6 @@ namespace SDK
             {
                 case ECharacterState.ParkourMode:
                     {
-
                         Vector3 targetMovementVelocity = Vector3.zero;
                         if (kinematicMotor.GroundingStatus.IsStableOnGround)
                         {
@@ -426,11 +429,20 @@ namespace SDK
                             // Calculate target velocity
                             Vector3 inputRight = Vector3.Cross(_moveInputVector, kinematicMotor.CharacterUp);
                             Vector3 reorientedInput = Vector3.Cross(kinematicMotor.GroundingStatus.GroundNormal, inputRight).normalized * _moveInputVector.magnitude;
-                            targetMovementVelocity = reorientedInput * maxStableMoveSpeed;
-                            
+
+                            float resultantVectorMagnitude = Mathf.Lerp(readjustmentSpeed, maxStableMoveSpeed, Mathf.InverseLerp(-1, 1, Vector3.Dot(currentVelocity, reorientedInput)));
+
+
+                            targetMovementVelocity = reorientedInput * resultantVectorMagnitude;
+
+                            if (currentVelocity != targetMovementVelocity)
+                            {
+                                targetMovementVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, Mathf.Pow(0.5f * accelerationRate, 2));
+                            }
 
                             // Smooth movement Velocity
-                            currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1 - Mathf.Exp(-groundMovementFriction * deltaTime));
+                            currentVelocity = Vector3.ClampMagnitude(Vector3.Lerp(currentVelocity, targetMovementVelocity, 1 - Mathf.Exp(-groundMovementFriction * deltaTime)), maxStableMoveSpeed);
+                            _linearSpeed = currentVelocity.magnitude;
                         }
                         //Air Moveement
                         else
