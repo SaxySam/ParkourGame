@@ -58,7 +58,7 @@ namespace SDK
 
         [Header("Stable Movement")]
         public float maxStableMoveSpeed = 10f;
-        public float stableMovementSharpness = 15;
+        public float groundMovementFriction = 15;
         public EOrientationMethod orientationMethod = EOrientationMethod.TowardsMovement;
         public float TowardsCameraOrientationSharpness = 50;
         public float TowardsMovementOrientationSharpness = 10;
@@ -427,9 +427,10 @@ namespace SDK
                             Vector3 inputRight = Vector3.Cross(_moveInputVector, kinematicMotor.CharacterUp);
                             Vector3 reorientedInput = Vector3.Cross(kinematicMotor.GroundingStatus.GroundNormal, inputRight).normalized * _moveInputVector.magnitude;
                             targetMovementVelocity = reorientedInput * maxStableMoveSpeed;
+                            
 
                             // Smooth movement Velocity
-                            currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1 - Mathf.Exp(-stableMovementSharpness * deltaTime));
+                            currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1 - Mathf.Exp(-groundMovementFriction * deltaTime));
                         }
                         //Air Moveement
                         else
