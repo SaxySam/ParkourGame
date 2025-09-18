@@ -79,21 +79,24 @@ namespace SDK
         private Vector3 cameraPlanarDirection;
         private Quaternion cameraPlanarRotation;
 
-        [Header("Air Movement")]
-        public float maxAirMoveSpeed = 10f;
-        public float airAccelerationSpeed = 5f;
-        public float drag = 0.1f;
-
         [Header("Jumping")]
         public bool allowJumpingWhenSliding = false;
         public bool allowWallJump = false;
         public bool allowDoubleJump = false;
-        public float jumpScalableUpSpeed = 10f;
-        public float jumpScalableForwardSpeed = 10f;
+        public float jumpScaleMultiplier = 1f;
+        public float minJumpScalableUpSpeed = 2.5f;
+        public float maxJumpScalableUpSpeed = 10f;
+        public float minJumpScalableForwardSpeed = 2.5f;
+        public float maxJumpScalableForwardSpeed = 10f;
         public float jumpPreGroundingGraceTime = 0f;
         public float jumpPostGroundingGraceTime = 0f;
         public EJumpType jumpType = EJumpType.Impulse;
         public float timeForMaxHeightJump = 0.5f;
+
+        [Header("Air Movement")]
+        public float maxAirMoveSpeed = 10f;
+        public float airAccelerationSpeed = 5f;
+        public float drag = 0.1f;
 
         [Header("Gravity")]
         public Vector3 gravity = new(0, -30f, 0);
@@ -115,6 +118,7 @@ namespace SDK
         private bool _jumpButtonHeld;
         private float _holdDuration = 0f;
         private float _jumpUpSpeed;
+        private float _jumpForwardSpeed;
         private bool _jumpRequested = false;
         private bool _jumpConsumed = false;
         private bool _jumpedThisFrame = false;
@@ -498,8 +502,8 @@ namespace SDK
                         switch (jumpType)
                         {
                             case EJumpType.Impulse:
-                            {
-                                _jumpUpSpeed = jumpScalableUpSpeed;
+                            
+                                _jumpUpSpeed = maxJumpScalableUpSpeed;
                                 _jumpedThisFrame = false;
                                 _timeSinceJumpRequested += deltaTime;
                                 if (_jumpRequested)
@@ -543,7 +547,7 @@ namespace SDK
 
                                         // Add to the return velocity and reset jump state
                                         currentVelocity += (jumpDirection * _jumpUpSpeed) - Vector3.Project(currentVelocity, kinematicMotor.CharacterUp);
-                                        currentVelocity += _moveInputVector * jumpScalableForwardSpeed;
+                                        currentVelocity += _moveInputVector * maxJumpScalableForwardSpeed;
                                         _jumpRequested = false;
                                         _jumpConsumed = true;
                                         _jumpedThisFrame = true;
@@ -559,22 +563,25 @@ namespace SDK
                                     currentVelocity += _internalVelocityAdd;
                                     _internalVelocityAdd = Vector3.zero;
                                 }
-                                break;
-                            }
+                            break;
 
                             case EJumpType.VariableHold:
-                            {
+                            
                                 if (_jumpButtonHeld)
                                 {
                                     _holdDuration = Mathf.Clamp(_holdDuration + Time.fixedDeltaTime, 0, timeForMaxHeightJump);
 
-                                    _jumpUpSpeed = Mathf.Lerp(0, jumpScalableUpSpeed, 1 - Mathf.InverseLerp(0, timeForMaxHeightJump, _holdDuration));
-
                                     if (_holdDuration == timeForMaxHeightJump)
                                     {
                                         _jumpUpSpeed = 0;
+                                        _jumpForwardSpeed = 0;
                                         _jumpButtonHeld = false;
                                     }
+
+                                    _jumpUpSpeed = Mathf.Lerp(maxJumpScalableUpSpeed * jumpScaleMultiplier, minJumpScalableUpSpeed * jumpScaleMultiplier, 1 - Mathf.InverseLerp(0, timeForMaxHeightJump, _holdDuration));
+
+                                    _jumpForwardSpeed = Mathf.Lerp(maxJumpScalableForwardSpeed * jumpScaleMultiplier, minJumpScalableForwardSpeed * jumpScaleMultiplier,  1 - Mathf.InverseLerp(0, timeForMaxHeightJump, _holdDuration));
+                                
 
                                     _jumpedThisFrame = false;
                                     _timeSinceJumpRequested += deltaTime;
@@ -582,6 +589,7 @@ namespace SDK
 
                                     if (_jumpRequested)
                                     {
+                                        // TODO - NEEDS FIXING
                                         // Handle double jump
                                         if (allowDoubleJump)
                                         {
@@ -596,11 +604,14 @@ namespace SDK
                                                 _jumpedThisFrame = true;
                                             }
                                         }
+                                        
 
                                         // See if we actually are allowed to jump
                                         if (_canWallJump
                                         || (!_jumpConsumed && ((allowJumpingWhenSliding ? kinematicMotor.GroundingStatus.FoundAnyGround : kinematicMotor.GroundingStatus.IsStableOnGround) || _timeSinceLastAbleToJump <= jumpPostGroundingGraceTime)))
                                         {
+
+                                            // TODO - NEEDS FIXING
                                             // Calculate jump direction before ungrounding
                                             if (_canWallJump)
                                             {
@@ -616,19 +627,21 @@ namespace SDK
                                             // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
                                             kinematicMotor.ForceUnground(0.1f);
 
+                                            
                                             // Add to the return velocity and reset jump state
                                             _jumpRequested = false;
                                             _jumpConsumed = true;
                                             _jumpedThisFrame = true;
                                         }
 
+                                        
                                         // Reset wall jump
                                         _canWallJump = false;
 
                                     }
-                                        
+                                    
                                     currentVelocity += (jumpDirection * _jumpUpSpeed) - Vector3.Project(currentVelocity, kinematicMotor.CharacterUp);
-                                    currentVelocity += _moveInputVector * jumpScalableForwardSpeed;
+                                    currentVelocity += _moveInputVector * (maxJumpScalableForwardSpeed * _jumpForwardSpeed);
                                     
 
                                     // Take into account additive velocity
@@ -638,9 +651,9 @@ namespace SDK
                                         _internalVelocityAdd = Vector3.zero;
                                     }
                                 }
-                                break;    
-                            }
-                        } 
+                            break;
+                            
+                        }
                         break;
                     }
             }

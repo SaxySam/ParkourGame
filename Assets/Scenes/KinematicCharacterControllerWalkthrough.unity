@@ -3235,8 +3235,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: allowDoubleJump
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: maxAirMoveSpeed
-      value: 10
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: accelerationRate
@@ -3255,12 +3259,24 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: jumpScalableUpSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: airAccelerationSpeed
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: timeForMaxHeightJump
-      value: 1
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: groundMovementFriction
       value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: minJumpScalableUpSpeed
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: stableMovementSharpness
@@ -3276,10 +3292,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: jumpPreGroundingGraceTime
-      value: 0.1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: jumpPostGroundingGraceTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: maxJumpScalableForwardSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: minJumpScalableForwardSpeed
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
