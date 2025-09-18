@@ -1154,7 +1154,7 @@ Transform:
   m_GameObject: {fileID: 737131261}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.70710707, z: -0, w: 0.70710653}
-  m_LocalPosition: {x: -13.88, y: 2.9, z: -12.149999}
+  m_LocalPosition: {x: -14, y: 3, z: -12}
   m_LocalScale: {x: 7.35801, y: 10.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1548,7 +1548,7 @@ Transform:
   m_GameObject: {fileID: 1263112925}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10.69, y: 2.9, z: -15.61}
+  m_LocalPosition: {x: -11, y: 3, z: -16}
   m_LocalScale: {x: 7.35801, y: 10.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3244,11 +3244,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: readjustmentSpeed
-      value: 0.75
+      value: 4.2
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: maxStableMoveSpeed
-      value: 12.5
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: groundMovementFriction
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: stableMovementSharpness
@@ -3277,6 +3281,22 @@ PrefabInstance:
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: TowardsMovementOrientationSharpness
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396481700057213082, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: Damping.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396481700057213082, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: Lookahead.Time
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396481700057213082, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: Lookahead.Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396481700057213082, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: Lookahead.Smoothing
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
