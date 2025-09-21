@@ -3548,12 +3548,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: gravity.y
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: allowWallJump
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: allowDoubleJump
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: maxAirMoveSpeed
@@ -3590,6 +3594,10 @@ PrefabInstance:
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: groundMovementFriction
       value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: maxJumpScalableUpSpeed
+      value: 12.5
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: minJumpScalableUpSpeed
