@@ -567,7 +567,6 @@ namespace SDK
                             case EJumpType.VariableHold:
                             
 
-                                //_jumpUpSpeed = maxJumpScalableUpSpeed;
                                 _jumpedThisFrame = false;
                                 _timeSinceJumpRequested += deltaTime;
                                 if (_jumpRequested)
@@ -575,7 +574,7 @@ namespace SDK
                                     if (!_jumpConsumed && (kinematicMotor.GroundingStatus.IsStableOnGround || _timeSinceLastAbleToJump <= jumpPostGroundingGraceTime))
                                     {
                                         //jump 
-                                        _jumpDirection = kinematicMotor.GroundingStatus.GroundNormal;
+                                        _jumpDirection = kinematicMotor.CharacterUp;
                                             
                                         // Makes the character skip ground probing/snapping on its next update.
                                         // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
