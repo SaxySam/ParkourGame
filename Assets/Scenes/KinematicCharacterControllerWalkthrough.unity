@@ -4808,64 +4808,12 @@ PrefabInstance:
       value: 0.000000001898278
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: jumpType
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: gravity.y
-      value: -50
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: allowWallJump
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: allowDoubleJump
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: maxAirMoveSpeed
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: accelerationRate
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: accelerationTime
       value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: readjustmentSpeed
-      value: 4.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: maxStableMoveSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: jumpScalableUpSpeed
       value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: airAccelerationSpeed
-      value: 7.65
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: timeForMaxHeightJump
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: groundMovementFriction
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: maxJumpScalableUpSpeed
-      value: 12.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: minJumpScalableUpSpeed
-      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: stableMovementSharpness
@@ -4880,29 +4828,9 @@ PrefabInstance:
       value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: jumpPreGroundingGraceTime
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: jumpPostGroundingGraceTime
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: maxJumpScalableForwardSpeed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: minJumpScalableForwardSpeed
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: 'ignoredColliders.Array.data[0]'
       value: 
       objectReference: {fileID: 638035488}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: TowardsMovementOrientationSharpness
-      value: 15
-      objectReference: {fileID: 0}
     - target: {fileID: 4973658556362978007, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: TargetOffset.y
       value: 1
