@@ -396,7 +396,7 @@ namespace SDK
                             }
                         }
 
-                        Vector3 currentUp = (currentRotation * Vector3.up);
+                        Vector3 currentUp = currentRotation * Vector3.up;
                         if (bonusOrientationMethod == EBonusOrientationMethod.TowardsGravity)
                         {
                             // Rotate from current up to invert gravity
@@ -496,7 +496,7 @@ namespace SDK
                             currentVelocity += gravity * deltaTime;
 
                             // Drag
-                            currentVelocity *= (1f / (1f + (drag * deltaTime)));
+                            currentVelocity *= 1f / (1f + (drag * deltaTime));
                         }
 
                         //! Handle jumping
