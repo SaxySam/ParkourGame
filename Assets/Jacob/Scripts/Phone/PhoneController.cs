@@ -6,9 +6,13 @@ namespace Phone
 {
     public class PhoneController : MonoBehaviour
     {
+        public static GameManager.OnGalleryOpen galleryOpenEvent;
+        public static GameManager.OnGalleryClose galleryCloseEvent;
+
         public InputActionReference pauseButton;
         public InputActionReference escapeAction;
         public GameObject phonePanel;
+        public GameObject galleryPanel;
         public GameObject photoCamera;
         public CinemachineCamera firstPersonCamera;
 
@@ -16,6 +20,7 @@ namespace Phone
         void Start()
         {
             phonePanel.SetActive(false);
+            galleryPanel.SetActive(false);
             photoCamera.SetActive(false);
         }
 
@@ -30,6 +35,11 @@ namespace Phone
             if (escapeAction.action.IsPressed())
             {
                 photoCamera.SetActive(false);
+                if (galleryPanel.activeSelf)
+                {
+                    galleryCloseEvent();
+                    galleryPanel.SetActive(false);
+                }
                 firstPersonCamera.Priority = 0;
             }
         }
@@ -47,6 +57,12 @@ namespace Phone
             firstPersonCamera.Priority = 2;
         }
 
+        public void OpenGallery()
+        {
+            galleryOpenEvent();
+            phonePanel.SetActive(false);
+            galleryPanel.SetActive(true);
+        }
 
     }
 }

@@ -15,9 +15,6 @@ namespace PhotoCamera
         public InputActionReference takePhotoAction;
         public PhotoImage photoImage;
 
-        // Display on screen
-        public RawImage rawImage;
-
         void TakePhoto()
         {
             // Takes the camera view and saves it to a Texture2D
@@ -41,18 +38,6 @@ namespace PhotoCamera
             if (cycleAction.action.IsPressed())
             {
                 List<Texture2D> images = photoImage.LoadAllPhotos();
-                StopCoroutine(CyclePhotos(images));
-                StartCoroutine(CyclePhotos(images));
-            }
-
-        }
-
-        IEnumerator CyclePhotos(List<Texture2D> images)
-        {
-            foreach (Texture2D image in images)
-            {
-                rawImage.texture = image;
-                yield return new WaitForSeconds(5);
             }
         }
     }
