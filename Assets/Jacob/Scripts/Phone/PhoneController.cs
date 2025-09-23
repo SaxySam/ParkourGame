@@ -11,10 +11,23 @@ namespace Phone
 
         public InputActionReference pauseButton;
         public InputActionReference escapeAction;
+
         public GameObject phonePanel;
         public GameObject galleryPanel;
         public GameObject photoCamera;
+        public GameObject EnlargedPhoto;
+
         public CinemachineCamera firstPersonCamera;
+
+        void OnEnable()
+        {
+            ButtonController.galleryPhotoEvent += EnlargePhoto;
+        }
+
+        void OnDisable()
+        {
+            ButtonController.galleryPhotoEvent -= EnlargePhoto;
+        }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -22,6 +35,7 @@ namespace Phone
             phonePanel.SetActive(false);
             galleryPanel.SetActive(false);
             photoCamera.SetActive(false);
+            EnlargedPhoto.SetActive(false);
         }
 
         // Update is called once per frame
@@ -40,6 +54,7 @@ namespace Phone
                     galleryCloseEvent();
                     galleryPanel.SetActive(false);
                 }
+                EnlargedPhoto.SetActive(false);
                 firstPersonCamera.Priority = 0;
             }
         }
@@ -62,6 +77,12 @@ namespace Phone
             galleryOpenEvent();
             phonePanel.SetActive(false);
             galleryPanel.SetActive(true);
+        }
+
+        void EnlargePhoto(Texture texture)
+        {
+            EnlargedPhoto.SetActive(true);
+            // EnlargedPhoto.GetComponent<RawImage>().texture = texture;
         }
 
     }

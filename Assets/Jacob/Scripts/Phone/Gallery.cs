@@ -14,6 +14,12 @@ namespace Phone
         private List<GameObject> photosInGallery = new List<GameObject>();
         private float sizePerImage = 0;
 
+        void OnDisable()
+        {
+            PhoneController.galleryOpenEvent -= CreateGalleryList;
+            PhoneController.galleryCloseEvent -= RemoveGalleryList;
+        }
+
         void Start()
         {
             PhoneController.galleryOpenEvent += CreateGalleryList;
