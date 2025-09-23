@@ -19,6 +19,7 @@ namespace KinematicCharacterController.Examples
         public int SpawnCount = 100;
         public float SpawnDistance = 2f;
 
+        [System.Obsolete]
         private void Start()
         {
             KinematicCharacterSystem.EnsureCreation();
@@ -35,6 +36,7 @@ namespace KinematicCharacterController.Examples
             KinematicCharacterSystem.Simulate(Time.deltaTime, KinematicCharacterSystem.CharacterMotors, KinematicCharacterSystem.PhysicsMovers);
         }
 
+        [System.Obsolete]
         private void UpdateOnImages()
         {
             RenderOn.enabled = Camera.cullingMask == -1;
@@ -50,6 +52,7 @@ namespace KinematicCharacterController.Examples
             }
         }
 
+        [System.Obsolete]
         public void ToggleRendering()
         {
             if(Camera.cullingMask == -1)
@@ -63,12 +66,14 @@ namespace KinematicCharacterController.Examples
             UpdateOnImages();
         }
 
+        [System.Obsolete]
         public void TogglePhysicsSim()
         {
             Physics.autoSimulation = !Physics.autoSimulation;
             UpdateOnImages();
         }
 
+        [System.Obsolete]
         public void ToggleInterpolation()
         {
             KinematicCharacterSystem.Settings.Interpolate = !KinematicCharacterSystem.Settings.Interpolate;
