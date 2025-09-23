@@ -14,19 +14,13 @@ namespace Phone
         private List<GameObject> photosInGallery = new List<GameObject>();
         private float sizePerImage = 0;
 
-        void OnDisable()
-        {
-            PhoneController.galleryOpenEvent -= CreateGalleryList;
-            PhoneController.galleryCloseEvent -= RemoveGalleryList;
-        }
-
         void Start()
         {
-            PhoneController.galleryOpenEvent += CreateGalleryList;
-            PhoneController.galleryCloseEvent += RemoveGalleryList;
+            Debug.Log("Gallery subscribing to galleryOpenEvent");
+            GameManager.galleryOpenEvent += CreateGalleryList;
+            GameManager.galleryCloseEvent += RemoveGalleryList;
 
             sizePerImage = contentArea.GetComponent<GridLayoutGroup>().cellSize.y + contentArea.GetComponent<GridLayoutGroup>().spacing.y;
-
         }
 
         void CreateGalleryList()

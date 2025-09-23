@@ -1,14 +1,13 @@
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using System;
 
 namespace Phone
 {
     public class PhoneController : MonoBehaviour
     {
-        public static GameManager.OnGalleryOpen galleryOpenEvent;
-        public static GameManager.OnGalleryClose galleryCloseEvent;
-
         public InputActionReference pauseButton;
         public InputActionReference escapeAction;
 
@@ -19,24 +18,17 @@ namespace Phone
 
         public CinemachineCamera firstPersonCamera;
 
-        void OnEnable()
-        {
-            ButtonController.galleryPhotoEvent += EnlargePhoto;
-        }
-
-        void OnDisable()
-        {
-            ButtonController.galleryPhotoEvent -= EnlargePhoto;
-        }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
+            GameManager.galleryButtonPressedEvent += EnlargePhoto;
             phonePanel.SetActive(false);
             galleryPanel.SetActive(false);
             photoCamera.SetActive(false);
             EnlargedPhoto.SetActive(false);
         }
+
 
         // Update is called once per frame
         void Update()
@@ -51,7 +43,7 @@ namespace Phone
                 photoCamera.SetActive(false);
                 if (galleryPanel.activeSelf)
                 {
-                    galleryCloseEvent();
+                    GameManager.galleryCloseEvent();
                     galleryPanel.SetActive(false);
                 }
                 EnlargedPhoto.SetActive(false);
@@ -74,16 +66,16 @@ namespace Phone
 
         public void OpenGallery()
         {
-            galleryOpenEvent();
-            phonePanel.SetActive(false);
             galleryPanel.SetActive(true);
+            phonePanel.SetActive(false);
+            Debug.Log("Invoking galleryOpenEvent");
+            GameManager.galleryOpenEvent();
         }
 
         void EnlargePhoto(Texture texture)
         {
             EnlargedPhoto.SetActive(true);
-            // EnlargedPhoto.GetComponent<RawImage>().texture = texture;
+            EnlargedPhoto.GetComponent<RawImage>().texture = texture;
         }
-
     }
 }
