@@ -75,22 +75,29 @@ MonoBehaviour:
   kinematicMotor: {fileID: 277347096623532543}
   <currentCharacterState>k__BackingField: 0
   maxStableMoveSpeed: 10
-  stableMovementSharpness: 15
+  readjustmentSpeed: 4.2
+  accelerationRate: 1.1
+  groundMovementFriction: 40
   orientationMethod: 1
   TowardsCameraOrientationSharpness: 50
-  TowardsMovementOrientationSharpness: 10
+  TowardsMovementOrientationSharpness: 15
   playerThirdPersonCamera: {fileID: 8437540174961184467}
-  maxAirMoveSpeed: 10
-  airAccelerationSpeed: 5
-  drag: 0.1
   allowJumpingWhenSliding: 1
   allowWallJump: 1
   allowDoubleJump: 0
-  jumpUpSpeed: 10
-  jumpScalableForwardSpeed: 0.5
-  jumpPreGroundingGraceTime: 0
-  jumpPostGroundingGraceTime: 0
-  gravity: {x: 0, y: -30, z: 0}
+  jumpScaleMultiplier: 1
+  minJumpScalableUpSpeed: 0.5
+  maxJumpScalableUpSpeed: 12.5
+  minJumpScalableForwardSpeed: 0.1
+  maxJumpScalableForwardSpeed: 1
+  jumpPreGroundingGraceTime: 0.1
+  jumpPostGroundingGraceTime: 0.1
+  jumpType: 1
+  timeForMaxHeightJump: 0.15
+  maxAirMoveSpeed: 8
+  airAccelerationSpeed: 7.65
+  drag: 0.1
+  gravity: {x: 0, y: -50, z: 0}
   bonusOrientationMethod: 1
   bonusOrientationSharpness: 10
   meshRoot: {fileID: 1580252296338831588}
@@ -328,14 +335,14 @@ MonoBehaviour:
   Radius: 10
   Orbits:
     Top:
-      Radius: 3
+      Radius: 0.75
       Height: 5
     Center:
       Radius: 7
       Height: 2.25
     Bottom:
-      Radius: 3
-      Height: 0.1
+      Radius: 2
+      Height: -0.75
     SplineCurvature: 0.5
   RecenteringTarget: 2
   HorizontalAxis:
