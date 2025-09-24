@@ -32,6 +32,7 @@ namespace PhotoCamera
         {
             if (takePhotoAction.action.IsPressed() && photoCamera.activeSelf)
             {
+                //Triggers rapidly - Fix to ony trigger once
                 TakePhoto();
             }
 

@@ -140,38 +140,42 @@ namespace SDK
 
         private void OnEnable()
         {
-            playerInputs.lookAction = playerInputActions.Player.Look;
+            playerInputActions.ThirdPersonPlayer.Enable();
+            
+            playerInputs.lookAction = playerInputActions.ThirdPersonPlayer.Look;
             playerInputs.lookAction.Enable();
             playerInputs.lookAction.performed += Look;
 
-            playerInputs.moveAction = playerInputActions.Player.Move;
+            playerInputs.moveAction = playerInputActions.ThirdPersonPlayer.Move;
             playerInputs.moveAction.Enable();
             playerInputs.moveAction.performed += Move;
             playerInputs.moveAction.canceled += Move;
 
-            playerInputs.jumpAction = playerInputActions.Player.Jump;
+            playerInputs.jumpAction = playerInputActions.ThirdPersonPlayer.Jump;
             playerInputs.jumpAction.Enable();
             playerInputs.jumpAction.performed += Jump;
             playerInputs.jumpAction.canceled += JumpCancelled;
 
-            playerInputs.crouchAction = playerInputActions.Player.Crouch;
+            playerInputs.crouchAction = playerInputActions.ThirdPersonPlayer.Crouch;
             playerInputs.crouchAction.Enable();
             playerInputs.crouchAction.performed += Crouch;
             playerInputs.crouchAction.canceled += Crouch;
 
-            // Removed for testing purposes
+            //! Removed for testing purposes
             
             // playerInputs.lockMouseAction = playerInputActions.Player.LeftClick;
             // playerInputs.lockMouseAction.Enable();
             // playerInputs.lockMouseAction.performed += LockMouse;
 
-            playerInputs.exitMouseAction = playerInputActions.Player.Exit;
+            playerInputs.exitMouseAction = playerInputActions.ThirdPersonPlayer.Exit;
             playerInputs.exitMouseAction.Enable();
             playerInputs.exitMouseAction.performed += Exit;
         }
 
         private void OnDisable()
         {
+            playerInputActions.ThirdPersonPlayer.Disable();
+
             playerInputs.lookAction.Disable();
             playerInputs.lookAction.performed -= Look;
 
@@ -186,7 +190,7 @@ namespace SDK
             playerInputs.crouchAction.performed -= Crouch;
             playerInputs.crouchAction.canceled -= Crouch;
 
-            // Removed for testing purposes
+            //! Removed for testing purposes
 
             // playerInputs.lockMouseAction.Disable();
             // playerInputs.lockMouseAction.performed -= LockMouse;
