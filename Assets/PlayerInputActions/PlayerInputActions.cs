@@ -24,13 +24,22 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     ""name"": ""PlayerInputActions"",
     ""maps"": [
         {
-            ""name"": ""Player"",
+            ""name"": ""ThirdPersonPlayer"",
             ""id"": ""df70fa95-8a34-4494-b137-73ab6b9c7d37"",
             ""actions"": [
                 {
                     ""name"": ""Move"",
                     ""type"": ""Value"",
                     ""id"": ""351f2ccd-1f9f-44bf-9bec-d62ac5c5f408"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""6b444451-8a00-4d00-a97e-f47457f736a8"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -85,7 +94,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""Next"",
                     ""type"": ""Button"",
                     ""id"": ""b7230bb6-fc9b-4f52-8b25-f5e19cb2c2ba"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -98,15 +107,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Look"",
-                    ""type"": ""Value"",
-                    ""id"": ""6b444451-8a00-4d00-a97e-f47457f736a8"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Zoom"",
@@ -145,6 +145,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""fe711d3a-6cf9-4b49-a445-5ee16808ba5e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Exit"",
                     ""type"": ""Button"",
                     ""id"": ""3391ab1b-7e47-4df3-bd2d-3dfaeef57b0f"",
@@ -154,7 +163,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""FpsSwitch"",
+                    ""name"": ""FPSSwitch"",
                     ""type"": ""Button"",
                     ""id"": ""36f8faff-e8a8-4672-b50c-21c7757d89b1"",
                     ""expectedControlType"": """",
@@ -650,12 +659,329 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ad54780b-17a3-402a-b8f8-d0733c04cab2"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""id"": ""43f18e8b-3405-470f-8d8d-7569391bff3e"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a3ac907e-8e96-4ebd-af86-8cc70d8119c4"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""29d93183-51ce-44e6-a0a9-482f5866d91c"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""FirstPersonCamera"",
+            ""id"": ""227e33fb-2bd8-4d10-a200-e9cec064df1e"",
+            ""actions"": [
+                {
+                    ""name"": ""TakePhoto"",
+                    ""type"": ""Button"",
+                    ""id"": ""9c815ca5-7c8c-4490-927f-eab6df106e5c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""80ec20b3-b7f9-4200-8e7c-6a0249b5a422"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""38ceeb27-74c0-4383-8c48-74b1921b04f9"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""16e81ad8-0707-4cd7-b9d7-762f6d67bf43"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Exit"",
+                    ""type"": ""Button"",
+                    ""id"": ""672acb42-0d1f-49e2-bcd2-1db0db6dcf4e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b179eb6a-f489-497a-aad8-35db4faa04b6"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TakePhoto"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""78ce98c3-0bc2-41db-817a-3fb5070b6fef"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TakePhoto"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4ef51f45-2fe3-4f1b-ab85-cc122d43e0da"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""FpsSwitch"",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""32d8313b-881d-4aa6-9483-2607f24c39d6"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0dd96824-5f35-48ec-8d67-6a0d18c5b832"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d933053f-5bc8-4d73-bc60-462f1dc86f4f"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""d7f33fb7-9f83-4a34-9a59-1a132d3a35cd"",
+                    ""path"": ""Dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""2c7bdded-fa41-4bc7-9cdf-37858b633888"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""291fa156-ac51-4b64-83d1-a6bd0ab86340"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""5534f43c-9666-4b95-8099-56f2e124b92b"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""dec06938-415c-4b01-b625-9e943c4420df"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""2ceb5c8f-fd35-4000-a9ea-1e09ab331179"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""ef195c5c-ec6f-4a03-896f-c534a6aabcb9"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""48d1ce90-64cf-49d6-8ecd-13a817dc72f1"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""4227dcfb-4c7c-4e00-9fd5-9e576a121efa"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""40765a10-3d76-42c7-9d3c-48878c8608db"",
+                    ""path"": ""<XRController>/{Primary2DAxis}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XR"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f0db3907-a66e-4d5f-a32d-a5e885984fe8"",
+                    ""path"": ""<Joystick>/stick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Joystick"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""447595e4-d618-4380-9c07-17ad07e377a3"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": ""ScaleVector2(x=50,y=50)"",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""94ea19a9-60e3-4c7f-b437-5eb78f8ebbc8"",
+                    ""path"": ""<Pointer>/delta"",
+                    ""interactions"": """",
+                    ""processors"": ""ScaleVector2(x=6,y=4)"",
+                    ""groups"": "";Keyboard&Mouse;Touch"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b563db0d-a1e8-4d99-a3f4-99dee3a8875b"",
+                    ""path"": ""<Joystick>/{Hatswitch}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Joystick"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""538b24d4-2da7-48d0-a257-942fd28a4c5b"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f42f426d-3fa0-43de-8079-ec5802a6f7b6"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1176,34 +1502,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
-        },
-        {
-            ""name"": ""Camera"",
-            ""id"": ""227e33fb-2bd8-4d10-a200-e9cec064df1e"",
-            ""actions"": [
-                {
-                    ""name"": ""TakePhoto"",
-                    ""type"": ""Button"",
-                    ""id"": ""9c815ca5-7c8c-4490-927f-eab6df106e5c"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""b179eb6a-f489-497a-aad8-35db4faa04b6"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""TakePhoto"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
         }
     ],
     ""controlSchemes"": [
@@ -1269,23 +1567,31 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     ]
 }");
-        // Player
-        m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
-        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
-        m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
-        m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        m_Player_Previous = m_Player.FindAction("Previous", throwIfNotFound: true);
-        m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
-        m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
-        m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
-        m_Player_Zoom = m_Player.FindAction("Zoom", throwIfNotFound: true);
-        m_Player_LeftClick = m_Player.FindAction("LeftClick", throwIfNotFound: true);
-        m_Player_RightClick = m_Player.FindAction("RightClick", throwIfNotFound: true);
-        m_Player_MiddleClick = m_Player.FindAction("MiddleClick", throwIfNotFound: true);
-        m_Player_Exit = m_Player.FindAction("Exit", throwIfNotFound: true);
-        m_Player_FpsSwitch = m_Player.FindAction("FpsSwitch", throwIfNotFound: true);
+        // ThirdPersonPlayer
+        m_ThirdPersonPlayer = asset.FindActionMap("ThirdPersonPlayer", throwIfNotFound: true);
+        m_ThirdPersonPlayer_Move = m_ThirdPersonPlayer.FindAction("Move", throwIfNotFound: true);
+        m_ThirdPersonPlayer_Look = m_ThirdPersonPlayer.FindAction("Look", throwIfNotFound: true);
+        m_ThirdPersonPlayer_Attack = m_ThirdPersonPlayer.FindAction("Attack", throwIfNotFound: true);
+        m_ThirdPersonPlayer_Interact = m_ThirdPersonPlayer.FindAction("Interact", throwIfNotFound: true);
+        m_ThirdPersonPlayer_Crouch = m_ThirdPersonPlayer.FindAction("Crouch", throwIfNotFound: true);
+        m_ThirdPersonPlayer_Jump = m_ThirdPersonPlayer.FindAction("Jump", throwIfNotFound: true);
+        m_ThirdPersonPlayer_Previous = m_ThirdPersonPlayer.FindAction("Previous", throwIfNotFound: true);
+        m_ThirdPersonPlayer_Next = m_ThirdPersonPlayer.FindAction("Next", throwIfNotFound: true);
+        m_ThirdPersonPlayer_Sprint = m_ThirdPersonPlayer.FindAction("Sprint", throwIfNotFound: true);
+        m_ThirdPersonPlayer_Zoom = m_ThirdPersonPlayer.FindAction("Zoom", throwIfNotFound: true);
+        m_ThirdPersonPlayer_LeftClick = m_ThirdPersonPlayer.FindAction("LeftClick", throwIfNotFound: true);
+        m_ThirdPersonPlayer_RightClick = m_ThirdPersonPlayer.FindAction("RightClick", throwIfNotFound: true);
+        m_ThirdPersonPlayer_MiddleClick = m_ThirdPersonPlayer.FindAction("MiddleClick", throwIfNotFound: true);
+        m_ThirdPersonPlayer_Pause = m_ThirdPersonPlayer.FindAction("Pause", throwIfNotFound: true);
+        m_ThirdPersonPlayer_Exit = m_ThirdPersonPlayer.FindAction("Exit", throwIfNotFound: true);
+        m_ThirdPersonPlayer_FPSSwitch = m_ThirdPersonPlayer.FindAction("FPSSwitch", throwIfNotFound: true);
+        // FirstPersonCamera
+        m_FirstPersonCamera = asset.FindActionMap("FirstPersonCamera", throwIfNotFound: true);
+        m_FirstPersonCamera_TakePhoto = m_FirstPersonCamera.FindAction("TakePhoto", throwIfNotFound: true);
+        m_FirstPersonCamera_Move = m_FirstPersonCamera.FindAction("Move", throwIfNotFound: true);
+        m_FirstPersonCamera_Look = m_FirstPersonCamera.FindAction("Look", throwIfNotFound: true);
+        m_FirstPersonCamera_Pause = m_FirstPersonCamera.FindAction("Pause", throwIfNotFound: true);
+        m_FirstPersonCamera_Exit = m_FirstPersonCamera.FindAction("Exit", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1298,16 +1604,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
-        // Camera
-        m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
-        m_Camera_TakePhoto = m_Camera.FindAction("TakePhoto", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
     {
-        UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, PlayerInputActions.Player.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_ThirdPersonPlayer.enabled, "This will cause a leak and performance issues, PlayerInputActions.ThirdPersonPlayer.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_FirstPersonCamera.enabled, "This will cause a leak and performance issues, PlayerInputActions.FirstPersonCamera.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, PlayerInputActions.UI.Disable() has not been called.");
-        UnityEngine.Debug.Assert(!m_Camera.enabled, "This will cause a leak and performance issues, PlayerInputActions.Camera.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -1366,55 +1669,60 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Player
-    private readonly InputActionMap m_Player;
-    private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
-    private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_Attack;
-    private readonly InputAction m_Player_Interact;
-    private readonly InputAction m_Player_Crouch;
-    private readonly InputAction m_Player_Jump;
-    private readonly InputAction m_Player_Previous;
-    private readonly InputAction m_Player_Next;
-    private readonly InputAction m_Player_Sprint;
-    private readonly InputAction m_Player_Look;
-    private readonly InputAction m_Player_Zoom;
-    private readonly InputAction m_Player_LeftClick;
-    private readonly InputAction m_Player_RightClick;
-    private readonly InputAction m_Player_MiddleClick;
-    private readonly InputAction m_Player_Exit;
-    private readonly InputAction m_Player_FpsSwitch;
-    public struct PlayerActions
+    // ThirdPersonPlayer
+    private readonly InputActionMap m_ThirdPersonPlayer;
+    private List<IThirdPersonPlayerActions> m_ThirdPersonPlayerActionsCallbackInterfaces = new List<IThirdPersonPlayerActions>();
+    private readonly InputAction m_ThirdPersonPlayer_Move;
+    private readonly InputAction m_ThirdPersonPlayer_Look;
+    private readonly InputAction m_ThirdPersonPlayer_Attack;
+    private readonly InputAction m_ThirdPersonPlayer_Interact;
+    private readonly InputAction m_ThirdPersonPlayer_Crouch;
+    private readonly InputAction m_ThirdPersonPlayer_Jump;
+    private readonly InputAction m_ThirdPersonPlayer_Previous;
+    private readonly InputAction m_ThirdPersonPlayer_Next;
+    private readonly InputAction m_ThirdPersonPlayer_Sprint;
+    private readonly InputAction m_ThirdPersonPlayer_Zoom;
+    private readonly InputAction m_ThirdPersonPlayer_LeftClick;
+    private readonly InputAction m_ThirdPersonPlayer_RightClick;
+    private readonly InputAction m_ThirdPersonPlayer_MiddleClick;
+    private readonly InputAction m_ThirdPersonPlayer_Pause;
+    private readonly InputAction m_ThirdPersonPlayer_Exit;
+    private readonly InputAction m_ThirdPersonPlayer_FPSSwitch;
+    public struct ThirdPersonPlayerActions
     {
         private @PlayerInputActions m_Wrapper;
-        public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Player_Move;
-        public InputAction @Attack => m_Wrapper.m_Player_Attack;
-        public InputAction @Interact => m_Wrapper.m_Player_Interact;
-        public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
-        public InputAction @Jump => m_Wrapper.m_Player_Jump;
-        public InputAction @Previous => m_Wrapper.m_Player_Previous;
-        public InputAction @Next => m_Wrapper.m_Player_Next;
-        public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
-        public InputAction @Look => m_Wrapper.m_Player_Look;
-        public InputAction @Zoom => m_Wrapper.m_Player_Zoom;
-        public InputAction @LeftClick => m_Wrapper.m_Player_LeftClick;
-        public InputAction @RightClick => m_Wrapper.m_Player_RightClick;
-        public InputAction @MiddleClick => m_Wrapper.m_Player_MiddleClick;
-        public InputAction @Exit => m_Wrapper.m_Player_Exit;
-        public InputAction @FpsSwitch => m_Wrapper.m_Player_FpsSwitch;
-        public InputActionMap Get() { return m_Wrapper.m_Player; }
+        public ThirdPersonPlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_ThirdPersonPlayer_Move;
+        public InputAction @Look => m_Wrapper.m_ThirdPersonPlayer_Look;
+        public InputAction @Attack => m_Wrapper.m_ThirdPersonPlayer_Attack;
+        public InputAction @Interact => m_Wrapper.m_ThirdPersonPlayer_Interact;
+        public InputAction @Crouch => m_Wrapper.m_ThirdPersonPlayer_Crouch;
+        public InputAction @Jump => m_Wrapper.m_ThirdPersonPlayer_Jump;
+        public InputAction @Previous => m_Wrapper.m_ThirdPersonPlayer_Previous;
+        public InputAction @Next => m_Wrapper.m_ThirdPersonPlayer_Next;
+        public InputAction @Sprint => m_Wrapper.m_ThirdPersonPlayer_Sprint;
+        public InputAction @Zoom => m_Wrapper.m_ThirdPersonPlayer_Zoom;
+        public InputAction @LeftClick => m_Wrapper.m_ThirdPersonPlayer_LeftClick;
+        public InputAction @RightClick => m_Wrapper.m_ThirdPersonPlayer_RightClick;
+        public InputAction @MiddleClick => m_Wrapper.m_ThirdPersonPlayer_MiddleClick;
+        public InputAction @Pause => m_Wrapper.m_ThirdPersonPlayer_Pause;
+        public InputAction @Exit => m_Wrapper.m_ThirdPersonPlayer_Exit;
+        public InputAction @FPSSwitch => m_Wrapper.m_ThirdPersonPlayer_FPSSwitch;
+        public InputActionMap Get() { return m_Wrapper.m_ThirdPersonPlayer; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
-        public void AddCallbacks(IPlayerActions instance)
+        public static implicit operator InputActionMap(ThirdPersonPlayerActions set) { return set.Get(); }
+        public void AddCallbacks(IThirdPersonPlayerActions instance)
         {
-            if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_ThirdPersonPlayerActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ThirdPersonPlayerActionsCallbackInterfaces.Add(instance);
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
@@ -1436,9 +1744,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
-            @Look.started += instance.OnLook;
-            @Look.performed += instance.OnLook;
-            @Look.canceled += instance.OnLook;
             @Zoom.started += instance.OnZoom;
             @Zoom.performed += instance.OnZoom;
             @Zoom.canceled += instance.OnZoom;
@@ -1451,19 +1756,25 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MiddleClick.started += instance.OnMiddleClick;
             @MiddleClick.performed += instance.OnMiddleClick;
             @MiddleClick.canceled += instance.OnMiddleClick;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
             @Exit.started += instance.OnExit;
             @Exit.performed += instance.OnExit;
             @Exit.canceled += instance.OnExit;
-            @FpsSwitch.started += instance.OnFpsSwitch;
-            @FpsSwitch.performed += instance.OnFpsSwitch;
-            @FpsSwitch.canceled += instance.OnFpsSwitch;
+            @FPSSwitch.started += instance.OnFPSSwitch;
+            @FPSSwitch.performed += instance.OnFPSSwitch;
+            @FPSSwitch.canceled += instance.OnFPSSwitch;
         }
 
-        private void UnregisterCallbacks(IPlayerActions instance)
+        private void UnregisterCallbacks(IThirdPersonPlayerActions instance)
         {
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
@@ -1485,9 +1796,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
-            @Look.started -= instance.OnLook;
-            @Look.performed -= instance.OnLook;
-            @Look.canceled -= instance.OnLook;
             @Zoom.started -= instance.OnZoom;
             @Zoom.performed -= instance.OnZoom;
             @Zoom.canceled -= instance.OnZoom;
@@ -1500,29 +1808,110 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MiddleClick.started -= instance.OnMiddleClick;
             @MiddleClick.performed -= instance.OnMiddleClick;
             @MiddleClick.canceled -= instance.OnMiddleClick;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
             @Exit.started -= instance.OnExit;
             @Exit.performed -= instance.OnExit;
             @Exit.canceled -= instance.OnExit;
-            @FpsSwitch.started -= instance.OnFpsSwitch;
-            @FpsSwitch.performed -= instance.OnFpsSwitch;
-            @FpsSwitch.canceled -= instance.OnFpsSwitch;
+            @FPSSwitch.started -= instance.OnFPSSwitch;
+            @FPSSwitch.performed -= instance.OnFPSSwitch;
+            @FPSSwitch.canceled -= instance.OnFPSSwitch;
         }
 
-        public void RemoveCallbacks(IPlayerActions instance)
+        public void RemoveCallbacks(IThirdPersonPlayerActions instance)
         {
-            if (m_Wrapper.m_PlayerActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_ThirdPersonPlayerActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IPlayerActions instance)
+        public void SetCallbacks(IThirdPersonPlayerActions instance)
         {
-            foreach (var item in m_Wrapper.m_PlayerActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_ThirdPersonPlayerActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_PlayerActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_ThirdPersonPlayerActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public PlayerActions @Player => new PlayerActions(this);
+    public ThirdPersonPlayerActions @ThirdPersonPlayer => new ThirdPersonPlayerActions(this);
+
+    // FirstPersonCamera
+    private readonly InputActionMap m_FirstPersonCamera;
+    private List<IFirstPersonCameraActions> m_FirstPersonCameraActionsCallbackInterfaces = new List<IFirstPersonCameraActions>();
+    private readonly InputAction m_FirstPersonCamera_TakePhoto;
+    private readonly InputAction m_FirstPersonCamera_Move;
+    private readonly InputAction m_FirstPersonCamera_Look;
+    private readonly InputAction m_FirstPersonCamera_Pause;
+    private readonly InputAction m_FirstPersonCamera_Exit;
+    public struct FirstPersonCameraActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public FirstPersonCameraActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @TakePhoto => m_Wrapper.m_FirstPersonCamera_TakePhoto;
+        public InputAction @Move => m_Wrapper.m_FirstPersonCamera_Move;
+        public InputAction @Look => m_Wrapper.m_FirstPersonCamera_Look;
+        public InputAction @Pause => m_Wrapper.m_FirstPersonCamera_Pause;
+        public InputAction @Exit => m_Wrapper.m_FirstPersonCamera_Exit;
+        public InputActionMap Get() { return m_Wrapper.m_FirstPersonCamera; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(FirstPersonCameraActions set) { return set.Get(); }
+        public void AddCallbacks(IFirstPersonCameraActions instance)
+        {
+            if (instance == null || m_Wrapper.m_FirstPersonCameraActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_FirstPersonCameraActionsCallbackInterfaces.Add(instance);
+            @TakePhoto.started += instance.OnTakePhoto;
+            @TakePhoto.performed += instance.OnTakePhoto;
+            @TakePhoto.canceled += instance.OnTakePhoto;
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
+            @Exit.started += instance.OnExit;
+            @Exit.performed += instance.OnExit;
+            @Exit.canceled += instance.OnExit;
+        }
+
+        private void UnregisterCallbacks(IFirstPersonCameraActions instance)
+        {
+            @TakePhoto.started -= instance.OnTakePhoto;
+            @TakePhoto.performed -= instance.OnTakePhoto;
+            @TakePhoto.canceled -= instance.OnTakePhoto;
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
+            @Exit.started -= instance.OnExit;
+            @Exit.performed -= instance.OnExit;
+            @Exit.canceled -= instance.OnExit;
+        }
+
+        public void RemoveCallbacks(IFirstPersonCameraActions instance)
+        {
+            if (m_Wrapper.m_FirstPersonCameraActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IFirstPersonCameraActions instance)
+        {
+            foreach (var item in m_Wrapper.m_FirstPersonCameraActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_FirstPersonCameraActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public FirstPersonCameraActions @FirstPersonCamera => new FirstPersonCameraActions(this);
 
     // UI
     private readonly InputActionMap m_UI;
@@ -1641,52 +2030,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
-
-    // Camera
-    private readonly InputActionMap m_Camera;
-    private List<ICameraActions> m_CameraActionsCallbackInterfaces = new List<ICameraActions>();
-    private readonly InputAction m_Camera_TakePhoto;
-    public struct CameraActions
-    {
-        private @PlayerInputActions m_Wrapper;
-        public CameraActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @TakePhoto => m_Wrapper.m_Camera_TakePhoto;
-        public InputActionMap Get() { return m_Wrapper.m_Camera; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(CameraActions set) { return set.Get(); }
-        public void AddCallbacks(ICameraActions instance)
-        {
-            if (instance == null || m_Wrapper.m_CameraActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_CameraActionsCallbackInterfaces.Add(instance);
-            @TakePhoto.started += instance.OnTakePhoto;
-            @TakePhoto.performed += instance.OnTakePhoto;
-            @TakePhoto.canceled += instance.OnTakePhoto;
-        }
-
-        private void UnregisterCallbacks(ICameraActions instance)
-        {
-            @TakePhoto.started -= instance.OnTakePhoto;
-            @TakePhoto.performed -= instance.OnTakePhoto;
-            @TakePhoto.canceled -= instance.OnTakePhoto;
-        }
-
-        public void RemoveCallbacks(ICameraActions instance)
-        {
-            if (m_Wrapper.m_CameraActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        public void SetCallbacks(ICameraActions instance)
-        {
-            foreach (var item in m_Wrapper.m_CameraActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_CameraActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public CameraActions @Camera => new CameraActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1732,9 +2075,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_XRSchemeIndex];
         }
     }
-    public interface IPlayerActions
+    public interface IThirdPersonPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
@@ -1742,13 +2086,21 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnPrevious(InputAction.CallbackContext context);
         void OnNext(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
-        void OnLook(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
         void OnLeftClick(InputAction.CallbackContext context);
         void OnRightClick(InputAction.CallbackContext context);
         void OnMiddleClick(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
         void OnExit(InputAction.CallbackContext context);
-        void OnFpsSwitch(InputAction.CallbackContext context);
+        void OnFPSSwitch(InputAction.CallbackContext context);
+    }
+    public interface IFirstPersonCameraActions
+    {
+        void OnTakePhoto(InputAction.CallbackContext context);
+        void OnMove(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+        void OnExit(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
@@ -1762,9 +2114,5 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnScrollWheel(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
-    }
-    public interface ICameraActions
-    {
-        void OnTakePhoto(InputAction.CallbackContext context);
     }
 }
