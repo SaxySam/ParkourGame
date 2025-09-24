@@ -7,6 +7,13 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.hwaet.projectcloner": {
+      "version": "https://github.com/hwaet/UnityProjectCloner.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "f8c8347af3a144069dffd6120f1c4142f8120891"
+    },
     "com.unity.addressables": {
       "version": "2.2.2",
       "depth": 1,
@@ -180,6 +187,16 @@
       "source": "registry",
       "dependencies": {
         "com.unity.services.multiplayer": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.netcode.gameobjects": {
+      "version": "2.4.4",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.transport": "2.4.0",
+        "com.unity.nuget.mono-cecil": "1.11.4"
       },
       "url": "https://packages.unity.com"
     },
