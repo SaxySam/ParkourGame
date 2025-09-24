@@ -130,6 +130,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "FpsSwitch",
+                    "type": "Button",
+                    "id": "36f8faff-e8a8-4672-b50c-21c7757d89b1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -614,6 +623,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Exit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ad54780b-17a3-402a-b8f8-d0733c04cab2",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "FpsSwitch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

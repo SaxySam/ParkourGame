@@ -63,7 +63,8 @@ namespace SDK
         [SerializeField] private KinematicCharacterMotor kinematicMotor;
         [field: SerializeField] public ECharacterState currentCharacterState { get; private set; } = ECharacterState.ParkourMode;
         private FPlayerInputs playerInputs;
-        private PlayerInputActions playerInputActions;
+
+        private PlayerInput playerInputComponent;
 
         [Header("Stable Movement")]
         public float maxStableMoveSpeed = 10f;
@@ -134,60 +135,55 @@ namespace SDK
 
         private void Awake()
         {
-            playerInputActions = new PlayerInputActions();
+            playerInputComponent = gameObject.GetComponent<PlayerInput>();
+            if (playerInputComponent == null)
+            {
+                Debug.Log("did not get Player input componit ");
+            }
             Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void OnEnable()
         {
-            playerInputs.lookAction = playerInputActions.Player.Look;
-            playerInputs.lookAction.Enable();
+            playerInputComponent.SwitchCurrentActionMap("Player");
+
+            playerInputs.lookAction = playerInputComponent.actions["Look"];
             playerInputs.lookAction.performed += Look;
 
-            playerInputs.moveAction = playerInputActions.Player.Move;
-            playerInputs.moveAction.Enable();
+            playerInputs.moveAction = playerInputComponent.actions["Move"];
             playerInputs.moveAction.performed += Move;
             playerInputs.moveAction.canceled += Move;
 
-            playerInputs.jumpAction = playerInputActions.Player.Jump;
-            playerInputs.jumpAction.Enable();
+            playerInputs.jumpAction = playerInputComponent.actions["Jump"];
             playerInputs.jumpAction.performed += Jump;
             playerInputs.jumpAction.canceled += JumpCancelled;
 
-            playerInputs.crouchAction = playerInputActions.Player.Crouch;
-            playerInputs.crouchAction.Enable();
+            playerInputs.crouchAction = playerInputComponent.actions["Crouch"];
             playerInputs.crouchAction.performed += Crouch;
             playerInputs.crouchAction.canceled += Crouch;
 
-            playerInputs.lockMouseAction = playerInputActions.Player.LeftClick;
-            playerInputs.lockMouseAction.Enable();
+            playerInputs.lockMouseAction = playerInputComponent.actions["LeftClick"];
             playerInputs.lockMouseAction.performed += LockMouse;
 
-            playerInputs.exitMouseAction = playerInputActions.Player.Exit;
-            playerInputs.exitMouseAction.Enable();
+            playerInputs.exitMouseAction = playerInputComponent.actions["Exit"];
             playerInputs.exitMouseAction.performed += Exit;
         }
 
         private void OnDisable()
         {
-            playerInputs.lookAction.Disable();
+
             playerInputs.lookAction.performed -= Look;
 
-            playerInputs.moveAction.Disable();
             playerInputs.moveAction.performed -= Move;
             playerInputs.moveAction.canceled -= Move;
 
-            playerInputs.jumpAction.Disable();
             playerInputs.jumpAction.performed -= Jump;
 
-            playerInputs.crouchAction.Disable();
             playerInputs.crouchAction.performed -= Crouch;
             playerInputs.crouchAction.canceled -= Crouch;
 
-            playerInputs.lockMouseAction.Disable();
             playerInputs.lockMouseAction.performed -= LockMouse;
 
-            playerInputs.exitMouseAction.Disable();
             playerInputs.exitMouseAction.performed -= Exit;
         }
         
