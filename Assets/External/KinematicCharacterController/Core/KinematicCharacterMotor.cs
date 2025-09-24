@@ -152,7 +152,9 @@ namespace KinematicCharacterController
     /// <summary>
     /// Component that manages character collisions and movement solving
     /// </summary>
+     
     [RequireComponent(typeof(CapsuleCollider))]
+    
     public class KinematicCharacterMotor : MonoBehaviour
     {
 #pragma warning disable 0414
@@ -160,6 +162,8 @@ namespace KinematicCharacterController
         /// <summary>
         /// The capsule collider of this motor
         /// </summary>
+        
+
         [ReadOnly]
         public CapsuleCollider Capsule;
 

@@ -61,7 +61,7 @@ namespace SDK
     public class SamCharacterController : MonoBehaviour, ICharacterController
     {
         [SerializeField] private KinematicCharacterMotor kinematicMotor;
-        [field: SerializeField] public ECharacterState currentCharacterState { get; private set; } = ECharacterState.ParkourMode;
+        [field: SerializeField] public ECharacterState CurrentCharacterState { get; private set; } = ECharacterState.ParkourMode;
         private FPlayerInputs playerInputs;
 
         private PlayerInput playerInputComponent;
@@ -201,9 +201,9 @@ namespace SDK
         /// </summary>
         public void TransitionToState(ECharacterState newState)
         {
-            ECharacterState tmpInitialState = currentCharacterState;
+            ECharacterState tmpInitialState = CurrentCharacterState;
             OnStateExit(tmpInitialState, newState);
-            currentCharacterState = newState;
+            CurrentCharacterState = newState;
             OnStateEnter(newState, tmpInitialState);
         }
 
@@ -237,7 +237,7 @@ namespace SDK
         
         private void Look(InputAction.CallbackContext context)
         {
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                     {
@@ -264,7 +264,7 @@ namespace SDK
 
         private void Jump(InputAction.CallbackContext context)
         {
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                     {
@@ -286,7 +286,7 @@ namespace SDK
 
         private void Crouch(InputAction.CallbackContext context)
         {
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                     {
@@ -354,7 +354,7 @@ namespace SDK
         /// </summary>
         public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
         {
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                     {
@@ -440,7 +440,7 @@ namespace SDK
         /// </summary>
         public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
         {
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                     {
@@ -624,7 +624,7 @@ namespace SDK
         public void AfterCharacterUpdate(float deltaTime)
         // This is called after the motor has finished everything in its update
         {
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                     {
@@ -706,7 +706,7 @@ namespace SDK
             // This is called when the motor's movement logic detects a hit
             // We can wall jump only if we are not stable on ground and are moving against an obstruction
 
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                 {
@@ -745,7 +745,7 @@ namespace SDK
 
         public void AddVelocity(Vector3 velocity)
         {
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                 {
@@ -758,7 +758,7 @@ namespace SDK
         public void ProcessHitStabilityReport(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, Vector3 atCharacterPosition, Quaternion atCharacterRotation, ref HitStabilityReport hitStabilityReport)
         {
             // This is called after every hit detected in the motor, to give you a chance to modify the HitStabilityReport any way you want
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                 {
