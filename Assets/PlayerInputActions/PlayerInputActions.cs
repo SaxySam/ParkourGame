@@ -161,6 +161,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FPSSwitch"",
+                    ""type"": ""Button"",
+                    ""id"": ""36f8faff-e8a8-4672-b50c-21c7757d89b1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1575,6 +1584,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_ThirdPersonPlayer_MiddleClick = m_ThirdPersonPlayer.FindAction("MiddleClick", throwIfNotFound: true);
         m_ThirdPersonPlayer_Pause = m_ThirdPersonPlayer.FindAction("Pause", throwIfNotFound: true);
         m_ThirdPersonPlayer_Exit = m_ThirdPersonPlayer.FindAction("Exit", throwIfNotFound: true);
+        m_ThirdPersonPlayer_FPSSwitch = m_ThirdPersonPlayer.FindAction("FPSSwitch", throwIfNotFound: true);
         // FirstPersonCamera
         m_FirstPersonCamera = asset.FindActionMap("FirstPersonCamera", throwIfNotFound: true);
         m_FirstPersonCamera_TakePhoto = m_FirstPersonCamera.FindAction("TakePhoto", throwIfNotFound: true);
@@ -1677,6 +1687,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_ThirdPersonPlayer_MiddleClick;
     private readonly InputAction m_ThirdPersonPlayer_Pause;
     private readonly InputAction m_ThirdPersonPlayer_Exit;
+    private readonly InputAction m_ThirdPersonPlayer_FPSSwitch;
     public struct ThirdPersonPlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1696,6 +1707,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @MiddleClick => m_Wrapper.m_ThirdPersonPlayer_MiddleClick;
         public InputAction @Pause => m_Wrapper.m_ThirdPersonPlayer_Pause;
         public InputAction @Exit => m_Wrapper.m_ThirdPersonPlayer_Exit;
+        public InputAction @FPSSwitch => m_Wrapper.m_ThirdPersonPlayer_FPSSwitch;
         public InputActionMap Get() { return m_Wrapper.m_ThirdPersonPlayer; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1750,6 +1762,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Exit.started += instance.OnExit;
             @Exit.performed += instance.OnExit;
             @Exit.canceled += instance.OnExit;
+            @FPSSwitch.started += instance.OnFPSSwitch;
+            @FPSSwitch.performed += instance.OnFPSSwitch;
+            @FPSSwitch.canceled += instance.OnFPSSwitch;
         }
 
         private void UnregisterCallbacks(IThirdPersonPlayerActions instance)
@@ -1799,6 +1814,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Exit.started -= instance.OnExit;
             @Exit.performed -= instance.OnExit;
             @Exit.canceled -= instance.OnExit;
+            @FPSSwitch.started -= instance.OnFPSSwitch;
+            @FPSSwitch.performed -= instance.OnFPSSwitch;
+            @FPSSwitch.canceled -= instance.OnFPSSwitch;
         }
 
         public void RemoveCallbacks(IThirdPersonPlayerActions instance)
@@ -2074,6 +2092,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMiddleClick(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnExit(InputAction.CallbackContext context);
+        void OnFPSSwitch(InputAction.CallbackContext context);
     }
     public interface IFirstPersonCameraActions
     {

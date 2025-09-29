@@ -61,9 +61,10 @@ namespace SDK
     public class SamCharacterController : MonoBehaviour, ICharacterController
     {
         [SerializeField] private KinematicCharacterMotor kinematicMotor;
-        [field: SerializeField] public ECharacterState currentCharacterState { get; private set; } = ECharacterState.ParkourMode;
+        [field: SerializeField] public ECharacterState CurrentCharacterState { get; private set; } = ECharacterState.ParkourMode;
         private FPlayerInputs playerInputs;
-        private PlayerInputActions playerInputActions;
+
+        private PlayerInput playerInputComponent;
 
         [Header("Stable Movement")]
         public float maxStableMoveSpeed = 10f;
@@ -134,68 +135,55 @@ namespace SDK
 
         private void Awake()
         {
-            playerInputActions = new PlayerInputActions();
+            playerInputComponent = gameObject.GetComponent<PlayerInput>();
+            if (playerInputComponent == null)
+            {
+                Debug.Log("did not get Player input componit ");
+            }
             Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void OnEnable()
         {
-            playerInputActions.ThirdPersonPlayer.Enable();
-            
-            playerInputs.lookAction = playerInputActions.ThirdPersonPlayer.Look;
-            playerInputs.lookAction.Enable();
+            playerInputComponent.SwitchCurrentActionMap("Player");
+
+            playerInputs.lookAction = playerInputComponent.actions["Look"];
             playerInputs.lookAction.performed += Look;
 
-            playerInputs.moveAction = playerInputActions.ThirdPersonPlayer.Move;
-            playerInputs.moveAction.Enable();
+            playerInputs.moveAction = playerInputComponent.actions["Move"];
             playerInputs.moveAction.performed += Move;
             playerInputs.moveAction.canceled += Move;
 
-            playerInputs.jumpAction = playerInputActions.ThirdPersonPlayer.Jump;
-            playerInputs.jumpAction.Enable();
+            playerInputs.jumpAction = playerInputComponent.actions["Jump"];
             playerInputs.jumpAction.performed += Jump;
             playerInputs.jumpAction.canceled += JumpCancelled;
 
-            playerInputs.crouchAction = playerInputActions.ThirdPersonPlayer.Crouch;
-            playerInputs.crouchAction.Enable();
+            playerInputs.crouchAction = playerInputComponent.actions["Crouch"];
             playerInputs.crouchAction.performed += Crouch;
             playerInputs.crouchAction.canceled += Crouch;
 
-            //! Removed for testing purposes
-            
-            // playerInputs.lockMouseAction = playerInputActions.Player.LeftClick;
-            // playerInputs.lockMouseAction.Enable();
-            // playerInputs.lockMouseAction.performed += LockMouse;
+            playerInputs.lockMouseAction = playerInputComponent.actions["LeftClick"];
+            playerInputs.lockMouseAction.performed += LockMouse;
 
-            playerInputs.exitMouseAction = playerInputActions.ThirdPersonPlayer.Exit;
-            playerInputs.exitMouseAction.Enable();
+            playerInputs.exitMouseAction = playerInputComponent.actions["Exit"];
             playerInputs.exitMouseAction.performed += Exit;
         }
 
         private void OnDisable()
         {
-            playerInputActions.ThirdPersonPlayer.Disable();
 
-            playerInputs.lookAction.Disable();
             playerInputs.lookAction.performed -= Look;
 
-            playerInputs.moveAction.Disable();
             playerInputs.moveAction.performed -= Move;
             playerInputs.moveAction.canceled -= Move;
 
-            playerInputs.jumpAction.Disable();
             playerInputs.jumpAction.performed -= Jump;
 
-            playerInputs.crouchAction.Disable();
             playerInputs.crouchAction.performed -= Crouch;
             playerInputs.crouchAction.canceled -= Crouch;
 
-            //! Removed for testing purposes
+            playerInputs.lockMouseAction.performed -= LockMouse;
 
-            // playerInputs.lockMouseAction.Disable();
-            // playerInputs.lockMouseAction.performed -= LockMouse;
-
-            playerInputs.exitMouseAction.Disable();
             playerInputs.exitMouseAction.performed -= Exit;
         }
         
@@ -213,9 +201,9 @@ namespace SDK
         /// </summary>
         public void TransitionToState(ECharacterState newState)
         {
-            ECharacterState tmpInitialState = currentCharacterState;
+            ECharacterState tmpInitialState = CurrentCharacterState;
             OnStateExit(tmpInitialState, newState);
-            currentCharacterState = newState;
+            CurrentCharacterState = newState;
             OnStateEnter(newState, tmpInitialState);
         }
 
@@ -249,7 +237,7 @@ namespace SDK
         
         private void Look(InputAction.CallbackContext context)
         {
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                     {
@@ -276,7 +264,7 @@ namespace SDK
 
         private void Jump(InputAction.CallbackContext context)
         {
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                     {
@@ -298,7 +286,7 @@ namespace SDK
 
         private void Crouch(InputAction.CallbackContext context)
         {
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                     {
@@ -366,7 +354,7 @@ namespace SDK
         /// </summary>
         public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
         {
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                     {
@@ -452,7 +440,7 @@ namespace SDK
         /// </summary>
         public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
         {
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                     {
@@ -636,7 +624,7 @@ namespace SDK
         public void AfterCharacterUpdate(float deltaTime)
         // This is called after the motor has finished everything in its update
         {
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                     {
@@ -718,7 +706,7 @@ namespace SDK
             // This is called when the motor's movement logic detects a hit
             // We can wall jump only if we are not stable on ground and are moving against an obstruction
 
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                 {
@@ -757,7 +745,7 @@ namespace SDK
 
         public void AddVelocity(Vector3 velocity)
         {
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                 {
@@ -770,7 +758,7 @@ namespace SDK
         public void ProcessHitStabilityReport(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, Vector3 atCharacterPosition, Quaternion atCharacterRotation, ref HitStabilityReport hitStabilityReport)
         {
             // This is called after every hit detected in the motor, to give you a chance to modify the HitStabilityReport any way you want
-            switch (currentCharacterState)
+            switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
                 {
