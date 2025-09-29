@@ -26284,9 +26284,33 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 36f8faff-e8a8-4672-b50c-21c7757d89b1
     m_ActionName: 'Player/FpsSwitch[/Keyboard/f]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fe711d3a-6cf9-4b49-a445-5ee16808ba5e
+    m_ActionName: 'ThirdPersonPlayer/Pause[/Keyboard/tab]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9c815ca5-7c8c-4490-927f-eab6df106e5c
+    m_ActionName: 'FirstPersonCamera/TakePhoto[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 80ec20b3-b7f9-4200-8e7c-6a0249b5a422
+    m_ActionName: 'FirstPersonCamera/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 38ceeb27-74c0-4383-8c48-74b1921b04f9
+    m_ActionName: 'FirstPersonCamera/Look[/Mouse/delta,/Pen/delta]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 16e81ad8-0707-4cd7-b9d7-762f6d67bf43
+    m_ActionName: 'FirstPersonCamera/Pause[/Keyboard/tab]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 672acb42-0d1f-49e2-bcd2-1db0db6dcf4e
+    m_ActionName: 'FirstPersonCamera/Exit[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: ThirdPersonPlayer
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!1 &1813028226
@@ -32566,6 +32590,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5838343785673483433, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 0f27a819cedfa0d4c94d169ba3b91578, type: 2}
     - target: {fileID: 7443614042598486819, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: m_IsActive
       value: 0

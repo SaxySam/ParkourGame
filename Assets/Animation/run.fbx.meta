@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 72ea68086eeeeaa408067ea72269c573
+guid: 2263907d8a40ab041ba38749eae1f4a5
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -17,9 +17,16 @@ ModelImporter:
     removeConstantScaleCurves: 0
     motionNodeName: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
+      might lower retargeting quality:\n\t'Character_rig:mixamorig:LeftLeg' has scale
+      animation that will be discarded.\n\t'Character_rig:mixamorig:LeftFoot' has
+      scale animation that will be discarded.\n\t'Character_rig:mixamorig:LeftToeBase'
+      has scale animation that will be discarded.\n\t'Character_rig:mixamorig:RightLeg'
+      has scale animation that will be discarded.\n\t'Character_rig:mixamorig:RightFoot'
+      has scale animation that will be discarded.\n\t'Character_rig:mixamorig:RightToeBase'
+      has scale animation that will be discarded.\n"
     animationRetargetingWarnings: 
-    animationDoRetargetingWarnings: 0
+    animationDoRetargetingWarnings: 1
     importAnimatedCustomProperties: 0
     importConstraints: 0
     animationCompression: 3
