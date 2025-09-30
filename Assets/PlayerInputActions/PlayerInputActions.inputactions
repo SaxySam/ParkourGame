@@ -924,7 +924,7 @@
                     "id": "94ea19a9-60e3-4c7f-b437-5eb78f8ebbc8",
                     "path": "<Pointer>/delta",
                     "interactions": "",
-                    "processors": "ScaleVector2(x=6,y=4)",
+                    "processors": "ScaleVector2(x=2)",
                     "groups": ";Keyboard&Mouse;Touch",
                     "action": "Look",
                     "isComposite": false,

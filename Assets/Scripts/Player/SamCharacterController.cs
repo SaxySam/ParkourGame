@@ -44,15 +44,17 @@ namespace SDK
         public InputAction moveAction;
         public InputAction jumpAction;
         public InputAction crouchAction;
+        public InputAction pauseAction;
         public InputAction lockMouseAction;
         public InputAction exitMouseAction;
 
-        private FPlayerInputs(InputAction lookAction, InputAction moveAction, InputAction jumpAction, InputAction crouchAction, InputAction lockMouseAction, InputAction exitMouseAction)
+        private FPlayerInputs(InputAction lookAction, InputAction moveAction, InputAction jumpAction, InputAction crouchAction, InputAction pauseAction, InputAction lockMouseAction, InputAction exitMouseAction)
         {
             this.lookAction = lookAction;
             this.moveAction = moveAction;
             this.jumpAction = jumpAction;
             this.crouchAction = crouchAction;
+            this.pauseAction = pauseAction;
             this.lockMouseAction = lockMouseAction;
             this.exitMouseAction = exitMouseAction;
         }
@@ -145,7 +147,7 @@ namespace SDK
 
         private void OnEnable()
         {
-            playerInputComponent.SwitchCurrentActionMap("Player");
+            playerInputComponent.SwitchCurrentActionMap("ThirdPersonPlayer");
 
             playerInputs.lookAction = playerInputComponent.actions["Look"];
             playerInputs.lookAction.performed += Look;
@@ -162,12 +164,16 @@ namespace SDK
             playerInputs.crouchAction.performed += Crouch;
             playerInputs.crouchAction.canceled += Crouch;
 
+            playerInputs.pauseAction = playerInputComponent.actions["Pause"];
+            playerInputs.pauseAction.performed += Pause;
+
             playerInputs.lockMouseAction = playerInputComponent.actions["LeftClick"];
             playerInputs.lockMouseAction.performed += LockMouse;
 
             playerInputs.exitMouseAction = playerInputComponent.actions["Exit"];
             playerInputs.exitMouseAction.performed += Exit;
         }
+
 
         private void OnDisable()
         {
@@ -770,6 +776,11 @@ namespace SDK
         public void OnDiscreteCollisionDetected(Collider hitCollider)
         {
             // This is called by the motor when it is detecting a collision that did not result from a "movement hit".
+        }
+
+        private void Pause(InputAction.CallbackContext context)
+        {
+            GameManager.phoneOpenEvent?.Invoke();
         }
     }
 }

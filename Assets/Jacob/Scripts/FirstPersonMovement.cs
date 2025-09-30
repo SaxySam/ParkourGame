@@ -3,6 +3,7 @@ using KinematicCharacterController;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Phone;
 
 namespace PhotoCamera
 {
@@ -25,15 +26,13 @@ namespace PhotoCamera
         public InputAction moveAction;
         public InputAction TakePhotoAction;
         public InputAction PauseAction;
-        public InputAction exitMouseAction;
 
-        private FPlayerInputs(InputAction lookAction, InputAction moveAction, InputAction TakePhotoAction, InputAction PauseAction, InputAction exitMouseAction)
+        private FPlayerInputs(InputAction lookAction, InputAction moveAction, InputAction TakePhotoAction, InputAction PauseAction)
         {
             this.lookAction = lookAction;
             this.moveAction = moveAction;
             this.TakePhotoAction = TakePhotoAction;
             this.PauseAction = PauseAction;
-            this.exitMouseAction = exitMouseAction;
         }
     }
 
@@ -74,6 +73,7 @@ namespace PhotoCamera
         private Vector3 _lookInputVector;
         private Vector3 _moveInputVector;
         private float _linearSpeed;
+        private PhotoCamera photoCamera;
 
         private void Awake()
         {
@@ -90,7 +90,7 @@ namespace PhotoCamera
             playerInputComponent.SwitchCurrentActionMap("FirstPersonCamera");
 
             // playerInputs.lookAction = playerInputComponent.actions["Look"];
-            playerInputs.lookAction = playerInputComponent.actions.actionMaps["FirstPersonMovement"].
+            playerInputs.lookAction = playerInputComponent.actions["Look"];
             playerInputs.lookAction.performed += Look;
 
             playerInputs.moveAction = playerInputComponent.actions["Move"];
@@ -102,9 +102,6 @@ namespace PhotoCamera
 
             playerInputs.PauseAction = playerInputComponent.actions["Pause"];
             playerInputs.PauseAction.performed += Pause;
-
-            playerInputs.exitMouseAction = playerInputComponent.actions["Exit"];
-            playerInputs.exitMouseAction.performed += Exit;
         }
 
         private void OnDisable()
@@ -118,8 +115,6 @@ namespace PhotoCamera
             playerInputs.TakePhotoAction.performed -= TakePhoto;
 
             playerInputs.PauseAction.performed -= Pause;
-
-            playerInputs.exitMouseAction.performed -= Exit;
         }
 
         /// <summary>
@@ -129,6 +124,7 @@ namespace PhotoCamera
         {
             // Assign to motor
             kinematicMotor.CharacterController = this;
+            photoCamera = FindFirstObjectByType<PhotoCamera>();
         }
 
         private void Look(InputAction.CallbackContext context)
@@ -152,12 +148,16 @@ namespace PhotoCamera
             moveInputVector = Vector3.ClampMagnitude(new Vector3(playerInputs.moveAction.ReadValue<Vector2>().x, 0f, playerInputs.moveAction.ReadValue<Vector2>().y), 1f);
         }
 
-        private void LockMouse(InputAction.CallbackContext context)
+        private void TakePhoto(InputAction.CallbackContext context)
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            Debug.Log("Take Photo");
+            if (photoCamera != null)
+            {
+                photoCamera.TakePhoto();
+            }
         }
 
-        private void Exit(InputAction.CallbackContext context)
+        private void Pause(InputAction.CallbackContext context)
         {
             Cursor.lockState = CursorLockMode.None;
         }

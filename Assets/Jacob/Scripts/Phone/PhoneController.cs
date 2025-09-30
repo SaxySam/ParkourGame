@@ -3,56 +3,73 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System;
+using Unity.Services.Lobbies.Models;
+using PhotoCamera;
+using SDK;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 namespace Phone
 {
     public class PhoneController : MonoBehaviour
     {
-        public InputActionReference pauseButton;
-        public InputActionReference escapeAction;
-
         public GameObject phonePanel;
         public GameObject galleryPanel;
-        public GameObject photoCamera;
         public GameObject EnlargedPhoto;
 
         public CinemachineCamera firstPersonCamera;
+        private PlayerInput playerInputComponent;
+        private FirstPersonMovement firstPersonMovement;
+        private SamCharacterController samCharacterController;
 
+        void OnEnable()
+        {
+            playerInputComponent = FindFirstObjectByType<PlayerInput>();
+            GameManager.phoneOpenEvent += OpenPhone;
+            GameManager.galleryButtonPressedEvent += EnlargePhoto;
+            playerInputComponent.actions["Exit"].performed += ExitPhone;
+        }
+
+        void OnDisable()
+        {
+            GameManager.phoneOpenEvent -= OpenPhone;
+            GameManager.galleryButtonPressedEvent -= EnlargePhoto;
+        }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            GameManager.galleryButtonPressedEvent += EnlargePhoto;
+            firstPersonMovement = FindFirstObjectByType<FirstPersonMovement>();
+            samCharacterController = FindFirstObjectByType<SamCharacterController>();
+
+            firstPersonMovement.enabled = false;
             phonePanel.SetActive(false);
             galleryPanel.SetActive(false);
-            photoCamera.SetActive(false);
             EnlargedPhoto.SetActive(false);
         }
-
 
         // Update is called once per frame
         void Update()
         {
-            if (pauseButton.action.triggered)
-            {
-                OpenPhone();
-            }
 
-            if (escapeAction.action.IsPressed())
+        }
+
+        public void ExitPhone(InputAction.CallbackContext context)
+        {
+            if (galleryPanel.activeSelf)
             {
-                photoCamera.SetActive(false);
-                if (galleryPanel.activeSelf)
-                {
-                    GameManager.galleryCloseEvent();
-                    galleryPanel.SetActive(false);
-                }
-                EnlargedPhoto.SetActive(false);
-                firstPersonCamera.Priority = 0;
+                GameManager.galleryCloseEvent();
+                galleryPanel.SetActive(false);
             }
+            EnlargedPhoto.SetActive(false);
+            firstPersonCamera.Priority = 0;
+            firstPersonMovement.enabled = false;
+            samCharacterController.enabled = true;
         }
 
         public void OpenPhone()
         {
+            firstPersonMovement.enabled = true;
+            samCharacterController.enabled = false;
             phonePanel.SetActive(!phonePanel.activeSelf);
             Cursor.lockState = CursorLockMode.None;
         }
@@ -60,7 +77,6 @@ namespace Phone
         public void OpenCamera()
         {
             phonePanel.SetActive(false);
-            photoCamera.SetActive(true);
             firstPersonCamera.Priority = 2;
         }
 
