@@ -19744,42 +19744,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 277347096623532543, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: StepHandling
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 277347096623532543, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: CapsuleHeight
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 277347096623532543, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: CapsuleRadius
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 277347096623532543, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: MaxStepHeight
-      value: 0.375
-      objectReference: {fileID: 0}
-    - target: {fileID: 277347096623532543, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: CapsuleYOffset
-      value: 1.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 277347096623532543, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: MinRequiredStepDepth
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 277347096623532543, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: MaxVelocityForLedgeSnap
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 277347096623532543, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: MaxStableDenivelationAngle
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 277347096623532543, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: AllowSteppingWithoutStableGrounding
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 606752517965790641, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: m_Name
       value: PlayerCharacter
@@ -19861,16 +19825,20 @@ PrefabInstance:
       value: 0.000000001898278
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: playerAnimator
-      value: 
-      objectReference: {fileID: 1813232167}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: accelerationTime
       value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: maxHightFromLedge
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: jumpScalableUpSpeed
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: maxDistanceFromLedge
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: stableMovementSharpness
@@ -19883,6 +19851,10 @@ PrefabInstance:
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: jumpScalableForwardSpeed
       value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: minPlayerVelocityToVault
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: 'ignoredColliders.Array.data[0]'
