@@ -104,6 +104,9 @@ namespace SDK
         public EBonusOrientationMethod bonusOrientationMethod = EBonusOrientationMethod.TowardsGravity;
         public float bonusOrientationSharpness = 10;
 
+        [Header("Aniamtion")]
+        public Animator playerAnimator;
+
         [Header("Misc")]
         public Transform meshRoot;
         public Transform cameraFollowPoint;
@@ -145,7 +148,7 @@ namespace SDK
 
         private void OnEnable()
         {
-            playerInputComponent.SwitchCurrentActionMap("Player");
+            playerInputComponent.SwitchCurrentActionMap("ThirdPersonPlayer");
 
             playerInputs.lookAction = playerInputComponent.actions["Look"];
             playerInputs.lookAction.performed += Look;
@@ -260,6 +263,9 @@ namespace SDK
         {
             // Clamp input
             moveInputVector = Vector3.ClampMagnitude(new Vector3(playerInputs.moveAction.ReadValue<Vector2>().x, 0f, playerInputs.moveAction.ReadValue<Vector2>().y), 1f);
+            playerAnimator.SetFloat("PlayerSpeedX", moveInputVector.x);
+            playerAnimator.SetFloat("PlayerSpeedZ", moveInputVector.z);
+            playerAnimator.SetFloat("PlayerVelocity", moveInputVector.magnitude);
         }
 
         private void Jump(InputAction.CallbackContext context)
@@ -432,7 +438,7 @@ namespace SDK
                     }
             }
         }
-        
+
         /// <summary>
         /// (Called by KinematicCharacterMotor during its update cycle)
         /// This is where you tell your character what its velocity should be right now.
@@ -499,7 +505,7 @@ namespace SDK
                         switch (jumpType)
                         {
                             case EJumpType.Impulse:
-                            
+
                                 _jumpUpSpeed = maxJumpScalableUpSpeed;
                                 _jumpedThisFrame = false;
                                 _timeSinceJumpRequested += deltaTime;
@@ -546,6 +552,7 @@ namespace SDK
                                         _jumpRequested = false;
                                         _jumpConsumed = true;
                                         _jumpedThisFrame = true;
+                                        playerAnimator.SetTrigger("Jump");
                                     }
 
                                     // Reset wall jump
@@ -558,10 +565,9 @@ namespace SDK
                                     currentVelocity += _internalVelocityAdd;
                                     _internalVelocityAdd = Vector3.zero;
                                 }
-                            break;
+                                break;
 
                             case EJumpType.VariableHold:
-                            
 
                                 _jumpedThisFrame = false;
                                 _timeSinceJumpRequested += deltaTime;
@@ -571,7 +577,7 @@ namespace SDK
                                     {
                                         //jump 
                                         _jumpDirection = kinematicMotor.CharacterUp;
-                                            
+
                                         // Makes the character skip ground probing/snapping on its next update.
                                         // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
                                         kinematicMotor.ForceUnground(0.1f);
@@ -579,15 +585,17 @@ namespace SDK
                                         _jumpRequested = false;
                                         _jumpConsumed = true;
                                         _jumpedThisFrame = true;
+                                        playerAnimator.SetTrigger("Jump");
                                     }
                                 }
-                                
+
                                 if (_jumpButtonHeld && _jumpConsumed)
                                 {
                                     _holdDuration = Mathf.Clamp(_holdDuration + Time.fixedDeltaTime, 0, timeForMaxHeightJump);
 
                                     if (_holdDuration == timeForMaxHeightJump)
                                     {
+                                    
                                         _jumpUpSpeed = 0;
                                         _jumpForwardSpeed = 0;
                                         _jumpButtonHeld = false;
@@ -608,13 +616,14 @@ namespace SDK
                                     }
 
                                 }
-                            break;
-                            
+                                break;
+
                         }
                         break;
                     }
             }
             _linearSpeed = currentVelocity.magnitude;
+            // playerAnimator.SetFloat("PlayerVelocity", _linearSpeed);
         }
 
         /// <summary>
@@ -736,6 +745,7 @@ namespace SDK
         protected void OnLanded()
         {
             Debug.Log("<b><color=cyan>Landed</b>");
+            playerAnimator.SetTrigger("Land");
         }
 
         protected void OnLeaveStableGround()

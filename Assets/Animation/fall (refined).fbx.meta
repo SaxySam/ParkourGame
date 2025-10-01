@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5163ea478b13eb342ba7e8b50be1a5e5
+guid: 25ceb6e61312c90439938b0a30c62d10
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -17,7 +17,15 @@ ModelImporter:
     removeConstantScaleCurves: 0
     motionNodeName: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'fall' has import animation warnings that might
+      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
+      retargeting quality.\n\t'Character_rig:mixamorig:LeftLeg' has scale animation
+      that will be discarded.\n\t'Character_rig:mixamorig:LeftFoot' has translation
+      animation that will be discarded.\n\t'Character_rig:mixamorig:LeftFoot' has
+      scale animation that will be discarded.\n\t'Character_rig:mixamorig:LeftToeBase'
+      has translation animation that will be discarded.\n\t'Character_rig:mixamorig:LeftToeBase'
+      has scale animation that will be discarded.\n\t'Character_rig:mixamorig:RightLeg'
+      has translation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -898,11 +906,11 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 5163ea478b13eb342ba7e8b50be1a5e5, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 2
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
