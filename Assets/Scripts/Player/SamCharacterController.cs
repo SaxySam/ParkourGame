@@ -626,20 +626,9 @@ namespace SDK
                                 {
                                     if (!_jumpConsumed)
                                     {
-                                        //jump 
-                                        _jumpDirection = kinematicMotor.CharacterUp;
-
-                                        // Makes the character skip ground probing/snapping on its next update.
-                                        // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
-                                        kinematicMotor.ForceUnground(0.1f);
-
-                                        _jumpRequested = false;
-                                        _jumpConsumed = true;
-                                        _jumpedThisFrame = true;
-                                        playerAnimator.SetTrigger("Jump");
                                         if (_vaultRequested)
                                         {
-                                            
+
                                             _jumpDirection = Vector3.Slerp(kinematicMotor.CharacterUp, kinematicMotor.CharacterForward, Mathf.InverseLerp(0, 90, vaultUpAngle));
                                             Debug.DrawRay(transform.position, _jumpDirection, Color.red, 60f);
 
@@ -651,6 +640,8 @@ namespace SDK
                                             _vaultRequested = false;
                                             _jumpConsumed = true;
                                             _jumpedThisFrame = true;
+                                            playerAnimator.SetTrigger("Jump"); // to do change to valut trigger 
+
                                         }
                                         else if (kinematicMotor.GroundingStatus.IsStableOnGround || _timeSinceLastAbleToJump <= jumpPostGroundingGraceTime)
                                         {
@@ -664,6 +655,7 @@ namespace SDK
                                             _jumpRequested = false;
                                             _jumpConsumed = true;
                                             _jumpedThisFrame = true;
+                                            playerAnimator.SetTrigger("Jump");
                                         }
                                     }
                                 }
