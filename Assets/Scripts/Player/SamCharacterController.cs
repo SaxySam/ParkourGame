@@ -110,7 +110,7 @@ namespace SDK
         private bool _vaultRequested = false;
 
         //physics 
-
+        public float vaultUpAngle = 15f;
 
         [Header("Air Movement")]
         public float maxAirMoveSpeed = 10f;
@@ -620,30 +620,31 @@ namespace SDK
                                     {
                                         if (_vaultRequested)
                                         {
-                                                //jump to do 
-                                                _jumpDirection = kinematicMotor.GroundingStatus.GroundNormal;
+                                            
+                                            _jumpDirection = Vector3.Slerp(kinematicMotor.CharacterUp, kinematicMotor.CharacterForward, Mathf.InverseLerp(0, 90, vaultUpAngle));
+                                            Debug.DrawRay(transform.position, _jumpDirection, Color.red, 60f);
 
-                                                // Makes the character skip ground probing/snapping on its next update.
-                                                // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
-                                                kinematicMotor.ForceUnground(0.1f);
+                                            // Makes the character skip ground probing/snapping on its next update.
+                                            // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
+                                            kinematicMotor.ForceUnground(0.1f);
 
-                                                _jumpRequested = false;
-                                                _vaultRequested = false;
-                                                _jumpConsumed = true;
-                                                _jumpedThisFrame = true;
+                                            _jumpRequested = false;
+                                            _vaultRequested = false;
+                                            _jumpConsumed = true;
+                                            _jumpedThisFrame = true;
                                         }
                                         else if (kinematicMotor.GroundingStatus.IsStableOnGround || _timeSinceLastAbleToJump <= jumpPostGroundingGraceTime)
                                         {
-                                                //jump 
-                                                _jumpDirection = kinematicMotor.GroundingStatus.GroundNormal;
+                                            //jump 
+                                            _jumpDirection = Vector3.up;
 
-                                                // Makes the character skip ground probing/snapping on its next update.
-                                                // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
-                                                kinematicMotor.ForceUnground(0.1f);
+                                            // Makes the character skip ground probing/snapping on its next update.
+                                            // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
+                                            kinematicMotor.ForceUnground(0.1f);
 
-                                                _jumpRequested = false;
-                                                _jumpConsumed = true;
-                                                _jumpedThisFrame = true;
+                                            _jumpRequested = false;
+                                            _jumpConsumed = true;
+                                            _jumpedThisFrame = true;
                                         }
                                     }
                                 }
