@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using KinematicCharacterController;
 using Unity.Cinemachine;
 using Unity.Mathematics;
@@ -8,6 +9,9 @@ using Unity.VisualScripting;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
+using Vector2 = UnityEngine.Vector2;
 
 
 namespace SDK
@@ -93,6 +97,20 @@ namespace SDK
         public float jumpPostGroundingGraceTime = 0f;
         public EJumpType jumpType = EJumpType.Impulse;
         public float timeForMaxHeightJump = 0.5f;
+
+        [Header("Vaulting")]
+
+        //conditionals
+        public bool enableVaulting = true;
+        public float maxHightFromLedge = 20.0f;
+        public float maxDistanceFromLedge = 5.0f;
+        public float minPlayerVelocityToVault = 1.0f;
+        public float minLedgeHight = 5.0f;
+
+        private bool _vaultRequested = false;
+
+        //physics 
+        public float vaultUpAngle = 15f;
 
         [Header("Air Movement")]
         public float maxAirMoveSpeed = 10f;
@@ -274,12 +292,44 @@ namespace SDK
             {
                 case ECharacterState.ParkourMode:
                     {
+                        CheckValuable();
                         _timeSinceJumpRequested = 0f;
                         _jumpRequested = true;
                         _jumpButtonHeld = true;
                         _jumpConsumed = false;
                         break;
                     }
+            }
+        }
+
+        private void CheckValuable()
+        {
+            if (!enableVaulting)
+            {
+                return;
+            }
+
+            if (!kinematicMotor.GroundingStatus.IsStableOnGround)
+            {
+                Debug.Log($"not on stable ground");
+                //send ray cast down
+                RaycastHit hit;
+                Debug.DrawLine(transform.position, transform.position + (Vector3.down * maxHightFromLedge), Color.blue, 6f);
+                if (Physics.Raycast(transform.position, Vector3.down, out hit, maxDistanceFromLedge))
+                {
+                    Debug.Log($"right dist from ground");
+                    Vector3 serfagePoint = hit.point + (Vector3.up * 0.01f);
+                    Vector3 ledgeCheckPoint = serfagePoint + (kinematicMotor.CharacterForward * maxDistanceFromLedge);
+                    Debug.DrawLine(serfagePoint, ledgeCheckPoint, Color.red, 6f);
+                    Debug.DrawLine(ledgeCheckPoint, ledgeCheckPoint + (Vector3.down * minLedgeHight), Color.white, 6f);
+                    if (!Physics.Raycast(ledgeCheckPoint, Vector3.down, minLedgeHight))
+                    {
+                        //ledge is valuable do vault
+                        Debug.Log($"leage ligit");
+                        _vaultRequested = true;
+
+                    }
+                }
             }
         }
 
@@ -531,7 +581,7 @@ namespace SDK
                                         || (!_jumpConsumed && ((allowJumpingWhenSliding ? kinematicMotor.GroundingStatus.FoundAnyGround : kinematicMotor.GroundingStatus.IsStableOnGround) || _timeSinceLastAbleToJump <= jumpPostGroundingGraceTime)))
                                     {
                                         // Calculate jump direction before ungrounding
-                                        Vector3 jumpDirection = kinematicMotor.CharacterUp;
+                                        Vector3 jumpDirection = kinematicMotor.GroundingStatus.GroundNormal;
                                         if (_canWallJump)
                                         {
                                             jumpDirection = _wallJumpNormal;
@@ -569,23 +619,44 @@ namespace SDK
 
                             case EJumpType.VariableHold:
 
+                            
                                 _jumpedThisFrame = false;
                                 _timeSinceJumpRequested += deltaTime;
                                 if (_jumpRequested)
                                 {
-                                    if (!_jumpConsumed && (kinematicMotor.GroundingStatus.IsStableOnGround || _timeSinceLastAbleToJump <= jumpPostGroundingGraceTime))
+                                    if (!_jumpConsumed)
                                     {
-                                        //jump 
-                                        _jumpDirection = kinematicMotor.CharacterUp;
+                                        if (_vaultRequested)
+                                        {
 
-                                        // Makes the character skip ground probing/snapping on its next update.
-                                        // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
-                                        kinematicMotor.ForceUnground(0.1f);
+                                            _jumpDirection = Vector3.Slerp(kinematicMotor.CharacterUp, kinematicMotor.CharacterForward, Mathf.InverseLerp(0, 90, vaultUpAngle));
+                                            Debug.DrawRay(transform.position, _jumpDirection, Color.red, 60f);
 
-                                        _jumpRequested = false;
-                                        _jumpConsumed = true;
-                                        _jumpedThisFrame = true;
-                                        playerAnimator.SetTrigger("Jump");
+                                            // Makes the character skip ground probing/snapping on its next update.
+                                            // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
+                                            kinematicMotor.ForceUnground(0.1f);
+
+                                            _jumpRequested = false;
+                                            _vaultRequested = false;
+                                            _jumpConsumed = true;
+                                            _jumpedThisFrame = true;
+                                            playerAnimator.SetTrigger("Jump"); // to do change to valut trigger 
+
+                                        }
+                                        else if (kinematicMotor.GroundingStatus.IsStableOnGround || _timeSinceLastAbleToJump <= jumpPostGroundingGraceTime)
+                                        {
+                                            //jump 
+                                            _jumpDirection = Vector3.up;
+
+                                            // Makes the character skip ground probing/snapping on its next update.
+                                            // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
+                                            kinematicMotor.ForceUnground(0.1f);
+
+                                            _jumpRequested = false;
+                                            _jumpConsumed = true;
+                                            _jumpedThisFrame = true;
+                                            playerAnimator.SetTrigger("Jump");
+                                        }
                                     }
                                 }
 
