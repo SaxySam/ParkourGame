@@ -337,6 +337,7 @@ namespace SDK
         {
             _jumpButtonHeld = false;
             _holdDuration = 0;
+            playerAnimator.SetTrigger("Fall");
         }
 
 
