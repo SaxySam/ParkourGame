@@ -366,8 +366,6 @@ namespace SDK
             }
         }
 
-
-
         private void Crouch(InputAction.CallbackContext context)
         {
             switch (CurrentCharacterState)
