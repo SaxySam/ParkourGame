@@ -321,7 +321,7 @@ namespace SDK
         private void JumpCancelled(InputAction.CallbackContext context)
         {
             _jumpButtonHeld = false;
-            _holdDuration = 0;
+            _holdDurationJump = 0;
             playerAnimator.SetTrigger("Fall");
         }
 
