@@ -340,7 +340,7 @@ namespace SDK
             _jumpButtonHeld = false;
             _holdDurationJump = 0;
             playerAnimator.SetBool("Jumping", false);
-            playerAnimator.SetTrigger("Fall");
+            playerAnimator.SetBool("Falling", true);
         }
 
         private void Crouch(InputAction.CallbackContext context)
@@ -721,6 +721,7 @@ namespace SDK
                                         _jumpForwardSpeed = 0;
                                         _jumpButtonHeld = false;
                                         playerAnimator.SetBool("Jumping", false);
+                                        playerAnimator.SetBool("Falling", true);
                                     }
 
                                     _jumpUpSpeed = Mathf.Lerp(maxJumpScalableUpSpeed * jumpScaleMultiplier, minJumpScalableUpSpeed * jumpScaleMultiplier, 1 - Mathf.InverseLerp(0, timeForMaxHeightJump, _holdDurationJump));
@@ -935,6 +936,7 @@ namespace SDK
         protected void OnLanded()
         {
             Debug.Log("<b><color=cyan>Landed</b>");
+            playerAnimator.SetBool("Falling", false);
             playerAnimator.SetTrigger("Land");
         }
 
