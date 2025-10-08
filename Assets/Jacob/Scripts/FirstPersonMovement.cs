@@ -74,6 +74,7 @@ namespace PhotoCamera
         private Vector3 _moveInputVector;
         private float _linearSpeed;
         private PhotoCamera photoCamera;
+        private bool _isPaused;
 
         private void Awake()
         {
@@ -83,10 +84,13 @@ namespace PhotoCamera
                 Debug.Log("did not get Player input componit ");
             }
             Cursor.lockState = CursorLockMode.Locked;
+            _isPaused = false;
         }
 
         private void OnEnable()
         {
+            kinematicMotor.CharacterController = this;
+
             playerInputComponent.SwitchCurrentActionMap("FirstPersonCamera");
 
             // playerInputs.lookAction = playerInputComponent.actions["Look"];
@@ -123,7 +127,6 @@ namespace PhotoCamera
         private void Start()
         {
             // Assign to motor
-            kinematicMotor.CharacterController = this;
             photoCamera = FindFirstObjectByType<PhotoCamera>();
         }
 
@@ -160,6 +163,9 @@ namespace PhotoCamera
         private void Pause(InputAction.CallbackContext context)
         {
             Cursor.lockState = CursorLockMode.None;
+            // _isPaused = !_isPaused;
+
+            GameManager.phoneOpenEvent?.Invoke();
         }
 
         public void BeforeCharacterUpdate(float deltaTime)

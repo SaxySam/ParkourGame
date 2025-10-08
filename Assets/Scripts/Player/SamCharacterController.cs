@@ -147,6 +147,8 @@ namespace SDK
 
         private void OnEnable()
         {
+            kinematicMotor.CharacterController = this;
+
             playerInputComponent.SwitchCurrentActionMap("ThirdPersonPlayer");
 
             playerInputs.lookAction = playerInputComponent.actions["Look"];
@@ -177,6 +179,7 @@ namespace SDK
 
         private void OnDisable()
         {
+
 
             playerInputs.lookAction.performed -= Look;
 
@@ -265,7 +268,7 @@ namespace SDK
         private void Move(InputAction.CallbackContext context)
         {
             // Clamp input
-            moveInputVector = Vector3.ClampMagnitude(new Vector3(playerInputs.moveAction.ReadValue<Vector2>().x, 0f, playerInputs.moveAction.ReadValue<Vector2>().y), 1f);
+            moveInputVector = Vector3.ClampMagnitude(new Vector3(context.ReadValue<Vector2>().x, 0f, context.ReadValue<Vector2>().y), 1f);
         }
 
         private void Jump(InputAction.CallbackContext context)
@@ -316,6 +319,11 @@ namespace SDK
                         break;
                     }
             }
+        }
+
+        private void Pause(InputAction.CallbackContext context)
+        {
+            GameManager.phoneOpenEvent?.Invoke();
         }
 
         private void LockMouse(InputAction.CallbackContext context)
@@ -776,11 +784,6 @@ namespace SDK
         public void OnDiscreteCollisionDetected(Collider hitCollider)
         {
             // This is called by the motor when it is detecting a collision that did not result from a "movement hit".
-        }
-
-        private void Pause(InputAction.CallbackContext context)
-        {
-            GameManager.phoneOpenEvent?.Invoke();
         }
     }
 }
