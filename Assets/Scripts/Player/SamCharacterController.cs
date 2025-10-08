@@ -1,3 +1,5 @@
+// https://docs.unity3d.com/ScriptReference/AddComponentMenu.html
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -49,20 +51,23 @@ namespace SDK
         public InputAction moveAction;
         public InputAction jumpAction;
         public InputAction crouchAction;
+        public InputAction pauseAction;
         public InputAction lockMouseAction;
         public InputAction exitMouseAction;
 
-        private FPlayerInputs(InputAction lookAction, InputAction moveAction, InputAction jumpAction, InputAction crouchAction, InputAction lockMouseAction, InputAction exitMouseAction)
+        private FPlayerInputs(InputAction lookAction, InputAction moveAction, InputAction jumpAction, InputAction crouchAction, InputAction pauseAction, InputAction lockMouseAction, InputAction exitMouseAction)
         {
             this.lookAction = lookAction;
             this.moveAction = moveAction;
             this.jumpAction = jumpAction;
             this.crouchAction = crouchAction;
+            this.pauseAction = pauseAction;
             this.lockMouseAction = lockMouseAction;
             this.exitMouseAction = exitMouseAction;
         }
     }
 
+    [AddComponentMenu("Parkour/Parkour Character Controller")]
     public class SamCharacterController : MonoBehaviour, ICharacterController
     {
         [SerializeField] private KinematicCharacterMotor kinematicMotor;
@@ -72,11 +77,14 @@ namespace SDK
 
         private PlayerInput playerInputComponent;
 
+
         [Header("Stable Movement")]
         public float maxStableMoveSpeed = 10f;
         public float readjustmentSpeed = 0.1f;
         public float accelerationRate = 5f;
         public float groundMovementFriction = 15;
+
+        [EnumButtons]
         public EOrientationMethod orientationMethod = EOrientationMethod.TowardsMovement;
         public float TowardsCameraOrientationSharpness = 50;
         public float TowardsMovementOrientationSharpness = 10;
@@ -116,17 +124,19 @@ namespace SDK
         private bool _launchRequested = false;
         private bool _lauchActivated = false;
         private bool _launchButtonHeld = true;
-        private bool  _launchConsumed = false;
+        private bool _launchConsumed = false;
         private float _launchUpSpeed;
         private float _launchForwardSpeed;
         private float _holdDurationLaunch = 0;
         private Vector3 _LaunchDirection = Vector3.zero;
-        
-        
+
+
 
         [Header("Sliding")]
+        [Tooltip("This is a slide")]
         public float slideSpeed;
-  
+        public bool _isSliding;
+
 
         [Header("Air Movement")]
         public float maxAirMoveSpeed = 10f;
@@ -153,7 +163,7 @@ namespace SDK
         private Vector3 _lookInputVector;
         private Vector3 _multipliedMoveInputVector;
         private float _linearSpeed;
-        
+
         private float _holdDurationJump = 0f;
         private bool _jumpButtonHeld;
         private float _jumpUpSpeed;
@@ -183,6 +193,8 @@ namespace SDK
 
         private void OnEnable()
         {
+            kinematicMotor.CharacterController = this;
+
             playerInputComponent.SwitchCurrentActionMap("ThirdPersonPlayer");
 
             playerInputs.lookAction = playerInputComponent.actions["Look"];
@@ -200,6 +212,9 @@ namespace SDK
             playerInputs.crouchAction.performed += Crouch;
             playerInputs.crouchAction.canceled += Crouch;
 
+            playerInputs.pauseAction = playerInputComponent.actions["Pause"];
+            playerInputs.pauseAction.performed += Pause;
+
             playerInputs.lockMouseAction = playerInputComponent.actions["LeftClick"];
             playerInputs.lockMouseAction.performed += LockMouse;
 
@@ -207,8 +222,10 @@ namespace SDK
             playerInputs.exitMouseAction.performed += Exit;
         }
 
+
         private void OnDisable()
         {
+
 
             playerInputs.lookAction.performed -= Look;
 
@@ -224,7 +241,7 @@ namespace SDK
 
             playerInputs.exitMouseAction.performed -= Exit;
         }
-        
+
         /// <summary>
         /// Start is called once before the first execution of Update after the MonoBehaviour is created
         /// </summary>
@@ -233,7 +250,7 @@ namespace SDK
             // Assign to motor
             kinematicMotor.CharacterController = this;
         }
-        
+
         /// <summary>
         /// Handles movement state transitions and enter/exit callbacks
         /// </summary>
@@ -253,9 +270,9 @@ namespace SDK
             switch (state)
             {
                 case ECharacterState.ParkourMode:
-                {
-                    break;
-                }
+                    {
+                        break;
+                    }
             }
         }
 
@@ -267,12 +284,12 @@ namespace SDK
             switch (state)
             {
                 case ECharacterState.ParkourMode:
-                {
-                    break;
-                }
+                    {
+                        break;
+                    }
             }
         }
-        
+
         private void Look(InputAction.CallbackContext context)
         {
             switch (CurrentCharacterState)
@@ -297,10 +314,10 @@ namespace SDK
         private void Move(InputAction.CallbackContext context)
         {
             // Clamp input
-            moveInputVector = Vector3.ClampMagnitude(new Vector3(playerInputs.moveAction.ReadValue<Vector2>().x, 0f, playerInputs.moveAction.ReadValue<Vector2>().y), 1f);
+            moveInputVector = Vector3.ClampMagnitude(new Vector3(context.ReadValue<Vector2>().x, 0f, context.ReadValue<Vector2>().y), 1f);
             playerAnimator.SetFloat("PlayerSpeedX", moveInputVector.x);
             playerAnimator.SetFloat("PlayerSpeedZ", moveInputVector.z);
-            playerAnimator.SetFloat("PlayerVelocity", moveInputVector.magnitude);
+            playerAnimator.SetFloat("PlayerInputVelocity", moveInputVector.magnitude);
         }
 
         private void Jump(InputAction.CallbackContext context)
@@ -332,7 +349,7 @@ namespace SDK
             {
                 case ECharacterState.ParkourMode:
                     {
-                        
+
                         // Crouching input
                         if (!_shouldBeCrouching)
                         {
@@ -351,6 +368,7 @@ namespace SDK
                                 if (kinematicMotor.Velocity.magnitude >= slideSpeed)
                                 {
                                     Debug.Log("<b><color=yellow>Sufficient Speed to Slide</b>");
+                                    Slide();
                                 }
                             }
                         }
@@ -377,34 +395,41 @@ namespace SDK
             {
                 return;
             }
-            
+
             if (!kinematicMotor.GroundingStatus.IsStableOnGround)
             {
                 return;
             }
-            
+
             if (kinematicMotor.BaseVelocity.magnitude <= minPlayerVelocityToLaunch)
             {
                 return;
             }
-        
+
             //send ray cast down
             RaycastHit hit;
             if (Physics.Raycast(transform.position, Vector3.down, out hit, maxDistanceFromLedge))
             {
-                
                 Vector3 serfagePoint = hit.point + (Vector3.up * 0.01f);
-                Vector3 ledgeCheckPoint = serfagePoint + (kinematicMotor.CharacterForward * maxDistanceFromLedge);
-                Debug.DrawLine(serfagePoint, ledgeCheckPoint, Color.red, 6f);
-                Debug.DrawLine(ledgeCheckPoint, ledgeCheckPoint + (Vector3.down * minLedgeHeight), Color.white, 6f);
-                if (!Physics.Raycast(ledgeCheckPoint, Vector3.down, minLedgeHeight))
+                if (!Physics.Raycast(serfagePoint, kinematicMotor.CharacterForward, maxDistanceFromLedge))
                 {
-                    //Ledge is launchable
-                    Debug.Log($"Launch Allowed");
-                    _launchRequested = true;
-                    _launchConsumed = false;
+                    Vector3 ledgeCheckPoint = serfagePoint + (kinematicMotor.CharacterForward * maxDistanceFromLedge);
+                    Debug.DrawLine(serfagePoint, ledgeCheckPoint, Color.red, 6f);
+                    Debug.DrawLine(ledgeCheckPoint, ledgeCheckPoint + (Vector3.down * minLedgeHeight), Color.white, 6f);
+                    if (!Physics.Raycast(ledgeCheckPoint, Vector3.down, minLedgeHeight))
+                    {
+                        //Ledge is launchable
+                        Debug.Log($"Launch Allowed");
+                        _launchRequested = true;
+                        _launchConsumed = false;
+                    }
                 }
             }
+        }
+
+        private void Pause(InputAction.CallbackContext context)
+        {
+            GameManager.phoneOpenEvent?.Invoke();
         }
 
         private void LockMouse(InputAction.CallbackContext context)
@@ -416,7 +441,7 @@ namespace SDK
         {
             Cursor.lockState = CursorLockMode.None;
         }
-        
+
         public void BeforeCharacterUpdate(float deltaTime)
         {
             // This is called before the motor does anything
@@ -458,33 +483,33 @@ namespace SDK
                         switch (orientationMethod)
                         {
                             case EOrientationMethod.TowardsCamera:
-                            {
-                                _lookInputVector = cameraPlanarDirection;
-
-                                if (_lookInputVector != Vector3.zero && TowardsCameraOrientationSharpness > 0f)
                                 {
-                                    // Smoothly interpolate from current to target look direction
-                                    Vector3 smoothedLookInputDirection = Vector3.Slerp(kinematicMotor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-TowardsCameraOrientationSharpness * deltaTime)).normalized;
+                                    _lookInputVector = cameraPlanarDirection;
 
-                                    // Set the current rotation (which will be used by the KinematicCharacterMotor)
-                                    currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, kinematicMotor.CharacterUp);
+                                    if (_lookInputVector != Vector3.zero && TowardsCameraOrientationSharpness > 0f)
+                                    {
+                                        // Smoothly interpolate from current to target look direction
+                                        Vector3 smoothedLookInputDirection = Vector3.Slerp(kinematicMotor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-TowardsCameraOrientationSharpness * deltaTime)).normalized;
+
+                                        // Set the current rotation (which will be used by the KinematicCharacterMotor)
+                                        currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, kinematicMotor.CharacterUp);
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
                             case EOrientationMethod.TowardsMovement:
-                            {
-                                _lookInputVector = _multipliedMoveInputVector.normalized;
-
-                                if (_lookInputVector != Vector3.zero && TowardsMovementOrientationSharpness > 0f)
                                 {
-                                    // Smoothly interpolate from current to target look direction
-                                    Vector3 smoothedLookInputDirection = Vector3.Slerp(kinematicMotor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-TowardsMovementOrientationSharpness * deltaTime)).normalized;
+                                    _lookInputVector = _multipliedMoveInputVector.normalized;
 
-                                    // Set the current rotation (which will be used by the KinematicCharacterMotor)
-                                    currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, kinematicMotor.CharacterUp);
+                                    if (_lookInputVector != Vector3.zero && TowardsMovementOrientationSharpness > 0f)
+                                    {
+                                        // Smoothly interpolate from current to target look direction
+                                        Vector3 smoothedLookInputDirection = Vector3.Slerp(kinematicMotor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-TowardsMovementOrientationSharpness * deltaTime)).normalized;
+
+                                        // Set the current rotation (which will be used by the KinematicCharacterMotor)
+                                        currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, kinematicMotor.CharacterUp);
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
                         }
 
                         Vector3 currentUp = currentRotation * Vector3.up;
@@ -785,6 +810,12 @@ namespace SDK
             playerAnimator.SetFloat("MotorVelocity", kinematicMotor.Velocity.magnitude);
         }
 
+
+        public void Slide()
+        {
+
+        }
+
         /// <summary>
         /// (Called by KinematicCharacterMotor during its update cycle)
         /// This is called after the character has finished its movement update
@@ -804,7 +835,7 @@ namespace SDK
                             {
                                 _jumpRequested = false;
                             }
-         
+
                             // Handle jumping while sliding
                             if (allowJumpingWhenSliding ? kinematicMotor.GroundingStatus.FoundAnyGround : kinematicMotor.GroundingStatus.IsStableOnGround)
                             {
@@ -851,7 +882,7 @@ namespace SDK
         public bool IsColliderValidForCollisions(Collider coll)
         {
             // This is called after when the motor wants to know if the collider can be collided with (or if we just go through it)
-            
+
             if (ignoredColliders.Count == 0)
             {
                 return true;
@@ -877,17 +908,17 @@ namespace SDK
             switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
-                {
-                    if (allowWallJump && !kinematicMotor.GroundingStatus.IsStableOnGround && !hitStabilityReport.IsStable)
                     {
-                        _canWallJump = true;
-                        _wallJumpNormal = hitNormal;
+                        if (allowWallJump && !kinematicMotor.GroundingStatus.IsStableOnGround && !hitStabilityReport.IsStable)
+                        {
+                            _canWallJump = true;
+                            _wallJumpNormal = hitNormal;
+                        }
+                        break;
                     }
-                    break;
-                }
             }
         }
-        
+
         public void PostGroundingUpdate(float deltaTime)
         {
             // Handle landing and leaving ground
@@ -917,10 +948,10 @@ namespace SDK
             switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
-                {
-                    _internalVelocityAdd += velocity;
-                    break;
-                }
+                    {
+                        _internalVelocityAdd += velocity;
+                        break;
+                    }
             }
         }
 
@@ -930,9 +961,9 @@ namespace SDK
             switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
-                {
-                    break;
-                }
+                    {
+                        break;
+                    }
             }
         }
 

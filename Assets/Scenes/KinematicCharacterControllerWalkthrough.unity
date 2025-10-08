@@ -20149,11 +20149,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 284016030}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!95 &1813232167 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5838343785673483433, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-  m_PrefabInstance: {fileID: 1930657520900112386}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1863105739
 GameObject:
   m_ObjectHideFlags: 0
@@ -25940,69 +25935,13 @@ PrefabInstance:
       value: 0.000000001898278
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: slideSpeed
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: vaultUpAngle
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: minLedgeHight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: playerAnimator
-      value: 
-      objectReference: {fileID: 1813232167}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: accelerationTime
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: maxHightFromLedge
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: jumpScalableUpSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: maxDistanceFromLedge
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: stableMovementSharpness
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: groundedMovementFriction
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: jumpScalableForwardSpeed
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: minPlayerVelocityToVault
-      value: 1
+      propertyPath: orientationMethod
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: 'ignoredColliders.Array.data[0]'
       value: 
       objectReference: {fileID: 638035488}
-    - target: {fileID: 2803274698634754833, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5838343785673483433, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 974a98b1550c08e4b83a95585d7e5fe6, type: 2}
-    - target: {fileID: 7443614042598486819, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

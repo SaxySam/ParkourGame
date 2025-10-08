@@ -2,65 +2,64 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using System;
+using PhotoCamera;
+using SDK;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 namespace Phone
 {
     public class PhoneController : MonoBehaviour
     {
-        public InputActionReference pauseButton;
-        public InputActionReference escapeAction;
-
         public GameObject phonePanel;
         public GameObject galleryPanel;
-        public GameObject photoCamera;
         public GameObject EnlargedPhoto;
 
         public CinemachineCamera firstPersonCamera;
+        private PlayerInput playerInputComponent;
+        private FirstPersonMovement firstPersonMovement;
+        private SamCharacterController samCharacterController;
 
+        void OnEnable()
+        {
+            playerInputComponent = FindFirstObjectByType<PlayerInput>();
+            GameManager.phoneOpenEvent += EnableDisablePhone;
+            GameManager.galleryButtonPressedEvent += EnlargePhoto;
+            playerInputComponent.actions.FindAction("FirstPersonCamera/Exit").performed += ExitPhone;
+        }
+
+        void OnDisable()
+        {
+            GameManager.phoneOpenEvent -= EnableDisablePhone;
+            GameManager.galleryButtonPressedEvent -= EnlargePhoto;
+#if !UNITY_EDITOR
+                playerInputComponent.actions.FindAction("FirstPersonCamera/Exit").performed += ExitPhone;
+#endif
+        }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            GameManager.galleryButtonPressedEvent += EnlargePhoto;
+            firstPersonMovement = FindFirstObjectByType<FirstPersonMovement>();
+            samCharacterController = FindFirstObjectByType<SamCharacterController>();
+
+            firstPersonMovement.enabled = false;
             phonePanel.SetActive(false);
             galleryPanel.SetActive(false);
-            photoCamera.SetActive(false);
             EnlargedPhoto.SetActive(false);
         }
 
 
-        // Update is called once per frame
-        void Update()
-        {
-            if (pauseButton.action.triggered)
-            {
-                OpenPhone();
-            }
-
-            if (escapeAction.action.IsPressed())
-            {
-                photoCamera.SetActive(false);
-                if (galleryPanel.activeSelf)
-                {
-                    GameManager.galleryCloseEvent();
-                    galleryPanel.SetActive(false);
-                }
-                EnlargedPhoto.SetActive(false);
-                firstPersonCamera.Priority = 0;
-            }
-        }
-
         public void OpenPhone()
         {
-            phonePanel.SetActive(!phonePanel.activeSelf);
+            firstPersonMovement.enabled = true;
+            samCharacterController.enabled = false;
+            phonePanel.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
         }
 
         public void OpenCamera()
         {
             phonePanel.SetActive(false);
-            photoCamera.SetActive(true);
             firstPersonCamera.Priority = 2;
         }
 
@@ -72,10 +71,43 @@ namespace Phone
             GameManager.galleryOpenEvent();
         }
 
+        void EnableDisablePhone()
+        {
+            if (phonePanel.activeSelf)
+            {
+                ExitPhone();
+                return;
+            }
+            OpenPhone();
+        }
+
         void EnlargePhoto(Texture texture)
         {
             EnlargedPhoto.SetActive(true);
             EnlargedPhoto.GetComponent<RawImage>().texture = texture;
+        }
+
+        public void ExitPhone()
+        {
+            phonePanel.SetActive(false);
+            if (galleryPanel.activeSelf)
+            {
+                GameManager.galleryCloseEvent();
+                galleryPanel.SetActive(false);
+            }
+            EnlargedPhoto.SetActive(false);
+            firstPersonCamera.Priority = 0;
+            firstPersonMovement.enabled = false;
+            samCharacterController.enabled = true;
+        }
+
+        /// <summary>
+        /// Overridden Exit Phone Method to allow for Input Delegate calling with Exit action
+        /// </summary>
+        /// <param name="context">The input action context. Unused.</param>
+        void ExitPhone(InputAction.CallbackContext context)
+        {
+            ExitPhone();
         }
     }
 }

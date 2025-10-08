@@ -447,7 +447,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: PlayerVelocity
+  - m_Name: PlayerInputVelocity
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -559,8 +559,8 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 3
-    m_ConditionEvent: PlayerVelocity
-    m_EventTreshold: 0
+    m_ConditionEvent: PlayerInputVelocity
+    m_EventTreshold: 0.1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6543035267148868616}
   m_Solo: 0
@@ -1017,9 +1017,10 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: PlayerSpeedX
     m_Mirror: 0
-  m_BlendParameter: PlayerVelocity
+  m_BlendParameter: PlayerInputVelocity
   m_BlendParameterY: Blend
   m_MinThreshold: 0.1
+  m_MaxThreshold: 1
   m_MaxThreshold: 1
   m_UseAutomaticThresholds: 0
   m_NormalizedBlendValues: 0
@@ -1074,7 +1075,7 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_Motion: {fileID: 3585420056504780238}
   m_Tag: 
-  m_SpeedParameter: PlayerVelocity
+  m_SpeedParameter: PlayerInputVelocity
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 

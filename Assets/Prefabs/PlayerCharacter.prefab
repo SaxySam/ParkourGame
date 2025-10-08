@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1822013801787433035}
   - component: {fileID: 2565790318435667513}
   - component: {fileID: 277347096623532543}
-  - component: {fileID: 5600236198362776433}
+  - component: {fileID: 3617371974743181296}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -96,20 +96,20 @@ MonoBehaviour:
   jumpType: 1
   timeForMaxHeightJump: 0.15
   enableLaunching: 1
-  maxDistanceFromLedge: 1
+  maxDistanceFromLedge: 2
   minPlayerVelocityToLaunch: 1
   minLedgeHeight: 1
-  timeForMaxDistenceLaunch: 0.1
+  timeForMaxDistenceLaunch: 0.2
   launchScaleMultiplier: 1
-  minLaunchScalableUpSpeed: 0.5
-  maxLaunchScalableUpSpeed: 8
-  minLaunchScalableForwardSpeed: 0.5
-  maxLaunchScalableForwardSpeed: 3
-  slideSpeed: 0
+  minLaunchScalableUpSpeed: 6
+  maxLaunchScalableUpSpeed: 10
+  minLaunchScalableForwardSpeed: 0.1
+  maxLaunchScalableForwardSpeed: 2
+  slideSpeed: 8
   maxAirMoveSpeed: 8
   airAccelerationSpeed: 7.65
   drag: 0.1
-  gravity: {x: 0, y: -50, z: 0}
+  gravity: {x: 0, y: -60, z: 0}
   bonusOrientationMethod: 1
   bonusOrientationSharpness: 10
   playerAnimator: {fileID: 5838343785673483433}
@@ -161,7 +161,7 @@ MonoBehaviour:
   CheckMovementInitialOverlaps: 1
   KillVelocityWhenExceedMaxMovementIterations: 1
   KillRemainingMovementWhenExceedMaxMovementIterations: 1
---- !u!114 &5600236198362776433
+--- !u!114 &3617371974743181296
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
