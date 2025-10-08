@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1822013801787433035}
   - component: {fileID: 2565790318435667513}
   - component: {fileID: 277347096623532543}
-  - component: {fileID: 3617371974743181296}
+  - component: {fileID: 3542459638836523435}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -75,6 +75,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   kinematicMotor: {fileID: 277347096623532543}
   <CurrentCharacterState>k__BackingField: 0
+  playerAnimator: {fileID: 5838343785673483433}
   maxStableMoveSpeed: 10
   readjustmentSpeed: 4.2
   accelerationRate: 1.1
@@ -99,23 +100,32 @@ MonoBehaviour:
   maxDistanceFromLedge: 2
   minPlayerVelocityToLaunch: 1
   minLedgeHeight: 1
-  timeForMaxDistenceLaunch: 0.2
+  timeForMaxDistanceLaunch: 0.5
   launchScaleMultiplier: 1
   minLaunchScalableUpSpeed: 6
   maxLaunchScalableUpSpeed: 10
   minLaunchScalableForwardSpeed: 0.1
   maxLaunchScalableForwardSpeed: 2
-  slideSpeed: 8
+  maxCrouchSpeed: 3
+  enableSquishyCrouch: 1
+  crouchedCapsuleHeightDivisor: 2
+  startSlideSpeedThreshold: 8
+  slideSpeedGain: 20
+  minimumSlideSpeed: 0.25
+  decelerationRate: 2.5
+  gravityMultiplier: 1.5
+  movementRestrictionMultiplier: 15
+  maxSlopeDetectionAngle: 45
+  isSliding: 0
+  _internalSlideSpeed: 0
   maxAirMoveSpeed: 8
   airAccelerationSpeed: 7.65
   drag: 0.1
   gravity: {x: 0, y: -60, z: 0}
   bonusOrientationMethod: 1
   bonusOrientationSharpness: 10
-  playerAnimator: {fileID: 5838343785673483433}
   meshRoot: {fileID: 1580252296338831588}
   cameraFollowPoint: {fileID: 4001791145642714313}
-  crouchedCapsuleHeightMultiplier: 2
   useFramePerfectRotation: 0
   ignoredColliders:
   - {fileID: 0}
@@ -161,7 +171,7 @@ MonoBehaviour:
   CheckMovementInitialOverlaps: 1
   KillVelocityWhenExceedMaxMovementIterations: 1
   KillRemainingMovementWhenExceedMaxMovementIterations: 1
---- !u!114 &3617371974743181296
+--- !u!114 &3542459638836523435
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -311,7 +321,7 @@ MonoBehaviour:
     m_ActionId: 672acb42-0d1f-49e2-bcd2-1db0db6dcf4e
     m_ActionName: 'FirstPersonCamera/Exit[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Keyboard&Mouse
+  m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: ThirdPersonPlayer
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
