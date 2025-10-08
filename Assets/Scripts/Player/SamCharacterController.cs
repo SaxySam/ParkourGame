@@ -322,6 +322,7 @@ namespace SDK
         {
             _jumpButtonHeld = false;
             _holdDurationJump = 0;
+            playerAnimator.SetBool("Jumping", false);
             playerAnimator.SetTrigger("Fall");
         }
 
@@ -398,8 +399,8 @@ namespace SDK
                 Debug.DrawLine(ledgeCheckPoint, ledgeCheckPoint + (Vector3.down * minLedgeHeight), Color.white, 6f);
                 if (!Physics.Raycast(ledgeCheckPoint, Vector3.down, minLedgeHeight))
                 {
-                    //ledge is launchable 
-                    Debug.Log($"launch ligit");
+                    //Ledge is launchable
+                    Debug.Log($"Launch Allowed");
                     _launchRequested = true;
                     _launchConsumed = false;
                 }
@@ -640,7 +641,7 @@ namespace SDK
                                         _jumpRequested = false;
                                         _jumpConsumed = true;
                                         _jumpedThisFrame = true;
-                                        playerAnimator.SetTrigger("Jump");
+                                        playerAnimator.SetBool("Jumping", true);
                                     }
 
                                     // Reset wall jump
@@ -670,7 +671,7 @@ namespace SDK
                                     {
                                         if (kinematicMotor.GroundingStatus.IsStableOnGround || _timeSinceLastAbleToJump <= jumpPostGroundingGraceTime)
                                         {
-                                            //jump 
+                                            //Jump
                                             _jumpDirection = Vector3.up;
 
                                             // Makes the character skip ground probing/snapping on its next update.
@@ -680,7 +681,7 @@ namespace SDK
                                             _jumpRequested = false;
                                             _jumpConsumed = true;
                                             _jumpedThisFrame = true;
-                                            playerAnimator.SetTrigger("Jump");
+                                            playerAnimator.SetBool("Jumping", true);
                                         }
                                     }
                                 }
@@ -691,10 +692,10 @@ namespace SDK
 
                                     if (_holdDurationJump == timeForMaxHeightJump)
                                     {
-
                                         _jumpUpSpeed = 0;
                                         _jumpForwardSpeed = 0;
                                         _jumpButtonHeld = false;
+                                        playerAnimator.SetBool("Jumping", false);
                                     }
 
                                     _jumpUpSpeed = Mathf.Lerp(maxJumpScalableUpSpeed * jumpScaleMultiplier, minJumpScalableUpSpeed * jumpScaleMultiplier, 1 - Mathf.InverseLerp(0, timeForMaxHeightJump, _holdDurationJump));
@@ -729,7 +730,7 @@ namespace SDK
                                             _launchRequested = false;
                                             _launchConsumed = true;
                                             _lauchActivated = true;
-                                            playerAnimator.SetTrigger("Jump"); // to do change to valut trigger 
+                                            playerAnimator.SetTrigger("Launch");
                                         }
                                     }
                                 }
