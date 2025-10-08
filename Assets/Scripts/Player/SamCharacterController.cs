@@ -391,17 +391,19 @@ namespace SDK
             RaycastHit hit;
             if (Physics.Raycast(transform.position, Vector3.down, out hit, maxDistanceFromLedge))
             {
-                
                 Vector3 serfagePoint = hit.point + (Vector3.up * 0.01f);
-                Vector3 ledgeCheckPoint = serfagePoint + (kinematicMotor.CharacterForward * maxDistanceFromLedge);
-                Debug.DrawLine(serfagePoint, ledgeCheckPoint, Color.red, 6f);
-                Debug.DrawLine(ledgeCheckPoint, ledgeCheckPoint + (Vector3.down * minLedgeHeight), Color.white, 6f);
-                if (!Physics.Raycast(ledgeCheckPoint, Vector3.down, minLedgeHeight))
+                if (!Physics.Raycast(serfagePoint, kinematicMotor.CharacterForward, maxDistanceFromLedge))
                 {
-                    //ledge is launchable 
-                    Debug.Log($"launch ligit");
-                    _launchRequested = true;
-                    _launchConsumed = false;
+                    Vector3 ledgeCheckPoint = serfagePoint + (kinematicMotor.CharacterForward * maxDistanceFromLedge);
+                    Debug.DrawLine(serfagePoint, ledgeCheckPoint, Color.red, 6f);
+                    Debug.DrawLine(ledgeCheckPoint, ledgeCheckPoint + (Vector3.down * minLedgeHeight), Color.white, 6f);
+                    if (!Physics.Raycast(ledgeCheckPoint, Vector3.down, minLedgeHeight))
+                    {
+                        //ledge is launchable 
+                        Debug.Log($"launch ligit");
+                        _launchRequested = true;
+                        _launchConsumed = false;
+                    }
                 }
             }
         }
