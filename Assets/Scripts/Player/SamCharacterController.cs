@@ -645,7 +645,7 @@ namespace SDK
 
                                 targetMovementVelocity = _multipliedMoveInputVector * _internalMaxAirSpeed;
 
-                                // Prevent climbing on un-stable slopes with air movement
+                                // Prevent climbing on unstable slopes with air movement
                                 if (kinematicMotor.GroundingStatus.FoundAnyGround)
                                 {
                                     Vector3 perpendicularObstructionNormal = Vector3.Cross(Vector3.Cross(kinematicMotor.CharacterUp, kinematicMotor.GroundingStatus.GroundNormal), kinematicMotor.CharacterUp).normalized;
@@ -803,7 +803,7 @@ namespace SDK
                     _jumpedThisFrame = false;
                     _timeSinceJumpRequested += deltaTime;
 
-                    if (_isCrouching)
+                    if (isSliding)
                     {
                         CheckLaunchable();
                     }
@@ -937,7 +937,7 @@ namespace SDK
                 return;
             }
 
-            if (!_isCrouching)
+            if (!isSliding)
             {
                 return;
             }
