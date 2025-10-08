@@ -300,7 +300,7 @@ namespace SDK
             moveInputVector = Vector3.ClampMagnitude(new Vector3(playerInputs.moveAction.ReadValue<Vector2>().x, 0f, playerInputs.moveAction.ReadValue<Vector2>().y), 1f);
             playerAnimator.SetFloat("PlayerSpeedX", moveInputVector.x);
             playerAnimator.SetFloat("PlayerSpeedZ", moveInputVector.z);
-            playerAnimator.SetFloat("PlayerVelocity", moveInputVector.magnitude);
+            playerAnimator.SetFloat("PlayerInputVelocity", moveInputVector.magnitude);
         }
 
         private void Jump(InputAction.CallbackContext context)
