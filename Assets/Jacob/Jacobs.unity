@@ -1389,10 +1389,9 @@ GameObject:
   m_Component:
   - component: {fileID: 636881851}
   - component: {fileID: 636881852}
-  - component: {fileID: 636881855}
   - component: {fileID: 636881854}
-  - component: {fileID: 636881850}
   - component: {fileID: 636881853}
+  - component: {fileID: 636881850}
   m_Layer: 0
   m_Name: PhotoCamera
   m_TagString: Untagged
@@ -1504,9 +1503,9 @@ MonoBehaviour:
         DecelTime: 0.2
     - Name: Look Y (Tilt)
       Owner: {fileID: 636881854}
-      Enabled: 0
+      Enabled: 1
       Input:
-        InputAction: {fileID: 0}
+        InputAction: {fileID: 8998812176493283073, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
         Gain: -1
         LegacyInput: 
         LegacyGain: 1
@@ -1529,12 +1528,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62d54399b04b4fa48a73e121d4937dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReferenceFrame: 0
-  RecenterTarget: 0
+  ReferenceFrame: 1
+  RecenterTarget: 2
   PanAxis:
     Value: 0
     Center: 0
-    Range: {x: -180, y: 180}
+    Range: {x: 0, y: 360}
     Wrap: 1
     Recentering:
       Enabled: 0
@@ -1551,19 +1550,6 @@ MonoBehaviour:
       Wait: 1
       Time: 2
     Restrictions: 0
---- !u!114 &636881855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 636881849}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36d1163fa822e8b418a0a603ec078d5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damping: 0
 --- !u!4 &664551056 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1580252296338831588, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
@@ -1852,7 +1838,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.07731227}
+  m_AnchoredPosition: {x: 0, y: -0.000008022858}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &899570337 stripped
@@ -2146,7 +2132,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1541923523}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.99999964
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2770,7 +2756,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1119319502}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99974805
+  m_Size: 0.9999569
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
