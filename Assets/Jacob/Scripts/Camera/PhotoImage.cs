@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 namespace PhotoCamera
 {
+    
+    [AddComponentMenu("Parkour Game/PhotoImage")]
     public class PhotoImage : MonoBehaviour
     {
         private string filePath;

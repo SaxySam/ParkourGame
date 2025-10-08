@@ -152,7 +152,8 @@ namespace KinematicCharacterController
     /// <summary>
     /// Component that manages character collisions and movement solving
     /// </summary>
-     
+
+    [AddComponentMenu("Parkour Game/KinematicCharacterMotor")]
     [RequireComponent(typeof(CapsuleCollider))]
     
     public class KinematicCharacterMotor : MonoBehaviour

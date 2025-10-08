@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace Networking
 {
+    [AddComponentMenu("Parkour Game/ServerManager")]
     public class ServerManager : MonoBehaviour
     {
         // Start is called once before the first execution of Update after the MonoBehaviour is created

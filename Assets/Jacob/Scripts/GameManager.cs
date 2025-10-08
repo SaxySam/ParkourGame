@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+[AddComponentMenu("Parkour Game/GameManager")]
 public class GameManager : MonoBehaviour
 {
     public delegate void OnPhoneOpen();

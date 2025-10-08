@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 namespace Phone
 {
+    [AddComponentMenu("Parkour Game/Gallery")]
     public class Gallery : MonoBehaviour
     {
         public PhotoImage photoImage;

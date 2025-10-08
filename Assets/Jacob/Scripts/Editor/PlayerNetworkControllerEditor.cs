@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(PlayerNetworkController))]
+
+[AddComponentMenu("Parkour Game/PlayerNetworkControllerEditor")]
 public class PlayerNetworkControllerEditor : Editor
 {
     public override void OnInspectorGUI()

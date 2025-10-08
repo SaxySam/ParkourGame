@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace PhotoCamera
 {
+    
+    [AddComponentMenu("Parkour Game/PhotoCamera")]
     public class PhotoCamera : MonoBehaviour
     {
         [SerializeField] private RenderTexture sourceTexture;

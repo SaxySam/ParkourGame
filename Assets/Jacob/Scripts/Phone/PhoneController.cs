@@ -8,6 +8,7 @@ using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 namespace Phone
 {
+    [AddComponentMenu("Parkour Game/PhoneController")]
     public class PhoneController : MonoBehaviour
     {
         public GameObject phonePanel;

@@ -4,6 +4,7 @@ using System.IO;
 
 namespace EditiorTools
 {
+    [AddComponentMenu("Parkour Game/FileHandler")]
     public class FileHandler
     {
         [MenuItem("Tools/Delete Photo Data")]

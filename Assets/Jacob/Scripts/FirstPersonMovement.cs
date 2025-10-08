@@ -36,6 +36,9 @@ namespace PhotoCamera
         }
     }
 
+    [AddComponentMenu("Parkour Game/FirstPersonMovement")]
+    [RequireComponent(typeof(KinematicCharacterMotor))]
+    [HelpURL("https://assetstore.unity.com/packages/tools/physics/kinematic-character-controller-99131")]
     public class FirstPersonMovement : MonoBehaviour, ICharacterController
     {
         [SerializeField] private KinematicCharacterMotor kinematicMotor;
@@ -74,7 +77,6 @@ namespace PhotoCamera
         private Vector3 _moveInputVector;
         private float _linearSpeed;
         private PhotoCamera photoCamera;
-        private bool _isPaused;
 
         private void Awake()
         {
@@ -84,7 +86,6 @@ namespace PhotoCamera
                 Debug.Log("did not get Player input componit ");
             }
             Cursor.lockState = CursorLockMode.Locked;
-            _isPaused = false;
         }
 
         private void OnEnable()

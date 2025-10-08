@@ -98,8 +98,7 @@ InitTestScene*.unity*
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 
-# Rider
-# Rider auto-generates .iml files, and contentModel.xml
+# Jetbrains / Rider auto-generated files
 **/.idea/**/workspace.xml
 **/.idea/**/tasks.xml
 **/.idea/shelf/*
@@ -109,6 +108,12 @@ InitTestScene*.unity*
 **/.idea/**/*.iml
 **/.idea/**/contentModel.xml
 **/.idea/**/modules.xml
+**/.idea/**/projectSettingsUpdater.xml
+**/.idea/**/httpRequests/
+**/.idea/**/dataSources/
+**/.idea/**/dataSources.local.xml
 
 # Mac
 .DS_Store
+
+
