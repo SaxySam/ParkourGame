@@ -79,10 +79,10 @@ MonoBehaviour:
   maxStableMoveSpeed: 10
   readjustmentSpeed: 4.2
   accelerationRate: 1.1
-  groundMovementFriction: 40
+  groundMovementFriction: 55
   orientationMethod: 1
-  TowardsCameraOrientationSharpness: 50
-  TowardsMovementOrientationSharpness: 15
+  towardsCameraOrientationSharpness: 50
+  towardsMovementOrientationSharpness: 15
   playerThirdPersonCamera: {fileID: 8437540174961184467}
   allowJumpingWhenSliding: 1
   allowWallJump: 1
@@ -100,7 +100,7 @@ MonoBehaviour:
   maxDistanceFromLedge: 2
   minPlayerVelocityToLaunch: 1
   minLedgeHeight: 1
-  timeForMaxDistanceLaunch: 0.5
+  timeForMaxDistanceLaunch: 0.2
   launchScaleMultiplier: 1
   minLaunchScalableUpSpeed: 6
   maxLaunchScalableUpSpeed: 10
@@ -112,12 +112,11 @@ MonoBehaviour:
   startSlideSpeedThreshold: 8
   slideSpeedGain: 20
   minimumSlideSpeed: 0.25
+  slideCooldownTime: 1
   decelerationRate: 2.5
   gravityMultiplier: 1.5
   movementRestrictionMultiplier: 15
   maxSlopeDetectionAngle: 45
-  isSliding: 0
-  _internalSlideSpeed: 0
   maxAirMoveSpeed: 8
   airAccelerationSpeed: 7.65
   drag: 0.1
