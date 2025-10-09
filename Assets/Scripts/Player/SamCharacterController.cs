@@ -93,13 +93,12 @@ namespace SDK
 
         [Space(5)]
         [Header("Sensitivity")]
+        //TODO - Look Sensitivity
 
 
         [Space(5)]
         [Header("Animation")]
         public Animator playerAnimator;
-
-
 
 
         [Space(5)]
@@ -186,6 +185,9 @@ namespace SDK
         public float crouchedCapsuleHeightDivisor = 2f;
         private bool _shouldBeCrouching = false;
         private bool _isCrouching = false;
+        private Vector3 _normalCapsuleSize;
+        private Vector3 _crouchedCapsuleSize;
+
 
 
         [Space(5)]
@@ -193,13 +195,15 @@ namespace SDK
         public float startSlideSpeedThreshold;
         public float slideSpeedGain;
         public float minimumSlideSpeed;
+        public float slideCooldownTime = 1f;
         public float decelerationRate;
         public float gravityMultiplier;
         public float movementRestrictionMultiplier;
         public float maxSlopeDetectionAngle = 45f;
         private RaycastHit slopeOutHit;
-        [SerializeField] private bool isSliding;
-        [SerializeField] private float _internalSlideSpeed;
+        private bool isSliding;
+        private float _internalSlideSpeed;
+        private float lastSlideTime;
 
 
         [Header("Air Movement")]
@@ -299,6 +303,8 @@ namespace SDK
             kinematicMotor.CharacterController = this;
             _internalSlideSpeed = slideSpeedGain;
             _internalOrientationSharpness = TowardsMovementOrientationSharpness;
+            _normalCapsuleSize = new Vector3(kinematicMotor.CapsuleRadius, kinematicMotor.CapsuleHeight, kinematicMotor.CapsuleYOffset);
+            _crouchedCapsuleSize = new Vector3(kinematicMotor.CapsuleRadius,  kinematicMotor.CapsuleHeight / crouchedCapsuleHeightDivisor,  kinematicMotor.CapsuleYOffset / crouchedCapsuleHeightDivisor);
         }
 
         /// <summary>
@@ -411,18 +417,21 @@ namespace SDK
                             {
                                 if (kinematicMotor.Velocity.magnitude >= startSlideSpeedThreshold)
                                 {
-                                    isSliding = true;
+                                    if (Time.time - lastSlideTime >= slideCooldownTime)
+                                    {
+                                        isSliding = true;
+                                        kinematicMotor.SetCapsuleDimensions(_crouchedCapsuleSize.x, _crouchedCapsuleSize.y, _crouchedCapsuleSize.z);
+                                        lastSlideTime = Time.time;
+                                    }
                                 }
                                 else
                                 {
                                     _isCrouching = true;
+                                    kinematicMotor.SetCapsuleDimensions(_crouchedCapsuleSize.x, _crouchedCapsuleSize.y, _crouchedCapsuleSize.z);
                                     playerAnimator.SetBool("Crouching", true);
 
                                     if (enableSquishyCrouch)
                                     {
-                                        kinematicMotor.SetCapsuleDimensions(kinematicMotor.CapsuleRadius,
-                                        kinematicMotor.CapsuleHeight / crouchedCapsuleHeightDivisor,
-                                        kinematicMotor.CapsuleYOffset / crouchedCapsuleHeightDivisor);
                                         meshRoot.localScale = new Vector3(1f, 0.5f, 1f);
                                         playerAnimator.SetBool("Crouching", true);
                                     }
@@ -679,7 +688,7 @@ namespace SDK
 
                             // if (!OnSlope() || currentVelocity.y > -0.1f)
                             // {
-                                _internalSlideSpeed = Mathf.Lerp(_internalSlideSpeed, 0, decelerationRate * Time.deltaTime);
+                            _internalSlideSpeed = Mathf.Lerp(_internalSlideSpeed, 0, decelerationRate * Time.deltaTime);
                             // }
                             // else
                             // {
@@ -695,10 +704,14 @@ namespace SDK
                                 _internalOrientationSharpness = TowardsMovementOrientationSharpness;
                             }
                         }
+                        else if (!isSliding && !_isCrouching)
+                        {
+                            kinematicMotor.SetCapsuleDimensions(_normalCapsuleSize.x, _normalCapsuleSize.y, _normalCapsuleSize.z);
+                        }
 
 
                         //! Handle jumping
-                        currentVelocity = HandleJump(currentVelocity, deltaTime);
+                            currentVelocity = HandleJump(currentVelocity, deltaTime);
                         break;
                     }
             }
@@ -1018,19 +1031,20 @@ namespace SDK
                         if (_isCrouching && !_shouldBeCrouching)
                         {
                             // Do an overlap test with the character's standing height to see if there are any obstructions
-                            kinematicMotor.SetCapsuleDimensions(kinematicMotor.CapsuleRadius, kinematicMotor.CapsuleHeight * crouchedCapsuleHeightDivisor, kinematicMotor.CapsuleYOffset * crouchedCapsuleHeightDivisor);
-                            if (kinematicMotor.CharacterCollisionsOverlap(
-                                    kinematicMotor.TransientPosition,
-                                    kinematicMotor.TransientRotation,
-                                    _probedColliders) > 0)
+                            kinematicMotor.SetCapsuleDimensions(_normalCapsuleSize.x, _normalCapsuleSize.y, _normalCapsuleSize.z);
+
+                            if (kinematicMotor.CharacterCollisionsOverlap(kinematicMotor.TransientPosition, kinematicMotor.TransientRotation, _probedColliders) > 0)
                             {
                                 // If obstructions, just stick to crouching dimensions
-                                kinematicMotor.SetCapsuleDimensions(kinematicMotor.CapsuleRadius, kinematicMotor.CapsuleHeight / crouchedCapsuleHeightDivisor, kinematicMotor.CapsuleYOffset / crouchedCapsuleHeightDivisor);
+                                kinematicMotor.SetCapsuleDimensions(_crouchedCapsuleSize.x, _crouchedCapsuleSize.y, _crouchedCapsuleSize.z);
                             }
                             else
                             {
                                 // If no obstructions, un-crouch
-                                meshRoot.localScale = new Vector3(1f, 1f, 1f);
+                                if (enableSquishyCrouch)
+                                {
+                                    meshRoot.localScale = new Vector3(1f, 1f, 1f);
+                                }
                                 _isCrouching = false;
                             }
                         }
