@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using KinematicCharacterController;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Phone;
+using UnityEngine.Serialization;
 
 namespace PhotoCamera
 {
@@ -22,17 +23,17 @@ namespace PhotoCamera
 
     public struct FPlayerInputs
     {
-        public InputAction lookAction;
-        public InputAction moveAction;
+        public InputAction LookAction;
+        public InputAction MoveAction;
         public InputAction TakePhotoAction;
         public InputAction PauseAction;
 
-        private FPlayerInputs(InputAction lookAction, InputAction moveAction, InputAction TakePhotoAction, InputAction PauseAction)
+        private FPlayerInputs(InputAction lookAction, InputAction moveAction, InputAction takePhotoAction, InputAction pauseAction)
         {
-            this.lookAction = lookAction;
-            this.moveAction = moveAction;
-            this.TakePhotoAction = TakePhotoAction;
-            this.PauseAction = PauseAction;
+            this.LookAction = lookAction;
+            this.MoveAction = moveAction;
+            this.TakePhotoAction = takePhotoAction;
+            this.PauseAction = pauseAction;
         }
     }
 
@@ -42,9 +43,9 @@ namespace PhotoCamera
     public class FirstPersonMovement : MonoBehaviour, ICharacterController
     {
         [SerializeField] private KinematicCharacterMotor kinematicMotor;
-        private FPlayerInputs playerInputs;
+        private FPlayerInputs _playerInputs;
 
-        private PlayerInput playerInputComponent;
+        private PlayerInput _playerInputComponent;
 
         [Header("Stable Movement")]
         public float maxStableMoveSpeed = 10f;
@@ -52,13 +53,13 @@ namespace PhotoCamera
         public float accelerationRate = 5f;
         public float groundMovementFriction = 15;
         public EOrientationMethod orientationMethod = EOrientationMethod.TowardsMovement;
-        public float TowardsCameraOrientationSharpness = 50;
-        public float TowardsMovementOrientationSharpness = 10;
+        public float towardsCameraOrientationSharpness = 50;
+        public float towardsMovementOrientationSharpness = 10;
         [SerializeField] private CinemachineCamera playerThirdPersonCamera;
 
-        private Vector3 moveInputVector;
-        private Vector3 cameraPlanarDirection;
-        private Quaternion cameraPlanarRotation;
+        private Vector3 _moveInputVector;
+        private Vector3 _cameraPlanarDirection;
+        private Quaternion _cameraPlanarRotation;
 
         [Header("Gravity")]
         public Vector3 gravity = new(0, -30f, 0);
@@ -74,16 +75,16 @@ namespace PhotoCamera
         [Header("Privates")]
         private Collider[] _probedColliders = new Collider[8];
         private Vector3 _lookInputVector;
-        private Vector3 _moveInputVector;
+        private Vector3 _multipliedMoveInputVector;
         private float _linearSpeed;
-        private PhotoCamera photoCamera;
+        private PhotoCamera _photoCamera;
 
         private void Awake()
         {
-            playerInputComponent = gameObject.GetComponent<PlayerInput>();
-            if (playerInputComponent == null)
+            _playerInputComponent = gameObject.GetComponent<PlayerInput>();
+            if (_playerInputComponent == null)
             {
-                Debug.Log("did not get Player input componit ");
+                Debug.Log("<b>Could not find PlayerInput Component!</b>");
             }
             Cursor.lockState = CursorLockMode.Locked;
         }
@@ -92,34 +93,33 @@ namespace PhotoCamera
         {
             kinematicMotor.CharacterController = this;
 
-            playerInputComponent.SwitchCurrentActionMap("FirstPersonCamera");
+            _playerInputComponent.SwitchCurrentActionMap("FirstPersonCamera");
 
             // playerInputs.lookAction = playerInputComponent.actions["Look"];
-            playerInputs.lookAction = playerInputComponent.actions["Look"];
-            playerInputs.lookAction.performed += Look;
+            _playerInputs.LookAction = _playerInputComponent.actions["Look"];
+            _playerInputs.LookAction.performed += Look;
 
-            playerInputs.moveAction = playerInputComponent.actions["Move"];
-            playerInputs.moveAction.performed += Move;
-            playerInputs.moveAction.canceled += Move;
+            _playerInputs.MoveAction = _playerInputComponent.actions["Move"];
+            _playerInputs.MoveAction.performed += Move;
+            _playerInputs.MoveAction.canceled += Move;
 
-            playerInputs.TakePhotoAction = playerInputComponent.actions["TakePhoto"];
-            playerInputs.TakePhotoAction.performed += TakePhoto;
+            _playerInputs.TakePhotoAction = _playerInputComponent.actions["TakePhoto"];
+            _playerInputs.TakePhotoAction.performed += TakePhoto;
 
-            playerInputs.PauseAction = playerInputComponent.actions["Pause"];
-            playerInputs.PauseAction.performed += Pause;
+            _playerInputs.PauseAction = _playerInputComponent.actions["Pause"];
+            _playerInputs.PauseAction.performed += Pause;
         }
 
         private void OnDisable()
         {
+            _playerInputs.LookAction.performed -= Look;
 
-            playerInputs.lookAction.performed -= Look;
+            _playerInputs.MoveAction.performed -= Move;
+            _playerInputs.MoveAction.canceled -= Move;
 
-            playerInputs.moveAction.performed -= Move;
-            playerInputs.moveAction.canceled -= Move;
+            _playerInputs.TakePhotoAction.performed -= TakePhoto;
 
-            playerInputs.TakePhotoAction.performed -= TakePhoto;
-
-            playerInputs.PauseAction.performed -= Pause;
+            _playerInputs.PauseAction.performed -= Pause;
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace PhotoCamera
         private void Start()
         {
             // Assign to motor
-            photoCamera = FindFirstObjectByType<PhotoCamera>();
+            _photoCamera = FindFirstObjectByType<PhotoCamera>();
         }
 
         private void Look(InputAction.CallbackContext context)
@@ -136,37 +136,35 @@ namespace PhotoCamera
             Quaternion cameraRotation = playerThirdPersonCamera.transform.rotation;
 
             // Calculate camera direction and rotation on the character plane
-            cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.forward, kinematicMotor.CharacterUp).normalized;
-            if (cameraPlanarDirection.sqrMagnitude == 0f)
+            _cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.forward, kinematicMotor.CharacterUp).normalized;
+            if (_cameraPlanarDirection.sqrMagnitude == 0f)
             {
-                cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.up, kinematicMotor.CharacterUp).normalized;
+                _cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.up, kinematicMotor.CharacterUp).normalized;
             }
 
-            cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, kinematicMotor.CharacterUp);
-
+            _cameraPlanarRotation = Quaternion.LookRotation(_cameraPlanarDirection, kinematicMotor.CharacterUp);
         }
 
         private void Move(InputAction.CallbackContext context)
         {
             // Clamp input
-            moveInputVector = Vector3.ClampMagnitude(new Vector3(playerInputs.moveAction.ReadValue<Vector2>().x, 0f, playerInputs.moveAction.ReadValue<Vector2>().y), 1f);
+            _moveInputVector = Vector3.ClampMagnitude(new Vector3(_playerInputs.MoveAction.ReadValue<Vector2>().x, 0f, _playerInputs.MoveAction.ReadValue<Vector2>().y), 1f);
         }
 
         private void TakePhoto(InputAction.CallbackContext context)
         {
             Debug.Log("Take Photo");
-            if (photoCamera != null)
+            if (_photoCamera == null)
             {
-                photoCamera.TakePhoto();
+                _photoCamera.TakePhoto();
             }
         }
 
         private void Pause(InputAction.CallbackContext context)
         {
             Cursor.lockState = CursorLockMode.None;
-            // _isPaused = !_isPaused;
 
-            GameManager.phoneOpenEvent?.Invoke();
+            GameManager.PhoneOpenEvent?.Invoke();
         }
 
         public void BeforeCharacterUpdate(float deltaTime)
@@ -176,14 +174,13 @@ namespace PhotoCamera
 
         public void PostInputUpdate(float deltaTime, Vector3 cameraForward)
         {
-            if (useFramePerfectRotation)
-            {
-                _lookInputVector = Vector3.ProjectOnPlane(cameraForward, kinematicMotor.CharacterUp);
+            if (!useFramePerfectRotation) return;
+            
+            _lookInputVector = Vector3.ProjectOnPlane(cameraForward, kinematicMotor.CharacterUp);
 
-                Quaternion newRotation = default;
-                HandleRotation(ref newRotation, deltaTime);
-                meshRoot.rotation = newRotation;
-            }
+            Quaternion newRotation = default;
+            HandleRotation(ref newRotation, deltaTime);
+            meshRoot.rotation = newRotation;
         }
 
         private void HandleRotation(ref Quaternion rot, float deltaTime)
@@ -201,18 +198,18 @@ namespace PhotoCamera
         /// </summary>
         public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
         {
-            _moveInputVector = cameraPlanarRotation * moveInputVector;
+            _multipliedMoveInputVector = _cameraPlanarRotation * _moveInputVector;
 
             switch (orientationMethod)
             {
                 case EOrientationMethod.TowardsCamera:
                 {
-                    _lookInputVector = cameraPlanarDirection;
+                    _lookInputVector = _cameraPlanarDirection;
 
-                    if (_lookInputVector != Vector3.zero && TowardsCameraOrientationSharpness > 0f)
+                    if (_lookInputVector != Vector3.zero && towardsCameraOrientationSharpness > 0f)
                     {
                         // Smoothly interpolate from current to target look direction
-                        Vector3 smoothedLookInputDirection = Vector3.Slerp(kinematicMotor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-TowardsCameraOrientationSharpness * deltaTime)).normalized;
+                        Vector3 smoothedLookInputDirection = Vector3.Slerp(kinematicMotor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-towardsCameraOrientationSharpness * deltaTime)).normalized;
 
                         // Set the current rotation (which will be used by the KinematicCharacterMotor)
                         currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, kinematicMotor.CharacterUp);
@@ -221,30 +218,33 @@ namespace PhotoCamera
                 }
                 case EOrientationMethod.TowardsMovement:
                 {
-                    _lookInputVector = _moveInputVector.normalized;
+                    _lookInputVector = _multipliedMoveInputVector.normalized;
 
-                    if (_lookInputVector != Vector3.zero && TowardsMovementOrientationSharpness > 0f)
+                    if (_lookInputVector != Vector3.zero && towardsMovementOrientationSharpness > 0f)
                     {
                         // Smoothly interpolate from current to target look direction
-                        Vector3 smoothedLookInputDirection = Vector3.Slerp(kinematicMotor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-TowardsMovementOrientationSharpness * deltaTime)).normalized;
+                        Vector3 smoothedLookInputDirection = Vector3.Slerp(kinematicMotor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-towardsMovementOrientationSharpness * deltaTime)).normalized;
 
                         // Set the current rotation (which will be used by the KinematicCharacterMotor)
                         currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, kinematicMotor.CharacterUp);
                     }
                     break;
                 }
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             Vector3 currentUp = currentRotation * Vector3.up;
-            if (bonusOrientationMethod == EBonusOrientationMethod.TowardsGravity)
+            switch (bonusOrientationMethod)
             {
-                // Rotate from current up to invert gravity
-                Vector3 smoothedGravityDir = Vector3.Slerp(currentUp, -gravity.normalized, 1 - Mathf.Exp(-bonusOrientationSharpness * deltaTime));
-                currentRotation = Quaternion.FromToRotation(currentUp, smoothedGravityDir) * currentRotation;
-            }
-            else if (bonusOrientationMethod == EBonusOrientationMethod.TowardsGroundSlopeAndGravity)
-            {
-                if (kinematicMotor.GroundingStatus.IsStableOnGround)
+                case EBonusOrientationMethod.TowardsGravity:
+                {
+                    // Rotate from current up to invert gravity
+                    Vector3 smoothedGravityDir = Vector3.Slerp(currentUp, -gravity.normalized, 1 - Mathf.Exp(-bonusOrientationSharpness * deltaTime));
+                    currentRotation = Quaternion.FromToRotation(currentUp, smoothedGravityDir) * currentRotation;
+                    break;
+                }
+                case EBonusOrientationMethod.TowardsGroundSlopeAndGravity when kinematicMotor.GroundingStatus.IsStableOnGround:
                 {
                     Vector3 initialCharacterBottomHemiCenter = kinematicMotor.TransientPosition + (currentUp * kinematicMotor.Capsule.radius);
 
@@ -253,17 +253,21 @@ namespace PhotoCamera
 
                     // Move the position to create a rotation around the bottom hemi center instead of around the pivot
                     kinematicMotor.SetTransientPosition(initialCharacterBottomHemiCenter + (currentRotation * Vector3.down * kinematicMotor.Capsule.radius));
+                    break;
                 }
-                else
+                case EBonusOrientationMethod.TowardsGroundSlopeAndGravity:
                 {
                     Vector3 smoothedGravityDir = Vector3.Slerp(currentUp, -gravity.normalized, 1 - Mathf.Exp(-bonusOrientationSharpness * deltaTime));
                     currentRotation = Quaternion.FromToRotation(currentUp, smoothedGravityDir) * currentRotation;
+                    break;
                 }
-            }
-            else
-            {
-                Vector3 smoothedGravityDir = Vector3.Slerp(currentUp, Vector3.up, 1 - Mathf.Exp(-bonusOrientationSharpness * deltaTime));
-                currentRotation = Quaternion.FromToRotation(currentUp, smoothedGravityDir) * currentRotation;
+                case EBonusOrientationMethod.None:
+                default:
+                {
+                    Vector3 smoothedGravityDir = Vector3.Slerp(currentUp, Vector3.up, 1 - Mathf.Exp(-bonusOrientationSharpness * deltaTime));
+                    currentRotation = Quaternion.FromToRotation(currentUp, smoothedGravityDir) * currentRotation;
+                    break;
+                }
             }
 
             if (useFramePerfectRotation)
@@ -280,14 +284,14 @@ namespace PhotoCamera
         public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
         {
             //! Ground Movement
-            Vector3 targetMovementVelocity = Vector3.zero;
+            Vector3 targetMovementVelocity;
 
             // Reorient source velocity on current ground slope (this is because we don't want our smoothing to cause any velocity losses in slope changes)
             currentVelocity = kinematicMotor.GetDirectionTangentToSurface(currentVelocity, kinematicMotor.GroundingStatus.GroundNormal) * currentVelocity.magnitude;
 
             // Calculate target velocity
-            Vector3 inputRight = Vector3.Cross(_moveInputVector, kinematicMotor.CharacterUp);
-            Vector3 reorientedInput = Vector3.Cross(kinematicMotor.GroundingStatus.GroundNormal, inputRight).normalized * _moveInputVector.magnitude;
+            Vector3 inputRight = Vector3.Cross(_multipliedMoveInputVector, kinematicMotor.CharacterUp);
+            Vector3 reorientedInput = Vector3.Cross(kinematicMotor.GroundingStatus.GroundNormal, inputRight).normalized * _multipliedMoveInputVector.magnitude;
             // targetMovementVelocity = reorientedInput * maxStableMoveSpeed;
 
             float resultantVectorMagnitude = Mathf.Lerp(readjustmentSpeed, maxStableMoveSpeed, Mathf.InverseLerp(-1, 1, Vector3.Dot(currentVelocity, reorientedInput)));
@@ -321,11 +325,7 @@ namespace PhotoCamera
                 return true;
             }
 
-            if (ignoredColliders.Contains(coll))
-            {
-                return false;
-            }
-            return true;
+            return !ignoredColliders.Contains(coll);
         }
 
         public void OnGroundHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using PhotoCamera;
 using SDK;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
+using UnityEngine.Serialization;
 
 namespace Phone
 {
@@ -13,47 +13,47 @@ namespace Phone
     {
         public GameObject phonePanel;
         public GameObject galleryPanel;
-        public GameObject EnlargedPhoto;
+        [FormerlySerializedAs("EnlargedPhoto")] public GameObject enlargedPhoto;
 
         public CinemachineCamera firstPersonCamera;
-        private PlayerInput playerInputComponent;
-        private FirstPersonMovement firstPersonMovement;
-        private SamCharacterController samCharacterController;
+        private PlayerInput _playerInputComponent;
+        private FirstPersonMovement _firstPersonMovement;
+        private SamCharacterController _samCharacterController;
 
-        void OnEnable()
+        private void OnEnable()
         {
-            playerInputComponent = FindFirstObjectByType<PlayerInput>();
-            GameManager.phoneOpenEvent += EnableDisablePhone;
-            GameManager.galleryButtonPressedEvent += EnlargePhoto;
-            playerInputComponent.actions.FindAction("FirstPersonCamera/Exit").performed += ExitPhone;
+            _playerInputComponent = FindFirstObjectByType<PlayerInput>();
+            GameManager.PhoneOpenEvent += EnableDisablePhone;
+            GameManager.GalleryButtonPressedEvent += EnlargePhoto;
+            _playerInputComponent.actions.FindAction("FirstPersonCamera/Exit").performed += ExitPhone;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
-            GameManager.phoneOpenEvent -= EnableDisablePhone;
-            GameManager.galleryButtonPressedEvent -= EnlargePhoto;
+            GameManager.PhoneOpenEvent -= EnableDisablePhone;
+            GameManager.GalleryButtonPressedEvent -= EnlargePhoto;
 #if !UNITY_EDITOR
                 playerInputComponent.actions.FindAction("FirstPersonCamera/Exit").performed += ExitPhone;
 #endif
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private void Start()
         {
-            firstPersonMovement = FindFirstObjectByType<FirstPersonMovement>();
-            samCharacterController = FindFirstObjectByType<SamCharacterController>();
+            _firstPersonMovement = FindFirstObjectByType<FirstPersonMovement>();
+            _samCharacterController = FindFirstObjectByType<SamCharacterController>();
 
-            firstPersonMovement.enabled = false;
+            _firstPersonMovement.enabled = false;
             phonePanel.SetActive(false);
             galleryPanel.SetActive(false);
-            EnlargedPhoto.SetActive(false);
+            enlargedPhoto.SetActive(false);
         }
 
 
         public void OpenPhone()
         {
-            firstPersonMovement.enabled = true;
-            samCharacterController.enabled = false;
+            _firstPersonMovement.enabled = true;
+            _samCharacterController.enabled = false;
             phonePanel.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
         }
@@ -69,10 +69,10 @@ namespace Phone
             galleryPanel.SetActive(true);
             phonePanel.SetActive(false);
             Debug.Log("Invoking galleryOpenEvent");
-            GameManager.galleryOpenEvent();
+            GameManager.GalleryOpenEvent();
         }
 
-        void EnableDisablePhone()
+        public void EnableDisablePhone()
         {
             if (phonePanel.activeSelf)
             {
@@ -82,10 +82,10 @@ namespace Phone
             OpenPhone();
         }
 
-        void EnlargePhoto(Texture texture)
+        public void EnlargePhoto(Texture texture)
         {
-            EnlargedPhoto.SetActive(true);
-            EnlargedPhoto.GetComponent<RawImage>().texture = texture;
+            enlargedPhoto.SetActive(true);
+            enlargedPhoto.GetComponent<RawImage>().texture = texture;
         }
 
         public void ExitPhone()
@@ -93,20 +93,20 @@ namespace Phone
             phonePanel.SetActive(false);
             if (galleryPanel.activeSelf)
             {
-                GameManager.galleryCloseEvent();
+                GameManager.GalleryCloseEvent();
                 galleryPanel.SetActive(false);
             }
-            EnlargedPhoto.SetActive(false);
+            enlargedPhoto.SetActive(false);
             firstPersonCamera.Priority = 0;
-            firstPersonMovement.enabled = false;
-            samCharacterController.enabled = true;
+            _firstPersonMovement.enabled = false;
+            _samCharacterController.enabled = true;
         }
 
         /// <summary>
         /// Overridden Exit Phone Method to allow for Input Delegate calling with Exit action
         /// </summary>
         /// <param name="context">The input action context. Unused.</param>
-        void ExitPhone(InputAction.CallbackContext context)
+        public void ExitPhone(InputAction.CallbackContext context)
         {
             ExitPhone();
         }

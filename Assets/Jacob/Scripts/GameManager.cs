@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 [AddComponentMenu("Parkour Game/GameManager")]
 public class GameManager : MonoBehaviour
@@ -9,8 +8,8 @@ public class GameManager : MonoBehaviour
     public delegate void OnGalleryClose();
     public delegate void OnGalleryButtonPressed(Texture texture);
 
-    public static OnPhoneOpen phoneOpenEvent;
-    public static OnGalleryOpen galleryOpenEvent;
-    public static OnGalleryClose galleryCloseEvent;
-    public static OnGalleryButtonPressed galleryButtonPressedEvent;
+    public static OnPhoneOpen PhoneOpenEvent;
+    public static OnGalleryOpen GalleryOpenEvent;
+    public static OnGalleryClose GalleryCloseEvent;
+    public static OnGalleryButtonPressed GalleryButtonPressedEvent;
 }

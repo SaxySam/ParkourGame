@@ -1,6 +1,5 @@
 using UnityEngine;
 using Unity.Netcode;
-using System.Collections.Generic;
 
 namespace Networking
 {
@@ -8,7 +7,7 @@ namespace Networking
     public class ServerManager : MonoBehaviour
     {
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private void Start()
         {
             if (NetworkManager.Singleton != null)
             {
@@ -23,12 +22,11 @@ namespace Networking
 
         public void DisplayClients()
         {
-            if (NetworkManager.Singleton.IsServer)
+            if (!NetworkManager.Singleton.IsServer) return;
+            
+            foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList)
             {
-                foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList)
-                {
-                    Debug.Log("Client ID: " + client.ClientId);
-                }
+                Debug.Log("Client ID: " + client.ClientId);
             }
         }
     }

@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.IO;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using System.Collections.Generic;
 
 namespace PhotoCamera
@@ -9,46 +8,46 @@ namespace PhotoCamera
     [AddComponentMenu("Parkour Game/PhotoImage")]
     public class PhotoImage : MonoBehaviour
     {
-        private string filePath;
+        private string _filePath;
 
         private void Awake()
         {
-            filePath = Path.Combine(Application.persistentDataPath, "photos.txt");
+            _filePath = Path.Combine(Application.persistentDataPath, "photos.txt");
         }
 
         public void SaveNewPhoto(Texture2D newPhoto)
         {
             PhotoList photoList;
 
-            if (File.Exists(filePath))
+            if (File.Exists(_filePath))
             {
-                string json = File.ReadAllText(filePath);
+                string json = File.ReadAllText(_filePath);
                 photoList = JsonUtility.FromJson<PhotoList>(json);
             }
             else
             {
-                photoList = new PhotoList();
+                photoList = gameObject.AddComponent<PhotoList>();
             }
 
             byte[] bytes = newPhoto.EncodeToPNG();
-            PhotoData newPhotoData = new PhotoData { pngData = bytes };
+            PhotoData newPhotoData = gameObject.AddComponent<PhotoData>();
             photoList.photos.Add(newPhotoData);
 
             string updatedJson = JsonUtility.ToJson(photoList);
-            File.WriteAllText(filePath, updatedJson);
+            File.WriteAllText(_filePath, updatedJson);
         }
 
         public List<Texture2D> LoadAllPhotos()
         {
             List<Texture2D> loadedTextures = new List<Texture2D>();
 
-            if (!File.Exists(filePath))
+            if (!File.Exists(_filePath))
             {
                 Debug.Log("No photos found");
                 return loadedTextures;
             }
 
-            string json = File.ReadAllText(filePath);
+            string json = File.ReadAllText(_filePath);
             PhotoList photoList = JsonUtility.FromJson<PhotoList>(json);
 
             if (photoList == null || photoList.photos == null)

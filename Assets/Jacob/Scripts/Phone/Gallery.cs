@@ -12,40 +12,40 @@ namespace Phone
         public GameObject imagePrefab;
         public GameObject contentArea;
 
-        private List<GameObject> photosInGallery = new List<GameObject>();
-        private float sizePerImage = 0;
+        private readonly List<GameObject> _photosInGallery = new List<GameObject>();
+        private float _sizePerImage = 0;
 
-        void Start()
+        private void Start()
         {
             Debug.Log("Gallery subscribing to galleryOpenEvent");
-            GameManager.galleryOpenEvent += CreateGalleryList;
-            GameManager.galleryCloseEvent += RemoveGalleryList;
+            GameManager.GalleryOpenEvent += CreateGalleryList;
+            GameManager.GalleryCloseEvent += RemoveGalleryList;
 
-            sizePerImage = contentArea.GetComponent<GridLayoutGroup>().cellSize.y + contentArea.GetComponent<GridLayoutGroup>().spacing.y;
+            _sizePerImage = contentArea.GetComponent<GridLayoutGroup>().cellSize.y + contentArea.GetComponent<GridLayoutGroup>().spacing.y;
         }
 
-        void CreateGalleryList()
+        private void CreateGalleryList()
         {
-            List<Texture2D> Photos = photoImage.LoadAllPhotos();
+            List<Texture2D> photos = photoImage.LoadAllPhotos();
 
-            foreach (Texture2D photo in Photos)
+            foreach (Texture2D photo in photos)
             {
-                var GalleryImage = Instantiate(imagePrefab, contentArea.transform);
-                GalleryImage.GetComponent<RawImage>().texture = photo;
-                photosInGallery.Add(GalleryImage);
+                GameObject galleryImage = Instantiate(imagePrefab, contentArea.transform);
+                galleryImage.GetComponent<RawImage>().texture = photo;
+                _photosInGallery.Add(galleryImage);
             }
 
-            double YHeight = Mathf.CeilToInt((float)photosInGallery.Count / 2);
-            YHeight *= sizePerImage;
-            contentArea.GetComponent<RectTransform>().sizeDelta = new Vector2(contentArea.GetComponent<RectTransform>().sizeDelta.x, (float)YHeight + 10);
+            double yHeight = Mathf.CeilToInt((float)_photosInGallery.Count / 2);
+            yHeight *= _sizePerImage;
+            contentArea.GetComponent<RectTransform>().sizeDelta = new Vector2(contentArea.GetComponent<RectTransform>().sizeDelta.x, (float)yHeight + 10);
         }
 
-        void RemoveGalleryList()
+        private void RemoveGalleryList()
         {
-            for (int i = photosInGallery.Count - 1; i >= 0; --i)
+            for (int i = _photosInGallery.Count - 1; i >= 0; --i)
             {
-                var photo = photosInGallery[i];
-                photosInGallery.Remove(photosInGallery[i]);
+                GameObject photo = _photosInGallery[i];
+                _photosInGallery.Remove(_photosInGallery[i]);
                 Destroy(photo);
             }
         }

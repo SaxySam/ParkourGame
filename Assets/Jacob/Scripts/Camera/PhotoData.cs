@@ -6,7 +6,7 @@ namespace PhotoCamera
     [System.Serializable]
     
     [AddComponentMenu("Parkour Game/PhotoData")]
-    public class PhotoData
+    public class PhotoData : MonoBehaviour
     {
         public byte[] pngData;
     }
@@ -14,7 +14,7 @@ namespace PhotoCamera
     [System.Serializable]
     
     [AddComponentMenu("Parkour Game/PhotoList")]
-    public class PhotoList
+    public class PhotoList : MonoBehaviour
     {
         public List<PhotoData> photos = new List<PhotoData>();
     }

@@ -8,7 +8,7 @@ namespace Phone
     {
         public void ButtonClick()
         {
-            GameManager.galleryButtonPressedEvent(gameObject.GetComponent<RawImage>().texture);
+            GameManager.GalleryButtonPressedEvent(gameObject.GetComponent<RawImage>().texture);
         }
     }
 }
