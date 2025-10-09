@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
 
+[AddComponentMenu("Parkour Game/PlayerNetworkController")]
 public class PlayerNetworkController : MonoBehaviour
 {
     public void ConnectToServer()

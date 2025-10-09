@@ -1,22 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
+
 
 namespace PhotoCamera
 {
+    
+    [AddComponentMenu("Parkour Game/PhotoCamera")]
     public class PhotoCamera : MonoBehaviour
     {
         [SerializeField] private RenderTexture sourceTexture;
-        public GameObject photoCamera;
-        public InputActionReference cycleAction;
-        public InputActionReference takePhotoAction;
         public PhotoImage photoImage;
 
-        void TakePhoto()
+        public void TakePhoto()
         {
+            Debug.Log("Taking Photo");
             // Takes the camera view and saves it to a Texture2D
             Texture2D image = new Texture2D(sourceTexture.width, sourceTexture.height, TextureFormat.RGBA32, false);
             RenderTexture.active = sourceTexture;
@@ -26,20 +22,6 @@ namespace PhotoCamera
 
             // Saves image to file
             photoImage.SaveNewPhoto(image);
-        }
-
-        void Update()
-        {
-            if (takePhotoAction.action.IsPressed() && photoCamera.activeSelf)
-            {
-                //Triggers rapidly - Fix to ony trigger once
-                TakePhoto();
-            }
-
-            if (cycleAction.action.IsPressed())
-            {
-                List<Texture2D> images = photoImage.LoadAllPhotos();
-            }
         }
     }
 }

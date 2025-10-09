@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(PlayerNetworkController))]
 public class PlayerNetworkControllerEditor : Editor
 {
     public override void OnInspectorGUI()

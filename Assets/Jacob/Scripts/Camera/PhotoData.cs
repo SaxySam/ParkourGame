@@ -4,13 +4,17 @@ using UnityEngine;
 namespace PhotoCamera
 {
     [System.Serializable]
-    public class PhotoData
+    
+    [AddComponentMenu("Parkour Game/PhotoData")]
+    public class PhotoData : MonoBehaviour
     {
         public byte[] pngData;
     }
 
     [System.Serializable]
-    public class PhotoList
+    
+    [AddComponentMenu("Parkour Game/PhotoList")]
+    public class PhotoList : MonoBehaviour
     {
         public List<PhotoData> photos = new List<PhotoData>();
     }

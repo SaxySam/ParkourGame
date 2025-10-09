@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Ske131
 {
+    [AddComponentMenu("Parkour Game/DrawGizmo")]
     public class DrawGizmo : MonoBehaviour
     {
         public enum GizmoShape

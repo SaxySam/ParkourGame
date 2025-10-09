@@ -17,23 +17,7 @@ ModelImporter:
     removeConstantScaleCurves: 0
     motionNodeName: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'jump' has import animation warnings that might
-      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
-      retargeting quality.\n\t'Character_rig:mixamorig:LeftUpLeg' has scale animation
-      that will be discarded.\n\t'Character_rig:mixamorig:LeftLeg' has translation
-      animation that will be discarded.\n\t'Character_rig:mixamorig:LeftLeg' has
-      scale animation that will be discarded.\n\t'Character_rig:mixamorig:LeftFoot'
-      has translation animation that will be discarded.\n\t'Character_rig:mixamorig:LeftFoot'
-      has scale animation that will be discarded.\n\t'Character_rig:mixamorig:LeftToeBase'
-      has translation animation that will be discarded.\n\t'Character_rig:mixamorig:LeftToeBase'
-      has scale animation that will be discarded.\n\t'Character_rig:mixamorig:RightUpLeg'
-      has scale animation that will be discarded.\n\t'Character_rig:mixamorig:RightLeg'
-      has translation animation that will be discarded.\n\t'Character_rig:mixamorig:RightLeg'
-      has scale animation that will be discarded.\n\t'Character_rig:mixamorig:RightFoot'
-      has translation animation that will be discarded.\n\t'Character_rig:mixamorig:RightFoot'
-      has scale animation that will be discarded.\n\t'Character_rig:mixamorig:RightToeBase'
-      has translation animation that will be discarded.\n\t'Character_rig:mixamorig:RightToeBase'
-      has scale animation that will be discarded.\n"
+    animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
