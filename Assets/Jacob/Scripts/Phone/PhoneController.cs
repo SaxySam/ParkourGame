@@ -33,7 +33,7 @@ namespace Phone
             GameManager.PhoneOpenEvent -= EnableDisablePhone;
             GameManager.GalleryButtonPressedEvent -= EnlargePhoto;
 #if !UNITY_EDITOR
-                playerInputComponent.actions.FindAction("FirstPersonCamera/Exit").performed += ExitPhone;
+                _playerInputComponent.actions.FindAction("FirstPersonCamera/Exit").performed += ExitPhone;
 #endif
         }
 
