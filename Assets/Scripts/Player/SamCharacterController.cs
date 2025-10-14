@@ -108,6 +108,7 @@ namespace SDK
         public float maxStableMoveSpeed = 10f;
         public float readjustmentSpeed = 0.1f;
         public float accelerationRate = 5f;
+        public float accelerationPowerMultiplier = 2f;
         public float groundMovementFriction = 15;
 
         [EnumButtons] public EOrientationMethod orientationMethod = EOrientationMethod.TowardsMovement;
@@ -129,6 +130,7 @@ namespace SDK
 
         [Space(5)]
         [Header("Jumping")]
+        [EnumButtons] public EJumpType jumpType = EJumpType.VariableHold;
         public bool allowJumpingWhenSliding;
         public bool allowWallJump;
         public bool allowDoubleJump;
@@ -139,7 +141,6 @@ namespace SDK
         public float maxJumpScalableForwardSpeed = 10f;
         public float jumpPreGroundingGraceTime;
         public float jumpPostGroundingGraceTime;
-        [EnumButtons] public EJumpType jumpType = EJumpType.Impulse;
         public float timeForMaxHeightJump = 0.5f;
 
         private float _holdDurationJump;
@@ -654,7 +655,7 @@ namespace SDK
 
                             if (currentVelocity != targetMovementVelocity)
                             {
-                                targetMovementVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, Mathf.Pow(0.5f * accelerationRate, 2));
+                                targetMovementVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, Mathf.Pow(accelerationRate, accelerationPowerMultiplier));
                             }
 
                             // Smooth movement Velocity
@@ -959,6 +960,7 @@ namespace SDK
                     break;
                     #endregion Variable Jump
 
+                case EJumpType.Impulse:
                 default:
                     throw new ArgumentOutOfRangeException();
             }
