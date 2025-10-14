@@ -771,6 +771,7 @@ namespace SDK
             switch (jumpType)
             {
                 #region Impulse Jump
+                //Test commit - Delete this afterwards
                 case EJumpType.Impulse:
 
                     _jumpUpSpeed = maxJumpScalableUpSpeed;
