@@ -88,14 +88,12 @@ MonoBehaviour:
   allowWallJump: 1
   allowDoubleJump: 0
   jumpScaleMultiplier: 1
-  minJumpScalableUpSpeed: 0.5
-  maxJumpScalableUpSpeed: 12.5
-  minJumpScalableForwardSpeed: 0.1
-  maxJumpScalableForwardSpeed: 1
+  startJumpUpSpeed: 6
+  endJumpUpSpeed: 0
   jumpPreGroundingGraceTime: 0.1
   jumpPostGroundingGraceTime: 0.1
+  timeForMaxHeightJump: 0.2
   jumpType: 1
-  timeForMaxHeightJump: 0.15
   enableLaunching: 1
   maxDistanceFromLedge: 2
   minPlayerVelocityToLaunch: 1
@@ -112,7 +110,7 @@ MonoBehaviour:
   startSlideSpeedThreshold: 8
   slideSpeedGain: 20
   minimumSlideSpeed: 0.25
-  slideCooldownTime: 1
+  slideCooldownTime: 1.5
   decelerationRate: 2.5
   gravityMultiplier: 1.5
   movementRestrictionMultiplier: 15
@@ -120,7 +118,7 @@ MonoBehaviour:
   maxAirMoveSpeed: 8
   airAccelerationSpeed: 7.65
   drag: 0.1
-  gravity: {x: 0, y: -60, z: 0}
+  gravity: {x: 0, y: -75, z: 0}
   bonusOrientationMethod: 1
   bonusOrientationSharpness: 10
   meshRoot: {fileID: 1580252296338831588}
@@ -151,7 +149,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   DiscreteCollisionEvents: 0
-  StepHandling: 1
+  StepHandling: 2
   MaxStepHeight: 0.35
   AllowSteppingWithoutStableGrounding: 0
   MinRequiredStepDepth: 0
@@ -666,6 +664,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 5163ea478b13eb342ba7e8b50be1a5e5, type: 3}
       propertyPath: m_Name
       value: PlayerCharacter_Base
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 5163ea478b13eb342ba7e8b50be1a5e5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 5163ea478b13eb342ba7e8b50be1a5e5, type: 3}
       propertyPath: m_Controller
