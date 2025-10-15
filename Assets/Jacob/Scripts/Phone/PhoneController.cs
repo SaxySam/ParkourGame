@@ -61,6 +61,7 @@ namespace Phone
         {
             phonePanel.SetActive(false);
             firstPersonCamera.Priority = 2;
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         public void OpenGallery()
