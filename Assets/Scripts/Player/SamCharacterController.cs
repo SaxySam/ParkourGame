@@ -94,13 +94,18 @@ namespace SDK
         private static readonly int PlayerSpeedX = Animator.StringToHash("PlayerSpeedX");
         private static readonly int PlayerSpeedZ = Animator.StringToHash("PlayerSpeedZ");
         private static readonly int PlayerInputVelocity = Animator.StringToHash("PlayerInputVelocity");
-        private static readonly int Jumping = Animator.StringToHash("Jumping");
-        private static readonly int Falling = Animator.StringToHash("Falling");
+        private static readonly int MotorVelocity = Animator.StringToHash("MotorVelocity");
+        private static readonly int Jumping = Animator.StringToHash("JumpingMovingUp");
+        private static readonly int Falling = Animator.StringToHash("FallingMovingDown");
         private static readonly int Crouching = Animator.StringToHash("Crouching");
         private static readonly int Sliding = Animator.StringToHash("Sliding");
-        private static readonly int MotorVelocity = Animator.StringToHash("MotorVelocity");
         private static readonly int Launch = Animator.StringToHash("Launch");
         private static readonly int Land = Animator.StringToHash("Land");
+        private static readonly int IsGrounded = Animator.StringToHash("IsGrounded");
+        
+        
+        private bool JumpingMovingUp = false;
+        private bool FallingMovingDown = false;
 
 
         [Space(5)]
@@ -735,10 +740,41 @@ namespace SDK
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
-            _linearSpeed = kinematicMotor.Velocity.magnitude;
-            _vectorVelocity = currentVelocity;
+            
             playerAnimator.SetFloat(MotorVelocity, kinematicMotor.Velocity.magnitude);
+            
+            if (kinematicMotor.GroundingStatus.IsStableOnGround)
+            {
+                playerAnimator.SetBool(IsGrounded, true);
+                if (JumpingMovingUp == true || FallingMovingDown == true)
+                {
+                    JumpingMovingUp = false;
+                    FallingMovingDown = false;
+                    playerAnimator.SetBool(Falling, FallingMovingDown);
+                    playerAnimator.SetBool(Jumping, JumpingMovingUp);
+                }
+            }
+            else
+            {
+                float playerVertaclDirection =
+                   Vector3.Dot(kinematicMotor.CharacterUp.normalized, kinematicMotor.Velocity.normalized);
+                Debug.Log($"the vetacal velocity is {playerVertaclDirection}");
+                playerAnimator.SetBool(IsGrounded, false);
+                //checks if there's up velosity will also check if already jump to make shore not redundent
+                if (JumpingMovingUp != true && playerVertaclDirection > 0)
+                {
+                    JumpingMovingUp = true;
+                    playerAnimator.SetTrigger(Jumping);
+                    FallingMovingDown = false;
+
+                }
+                if (FallingMovingDown != true && playerVertaclDirection < 0)
+                {
+                    FallingMovingDown = true;
+                    playerAnimator.SetTrigger(Falling);
+                    JumpingMovingUp = false;
+                }
+            }
         }
 
         #endregion Velocity
