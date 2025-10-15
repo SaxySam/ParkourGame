@@ -107,12 +107,9 @@ namespace SDK
         [Space(5)]
         [Header("Stable Movement")]
         public float maxStableMoveSpeed = 10f;
-        public float readjustmentSpeed = 0.1f;
         public float accelerationRate = 5f;
         public float decelerationRate = 5f;
-        public float accelerationPowerMultiplier = 2f;
-        public float decelerationPowerMultiplier = 2f;
-        [Min(0)] public float groundMovementFriction;
+        [Min(0)] public float groundMovementFriction = 15f;
         // public Vector3 groundMovementFriction;
 
         [EnumButtons] public EOrientationMethod orientationMethod = EOrientationMethod.TowardsMovement;

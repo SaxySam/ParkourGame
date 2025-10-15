@@ -6915,7 +6915,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: accelerationRate
-      value: 3.5
+      value: 2.73
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: decelerationRate
+      value: 0.22
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: orientationMethod
@@ -6923,7 +6927,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: readjustmentSpeed
-      value: 0.25
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: slideCooldownTime
@@ -6931,35 +6935,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: maxStableMoveSpeed
-      value: 12
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: groundMovementFriction
+      value: 15.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
+      propertyPath: bonusOrientationSharpness
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: groundMovementFriction.x
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: groundMovementFriction.y
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: groundMovementFriction.z
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: accelerationPowerMultiplier
-      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: 'ignoredColliders.Array.data[0]'
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: towardsMovementOrientationSharpness
-      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
