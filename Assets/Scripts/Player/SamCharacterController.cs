@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using KinematicCharacterController;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Quaternion = UnityEngine.Quaternion;
@@ -111,9 +112,10 @@ namespace SDK
         [Space(5)]
         [Header("Stable Movement")]
         public float maxStableMoveSpeed = 10f;
-        public float readjustmentSpeed = 0.1f;
         public float accelerationRate = 5f;
-        public float groundMovementFriction = 15;
+        public float decelerationRate = 5f;
+        [Min(0)] public float groundMovementFriction = 15f;
+        // public Vector3 groundMovementFriction;
 
         [EnumButtons] public EOrientationMethod orientationMethod = EOrientationMethod.TowardsMovement;
         public float towardsCameraOrientationSharpness = 50;
@@ -134,6 +136,7 @@ namespace SDK
 
         [Space(5)]
         [Header("Jumping")]
+        [EnumButtons] public EJumpType jumpType = EJumpType.VariableHold;
         public bool allowJumpingWhenSliding;
         public bool allowWallJump;
         public bool allowDoubleJump;
@@ -200,7 +203,7 @@ namespace SDK
         public float slideSpeedGain;
         public float minimumSlideSpeed;
         public float slideCooldownTime = 1f;
-        public float decelerationRate;
+        public float slideDecelerationRate = 2.5f;
         public float gravityMultiplier;
         public float movementRestrictionMultiplier;
         public float maxSlopeDetectionAngle = 45f;
@@ -652,17 +655,17 @@ namespace SDK
                                 _internalMaxSpeed = maxStableMoveSpeed + _internalSlideSpeed;
                             }
                             
-                            float resultantVectorMagnitude = Mathf.Lerp(readjustmentSpeed, _internalMaxSpeed, Mathf.InverseLerp(-1, 1, Vector3.Dot(currentVelocity, reorientedInput)));
-                            targetMovementVelocity = reorientedInput * resultantVectorMagnitude;
-
-                            if (currentVelocity != targetMovementVelocity)
-                            {
-                                targetMovementVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, Mathf.Pow(0.5f * accelerationRate, 2));
-                            }
+                            //gets an acselatration rat depending on how closly aligned input vector and velocity vector align
+                            float acselationToBeApplyed = Mathf.Lerp(decelerationRate, accelerationRate, Mathf.InverseLerp(-1, 1, Vector3.Dot(currentVelocity, reorientedInput)));
+                            // then applys that acselatrion rate to the target input derection to give be added to the current velocity 
+                            currentVelocity += reorientedInput * acselationToBeApplyed;
+                            
 
                             // Smooth movement Velocity
-                            currentVelocity = Vector3.ClampMagnitude(Vector3.Lerp(currentVelocity, targetMovementVelocity, 1 - Mathf.Exp(-groundMovementFriction * deltaTime)), _internalMaxSpeed);
-
+                            currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxStableMoveSpeed);
+ 
+                            currentVelocity  *= 1f / (1f + (groundMovementFriction * deltaTime));
+                            
                         }
 
                         //! Air Movement
@@ -702,7 +705,7 @@ namespace SDK
                                 Debug.Log("<b><color=yellow>Currently Sliding</b>");
                                 playerAnimator.SetBool(Sliding, true);
 
-                                _internalSlideSpeed = Mathf.Lerp(_internalSlideSpeed, 0, decelerationRate * Time.deltaTime);
+                                _internalSlideSpeed = Mathf.Lerp(_internalSlideSpeed, 0, slideDecelerationRate * Time.deltaTime);
                                 
                                 /*if (!OnSlope() || currentVelocity.y > -0.1f)
                                 {
