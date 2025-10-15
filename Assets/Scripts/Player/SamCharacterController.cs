@@ -146,7 +146,7 @@ namespace SDK
         public float jumpPreGroundingGraceTime;
         public float jumpPostGroundingGraceTime;
         public float timeForMaxHeightJump = 0.5f;
-        [EnumButtons] public EJumpType jumpType = EJumpType.Impulse;
+
 
         private float _holdDurationJump;
         private bool _jumpButtonHeld;

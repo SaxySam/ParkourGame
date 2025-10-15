@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1822013801787433035}
   - component: {fileID: 2565790318435667513}
   - component: {fileID: 277347096623532543}
+  - component: {fileID: 5851183439827807944}
   - component: {fileID: 3542459638836523435}
   - component: {fileID: 3621992239204718643}
   m_Layer: 0
@@ -77,14 +78,15 @@ MonoBehaviour:
   kinematicMotor: {fileID: 277347096623532543}
   <CurrentCharacterState>k__BackingField: 0
   playerAnimator: {fileID: 5838343785673483433}
-  maxStableMoveSpeed: 10
-  readjustmentSpeed: 4.2
-  accelerationRate: 1.1
-  groundMovementFriction: 55
+  maxStableMoveSpeed: 50
+  accelerationRate: 3.73
+  decelerationRate: 0.22
+  groundMovementFriction: 15.8
   orientationMethod: 1
   towardsCameraOrientationSharpness: 50
   towardsMovementOrientationSharpness: 15
   playerThirdPersonCamera: {fileID: 8437540174961184467}
+  jumpType: 1
   allowJumpingWhenSliding: 1
   allowWallJump: 1
   allowDoubleJump: 0
@@ -94,7 +96,6 @@ MonoBehaviour:
   jumpPreGroundingGraceTime: 0.1
   jumpPostGroundingGraceTime: 0.1
   timeForMaxHeightJump: 0.2
-  jumpType: 1
   enableLaunching: 1
   maxDistanceFromLedge: 2
   minPlayerVelocityToLaunch: 1
@@ -112,7 +113,7 @@ MonoBehaviour:
   slideSpeedGain: 20
   minimumSlideSpeed: 0.25
   slideCooldownTime: 1.5
-  decelerationRate: 2.5
+  slideDecelerationRate: 2.5
   gravityMultiplier: 1.5
   movementRestrictionMultiplier: 15
   maxSlopeDetectionAngle: 45
@@ -121,7 +122,7 @@ MonoBehaviour:
   drag: 0.1
   gravity: {x: 0, y: -75, z: 0}
   bonusOrientationMethod: 1
-  bonusOrientationSharpness: 10
+  bonusOrientationSharpness: 1
   meshRoot: {fileID: 1580252296338831588}
   cameraFollowPoint: {fileID: 4001791145642714313}
   useFramePerfectRotation: 0
@@ -169,6 +170,24 @@ MonoBehaviour:
   CheckMovementInitialOverlaps: 1
   KillVelocityWhenExceedMaxMovementIterations: 1
   KillRemainingMovementWhenExceedMaxMovementIterations: 1
+--- !u!114 &5851183439827807944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606752517965790641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ea3a01d53536dd44862f88c0aa3b6bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gizmoShape: 0
+  rayDirection: 1
+  gizmoColor: {r: 1, g: 1, b: 1, a: 1}
+  gizmoOffset: {x: 0, y: 0, z: 0}
+  gizmoScale: 1
+  matchObjectLocalScale: 0
 --- !u!114 &3542459638836523435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -784,7 +803,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 5163ea478b13eb342ba7e8b50be1a5e5, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 5163ea478b13eb342ba7e8b50be1a5e5, type: 3}
       propertyPath: m_Controller
