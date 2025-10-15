@@ -764,15 +764,15 @@ namespace SDK
                 if (JumpingMovingUp != true && playerVertaclDirection > 0)
                 {
                     JumpingMovingUp = true;
-                    playerAnimator.SetTrigger(Jumping);
                     FallingMovingDown = false;
+                    playerAnimator.SetTrigger(Jumping);
 
                 }
                 if (FallingMovingDown != true && playerVertaclDirection < 0)
                 {
                     FallingMovingDown = true;
-                    playerAnimator.SetTrigger(Falling);
                     JumpingMovingUp = false;
+                    playerAnimator.SetTrigger(Falling);
                 }
             }
         }
