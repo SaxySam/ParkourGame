@@ -638,7 +638,6 @@ namespace SDK
                         if (kinematicMotor.GroundingStatus.IsStableOnGround)
                         {
                             // Reorient source velocity on current ground slope (this is because we don't want our smoothing to cause any velocity losses in slope changes)
-                            
                             currentVelocity = kinematicMotor.GetDirectionTangentToSurface(currentVelocity, kinematicMotor.GroundingStatus.GroundNormal) * currentVelocity.magnitude;
 
                             // Calculate target velocity
@@ -655,22 +654,17 @@ namespace SDK
                                 _internalMaxSpeed = maxStableMoveSpeed + _internalSlideSpeed;
                             }
                             
-                            float resultantVectorMagnitude = Mathf.Lerp(readjustmentSpeed, _internalMaxSpeed, Mathf.InverseLerp(-1, 1, Vector3.Dot(currentVelocity, reorientedInput)));
-                            targetMovementVelocity = reorientedInput * resultantVectorMagnitude;
+                            //gets an acselatration rat depending on how closly aligned input vector and velocity vector align
+                            float acselationToBeApplyed = Mathf.Lerp(decelerationRate, accelerationRate, Mathf.InverseLerp(-1, 1, Vector3.Dot(currentVelocity, reorientedInput)));
+                            // then applys that acselatrion rate to the target input derection to give be added to the current velocity 
+                            currentVelocity += reorientedInput * acselationToBeApplyed;
                             
 
-                            if (currentVelocity != targetMovementVelocity)
-                            {
-                                targetMovementVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, Mathf.Approximately(targetMovementVelocity.magnitude, 0) ? Mathf.Pow(decelerationRate, decelerationPowerMultiplier) : Mathf.Pow(accelerationRate, accelerationPowerMultiplier));
-                            }
-
                             // Smooth movement Velocity
-                            currentVelocity = Vector3.ClampMagnitude(Vector3.Lerp(currentVelocity, targetMovementVelocity, 1 - Mathf.Exp(-groundMovementFriction * deltaTime)), _internalMaxSpeed);
+                            currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxStableMoveSpeed);
  
                             currentVelocity  *= 1f / (1f + (groundMovementFriction * deltaTime));
                             
-                            
-
                         }
 
                         //! Air Movement
