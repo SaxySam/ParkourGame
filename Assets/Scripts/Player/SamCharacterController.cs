@@ -185,6 +185,7 @@ namespace SDK
 
         [Space(5)]
         [Header("Sliding")]
+        public bool enableSliding = true;
         public float startSlideSpeedThreshold;
         public float slideSpeedMultiplier;
         public float minimumSlideSpeed;
@@ -424,7 +425,7 @@ namespace SDK
 
                             if (!_isCrouching)
                             {
-                                if (kinematicMotor.Velocity.magnitude >= startSlideSpeedThreshold)
+                                if (kinematicMotor.Velocity.magnitude >= startSlideSpeedThreshold && enableSliding)
                                 {
                                     if (Time.time - _lastSlideTime >= slideCooldownTime)
                                     {
@@ -635,16 +636,7 @@ namespace SDK
                             Vector3 inputRight = Vector3.Cross(_multipliedMoveInputVector, kinematicMotor.CharacterUp);
                             Vector3 reorientedInput = Vector3.Cross(kinematicMotor.GroundingStatus.GroundNormal, inputRight).normalized * _multipliedMoveInputVector.magnitude;
 
-                            //! Crouched Speeds
-                            if (_isSliding)
-                            {
-                                _internalMaxSpeed = _internalSlideSpeed;
-                                Debug.Log($"Sliding Speed {_internalMaxSpeed}");
-                            }
-                            else
-                            {
-                                _internalMaxSpeed = _isCrouching ? maxCrouchSpeed : maxStableMoveSpeed;
-                            }
+                            _internalMaxSpeed = _isCrouching ? maxCrouchSpeed : maxStableMoveSpeed;
 
                             // Gets an acceleration rate depending on how closely the input and velocity vectors align
                             float accelerationToBeApplied = Mathf.Lerp(decelerationRate, accelerationRate, Mathf.InverseLerp(-1, 1, Vector3.Dot(currentVelocity, reorientedInput)));
@@ -688,7 +680,7 @@ namespace SDK
                         }
                         
                         //! Handle Sliding
-                        HandleSlide();
+                        if (enableSliding) currentVelocity = HandleSlide(currentVelocity, deltaTime);
                         
                         //! Handle jumping
                         currentVelocity = HandleJump(currentVelocity, deltaTime);
@@ -737,7 +729,7 @@ namespace SDK
         }
 
         #region  Sliding
-        private void HandleSlide()
+        private Vector3 HandleSlide(Vector3 currentVelocity, float deltaTime)
         {
             switch (_isSliding)
             {
@@ -747,16 +739,16 @@ namespace SDK
                     Debug.Log("<b><color=yellow>Currently Sliding</b>");
                     playerAnimator.SetBool(Sliding, true);
 
-                    _internalSlideSpeed = Mathf.Lerp(_internalSlideSpeed, 0, slideDecelerationRate * Time.deltaTime);
+                    _internalSlideSpeed = Mathf.Lerp(_internalSlideSpeed, 0, slideDecelerationRate * deltaTime);
                                 
                     /*if (!OnSlope() || currentVelocity.y > -0.1f)
-                                {
-                                    
-                                }
-                                else
-                                {
-                                    _internalSlideSpeed = minimumSlideSpeed + (decelerationRate * Time.deltaTime);
-                                }*/
+                    {
+                        
+                    }
+                    else
+                    {
+                        _internalSlideSpeed = minimumSlideSpeed + (decelerationRate * Time.deltaTime);
+                    }*/
                                 
                     _internalOrientationSharpness = towardsMovementOrientationSharpness / movementRestrictionMultiplier;
                     if (_internalSlideSpeed <= minimumSlideSpeed)
@@ -767,6 +759,8 @@ namespace SDK
                         _internalSlideSpeed = maxStableMoveSpeed * slideSpeedMultiplier;
                         _internalOrientationSharpness = towardsMovementOrientationSharpness;
                     }
+                    
+                    currentVelocity += Vector3.forward * _internalSlideSpeed;
 
                     break;
                 }
@@ -774,6 +768,8 @@ namespace SDK
                     kinematicMotor.SetCapsuleDimensions(_normalCapsuleSize.x, _normalCapsuleSize.y, _normalCapsuleSize.z);
                     break;
             }
+            
+            return currentVelocity;
         }
         
         #endregion Sliding
@@ -884,7 +880,6 @@ namespace SDK
 
                     if (_launchConsumed && _launchActivated)
                     {
-
                         _holdDurationLaunch = Mathf.Clamp(_holdDurationLaunch + Time.fixedDeltaTime, 0, timeForMaxDistanceLaunch);
 
                         if (_holdDurationLaunch >= timeForMaxDistanceLaunch)
