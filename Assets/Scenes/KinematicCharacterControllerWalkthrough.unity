@@ -6817,10 +6817,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCharacter
       objectReference: {fileID: 0}
-    - target: {fileID: 606752517965790641, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
     - target: {fileID: 681085190567068259, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -6860,50 +6856,6 @@ PrefabInstance:
     - target: {fileID: 681085190567068259, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: enableSliding
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: maxCrouchSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: accelerationRate
-      value: 3.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: decelerationRate
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: minimumSlideSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: slideSpeedMultiplier
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: crouchedJumpMultiplier
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: groundMovementFriction
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: startSlideSpeedThreshold
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: movementRestrictionMultiplier
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3621992239204718643, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: m_Time
-      value: 2.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

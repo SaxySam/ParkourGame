@@ -684,6 +684,7 @@ namespace SDK
                         
                         //! Handle jumping
                         currentVelocity = HandleJump(currentVelocity, deltaTime);
+                        
                         break;
                     }
                 case ECharacterState.PhoneMode:
@@ -736,7 +737,6 @@ namespace SDK
                 //! Sliding
                 case true:
                 {
-                    Debug.Log("<b><color=yellow>Currently Sliding</b>");
                     playerAnimator.SetBool(Sliding, true);
 
                     _internalSlideSpeed = Mathf.Lerp(_internalSlideSpeed, 0, slideDecelerationRate * deltaTime);
@@ -751,6 +751,8 @@ namespace SDK
                     }*/
                                 
                     _internalOrientationSharpness = towardsMovementOrientationSharpness / movementRestrictionMultiplier;
+                    currentVelocity = gameObject.transform.forward * _internalSlideSpeed;
+                    
                     if (_internalSlideSpeed <= minimumSlideSpeed)
                     {
                         Debug.Log("<b><color=green>Finished Sliding</b>");
@@ -760,7 +762,7 @@ namespace SDK
                         _internalOrientationSharpness = towardsMovementOrientationSharpness;
                     }
                     
-                    currentVelocity += Vector3.forward * _internalSlideSpeed;
+                    // Debug.Log($"<b><color=yellow>Currently Sliding, Speed: {currentVelocity.magnitude}</b>");
 
                     break;
                 }
@@ -772,10 +774,6 @@ namespace SDK
             return currentVelocity;
         }
         
-        #endregion Sliding
-
-        #endregion Velocity
-
         private bool OnSlope()
         {
             if (!Physics.Raycast(transform.position,
@@ -793,6 +791,10 @@ namespace SDK
         {
             return Vector3.ProjectOnPlane(moveDirection, _slopeOutHit.normal).normalized;
         }
+        #endregion Sliding
+
+        #endregion Velocity
+
 
         #region Jumping
 
