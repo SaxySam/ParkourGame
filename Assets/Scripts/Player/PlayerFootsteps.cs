@@ -4,11 +4,12 @@ using System.Collections;
 
 namespace SDK
 {
-    public class PlayerParticleEffects : MonoBehaviour
+    public class PlayerFootsteps : MonoBehaviour
     {
         public void PlayFootstepParticle(ParticleSystem footstepParticle)
         {
             footstepParticle.Play();
+            //Play Wwise Footstep
         }
 
         public void PlayLandParticle(ParticleSystem landParticle)
