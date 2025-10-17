@@ -30,24 +30,25 @@ namespace Ske131
 
         public GizmoShape gizmoShape;
         [EnumButtons] public RayDirection rayDirection;
+        public bool useLocalSpace;
         public Color gizmoColor = Color.white;
         public Vector3 gizmoOffset = Vector3.zero;
         public float gizmoScale = 1f;
         public bool matchObjectLocalScale;
         private Vector3 _direction = Vector3.zero;
 
-        void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
             Gizmos.color = gizmoColor;
 
             _direction = rayDirection switch
             {
-                RayDirection.Up => Vector3.up,
-                RayDirection.Down => Vector3.down,
-                RayDirection.Left => Vector3.left,
-                RayDirection.Right => Vector3.right,
-                RayDirection.Forward => Vector3.forward,
-                RayDirection.Back => Vector3.back,
+                RayDirection.Up => useLocalSpace ? gameObject.transform.up : Vector3.up,
+                RayDirection.Down => useLocalSpace ? -gameObject.transform.up : Vector3.down,
+                RayDirection.Right => useLocalSpace ? gameObject.transform.right : Vector3.right,
+                RayDirection.Left => useLocalSpace ? -gameObject.transform.right : Vector3.left,
+                RayDirection.Forward => useLocalSpace ? gameObject.transform.forward : Vector3.forward,
+                RayDirection.Back => useLocalSpace ? -gameObject.transform.forward : Vector3.back,
                 _ => throw new ArgumentOutOfRangeException()
             };
 

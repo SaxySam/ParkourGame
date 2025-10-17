@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3621992239204718643}
   m_Layer: 0
   m_Name: PlayerCharacter
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,23 +79,22 @@ MonoBehaviour:
   <CurrentCharacterState>k__BackingField: 0
   playerAnimator: {fileID: 5838343785673483433}
   maxStableMoveSpeed: 50
-  accelerationRate: 3.73
-  decelerationRate: 0.22
-  groundMovementFriction: 15.8
+  accelerationRate: 3.75
+  decelerationRate: 0.25
+  groundMovementFriction: 16
   orientationMethod: 1
   towardsCameraOrientationSharpness: 50
   towardsMovementOrientationSharpness: 15
   playerThirdPersonCamera: {fileID: 8437540174961184467}
-  jumpType: 1
   allowJumpingWhenSliding: 1
   allowWallJump: 1
   allowDoubleJump: 0
   jumpScaleMultiplier: 1
   startJumpUpSpeed: 6
   endJumpUpSpeed: 0
+  timeForMaxHeightJump: 0.2
   jumpPreGroundingGraceTime: 0.1
   jumpPostGroundingGraceTime: 0.1
-  timeForMaxHeightJump: 0.2
   enableLaunching: 1
   maxDistanceFromLedge: 2
   minPlayerVelocityToLaunch: 1
@@ -106,16 +105,18 @@ MonoBehaviour:
   maxLaunchScalableUpSpeed: 10
   minLaunchScalableForwardSpeed: 0.1
   maxLaunchScalableForwardSpeed: 2
-  maxCrouchSpeed: 3
+  maxCrouchSpeed: 5
   enableSquishyCrouch: 1
   crouchedCapsuleHeightDivisor: 2
+  crouchedJumpMultiplier: 0.75
+  enableSliding: 0
   startSlideSpeedThreshold: 8
-  slideSpeedGain: 20
-  minimumSlideSpeed: 0.25
+  slideSpeedMultiplier: 1.1
+  minimumSlideSpeed: 5
   slideCooldownTime: 1.5
-  slideDecelerationRate: 2.5
+  slideDecelerationRate: 1.5
   gravityMultiplier: 1.5
-  movementRestrictionMultiplier: 15
+  movementRestrictionMultiplier: 10
   maxSlopeDetectionAngle: 45
   maxAirMoveSpeed: 8
   airAccelerationSpeed: 7.65
@@ -183,7 +184,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gizmoShape: 0
-  rayDirection: 1
+  rayDirection: 4
+  useLocalSpace: 1
   gizmoColor: {r: 1, g: 1, b: 1, a: 1}
   gizmoOffset: {x: 0, y: 0, z: 0}
   gizmoScale: 1
@@ -387,7 +389,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 5
+  m_Time: 2.5
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
