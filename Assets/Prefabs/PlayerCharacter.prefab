@@ -90,9 +90,9 @@ MonoBehaviour:
   allowWallJump: 1
   allowDoubleJump: 0
   jumpScaleMultiplier: 1
-  startJumpUpSpeed: 6
+  startJumpUpSpeed: 3.23
   endJumpUpSpeed: 0
-  timeForMaxHeightJump: 0.2
+  timeForMaxHeightJump: 0.3
   jumpPreGroundingGraceTime: 0.1
   jumpPostGroundingGraceTime: 0.1
   enableLaunching: 1
@@ -121,7 +121,7 @@ MonoBehaviour:
   maxAirMoveSpeed: 8
   airAccelerationSpeed: 7.65
   drag: 0.1
-  gravity: {x: 0, y: -75, z: 0}
+  gravity: {x: 0, y: -58.2, z: 0}
   bonusOrientationMethod: 1
   bonusOrientationSharpness: 1
   meshRoot: {fileID: 1580252296338831588}
