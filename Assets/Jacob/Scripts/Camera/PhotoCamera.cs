@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace PhotoCamera
 {
+    
+    [AddComponentMenu("Parkour Game/PhotoCamera")]
     public class PhotoCamera : MonoBehaviour
     {
         [SerializeField] private RenderTexture sourceTexture;
@@ -23,11 +25,6 @@ namespace PhotoCamera
 
             // Saves image to file
             photoImage.SaveNewPhoto(image);
-        }
-
-        void Update()
-        {
-
         }
     }
 }

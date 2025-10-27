@@ -152,7 +152,8 @@ namespace KinematicCharacterController
     /// <summary>
     /// Component that manages character collisions and movement solving
     /// </summary>
-     
+
+    [AddComponentMenu("Parkour Game/KinematicCharacterMotor")]
     [RequireComponent(typeof(CapsuleCollider))]
     
     public class KinematicCharacterMotor : MonoBehaviour
@@ -173,19 +174,19 @@ namespace KinematicCharacterController
         /// </summary>
         [SerializeField]
         [Tooltip("Radius of the Character Capsule")]
-        private float CapsuleRadius = 0.5f;
+        public float CapsuleRadius = 0.5f;
         /// <summary>
         /// Height of the character's capsule
         /// </summary>
         [SerializeField]
         [Tooltip("Height of the Character Capsule")]
-        private float CapsuleHeight = 2f;
+        public float CapsuleHeight = 2f;
         /// <summary>
         /// Local y position of the character's capsule center
         /// </summary>
         [SerializeField]
         [Tooltip("Height of the Character Capsule")]
-        private float CapsuleYOffset = 1f;
+        public float CapsuleYOffset = 1f;
         /// <summary>
         /// Physics material of the character's capsule
         /// </summary>

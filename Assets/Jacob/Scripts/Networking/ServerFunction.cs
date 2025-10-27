@@ -1,6 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
+[AddComponentMenu("Parkour Game/ServerFunction")]
 public class ServerFunction : NetworkBehaviour
 {
     [Rpc(SendTo.Server)]

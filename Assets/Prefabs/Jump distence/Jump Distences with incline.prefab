@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4735269723325537898
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 213058083813864213, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_VersionIndex
+      value: 2682
+      objectReference: {fileID: 0}
+    - target: {fileID: 222995924039264928, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_VersionIndex
+      value: 2688
+      objectReference: {fileID: 0}
+    - target: {fileID: 580515706368755415, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_VersionIndex
+      value: 2688
+      objectReference: {fileID: 0}
+    - target: {fileID: 712331097221717858, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_VersionIndex
+      value: 2682
+      objectReference: {fileID: 0}
+    - target: {fileID: 4540265248782837051, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 4557123105835820035, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 5365107762895583318, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 19.679863
+      objectReference: {fileID: 0}
+    - target: {fileID: 5365107762895583318, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5365107762895583318, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 29.61549
+      objectReference: {fileID: 0}
+    - target: {fileID: 5365107762895583318, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5365107762895583318, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5365107762895583318, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5365107762895583318, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5365107762895583318, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5365107762895583318, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5365107762895583318, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6040657116466427674, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6426128023301358296, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7280116826814958715, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_VersionIndex
+      value: 2688
+      objectReference: {fileID: 0}
+    - target: {fileID: 7292541448765279555, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_VersionIndex
+      value: 2682
+      objectReference: {fileID: 0}
+    - target: {fileID: 7934904696202534924, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_VersionIndex
+      value: 2688
+      objectReference: {fileID: 0}
+    - target: {fileID: 7935929298058928436, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_VersionIndex
+      value: 2682
+      objectReference: {fileID: 0}
+    - target: {fileID: 8104389996403636193, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
+      propertyPath: m_Name
+      value: Jump Distences with incline
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b9b333043e2bf4860b2a456d6017541d, type: 3}
