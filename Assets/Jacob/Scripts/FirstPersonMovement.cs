@@ -156,7 +156,7 @@ namespace PhotoCamera
         private void TakePhoto(InputAction.CallbackContext context)
         {
             Debug.Log("Take Photo");
-            if (_photoCamera == null)
+            if (_photoCamera != null && _canTakePhoto())
             {
                 _photoCamera.TakePhoto();
             }

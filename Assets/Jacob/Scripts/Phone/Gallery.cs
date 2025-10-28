@@ -12,7 +12,7 @@ namespace Phone
         public GameObject imagePrefab;
         public GameObject contentArea;
 
-        private readonly List<GameObject> _photosInGallery = new List<GameObject>();
+        private List<GameObject> _photosInGallery = new List<GameObject>();
         private float _sizePerImage = 0;
 
         private void Start()
