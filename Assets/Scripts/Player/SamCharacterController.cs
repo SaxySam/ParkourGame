@@ -1092,6 +1092,7 @@ namespace SDK
         {
             Debug.Log("<b><color=cyan>Landed</b>");
             playerAnimator.SetBool(Falling, false);
+            GameManager.PlayerLandedEvent();
         }
 
         private static void OnLeaveStableGround()
