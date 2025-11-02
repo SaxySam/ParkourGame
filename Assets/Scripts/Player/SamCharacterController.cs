@@ -450,6 +450,11 @@ namespace SDK
                                 }
 
                             }
+                            else
+                            {
+                                GameManager.SlideStopEvent();
+                            }
+                            
                         }
                         else
                         {

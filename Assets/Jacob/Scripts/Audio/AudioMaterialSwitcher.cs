@@ -26,21 +26,22 @@ namespace Audio
 
         void OnTriggerEnter(Collider other)
         {
+            GameObject audioPoint = GameObject.Find("CameraFollowPoint");
             if (other.CompareTag("Player"))
             {
                 switch (materialToSwitchTo)
                 {
                 case MaterialTypes.Concrete:
-                    AkUnitySoundEngine.SetSwitch("Run", "Conc", other.gameObject);
-
+                    AkUnitySoundEngine.SetSwitch("Run", "Conc", audioPoint);
+                    AkUnitySoundEngine.SetSwitch("Land", "Conc", audioPoint);
                     break;
                 case MaterialTypes.Metal:
-                    AkUnitySoundEngine.SetSwitch("Run", "Metal", other.gameObject);
-
+                    AkUnitySoundEngine.SetSwitch("Run", "Metal", audioPoint);
+                    AkUnitySoundEngine.SetSwitch("Land", "Metal", audioPoint);
                     break;
                 case MaterialTypes.Wood:
-                    AkUnitySoundEngine.SetSwitch("Run", "Wood", other.gameObject);
-
+                    AkUnitySoundEngine.SetSwitch("Run", "Wood", audioPoint);
+                    AkUnitySoundEngine.SetSwitch("Land", "Wood", audioPoint);
                     break;
                 }
             }

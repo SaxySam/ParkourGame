@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public delegate void OnGalleryButtonPressed(Texture texture);
 
     public delegate void OnPlayerLanded();
+    public delegate void OnSlideStop();
 
     public static OnPhoneOpen PhoneOpenEvent;
     public static OnGalleryOpen GalleryOpenEvent;
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     public static OnGalleryButtonPressed GalleryButtonPressedEvent;
     
     public static OnPlayerLanded PlayerLandedEvent;
+    public static OnSlideStop SlideStopEvent;
 
     void Start()
     {

@@ -11,6 +11,7 @@ namespace Audio
         private void OnEnable()
         {
             GameManager.PlayerLandedEvent += OnLand;
+            GameManager.SlideStopEvent += OnStopSlide;
         }
 
         void Start()

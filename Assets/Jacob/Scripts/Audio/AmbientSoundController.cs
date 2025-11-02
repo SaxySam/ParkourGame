@@ -11,8 +11,6 @@ namespace Audio
     
     public class AmbientSoundController : MonoBehaviour
     {
-        public GameObject player;
-        
         public SoundType soundType =  SoundType.Bird;
         
         private uint _soundId;
