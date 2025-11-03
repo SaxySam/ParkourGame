@@ -15,7 +15,7 @@ namespace Phone
         private List<GameObject> _photosInGallery = new List<GameObject>();
         private float _sizePerImage = 0;
 
-        private void Start()
+        private void Awake()
         {
             Debug.Log("Gallery subscribing to galleryOpenEvent");
             GameManager.GalleryOpenEvent += CreateGalleryList;

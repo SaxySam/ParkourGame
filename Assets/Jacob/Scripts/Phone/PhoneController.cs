@@ -73,6 +73,13 @@ namespace Phone
             GameManager.GalleryOpenEvent();
         }
 
+        public void CloseGallery()
+        {
+            galleryPanel.SetActive(false);
+            phonePanel.SetActive(true);
+            GameManager.GalleryCloseEvent();
+        }
+
         public void EnableDisablePhone()
         {
             if (phonePanel.activeSelf)
