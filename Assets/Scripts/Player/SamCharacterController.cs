@@ -122,8 +122,6 @@ namespace SDK
         [Space(5)]
         [Header("Jumping")]
         public bool allowJumpingWhenSliding;
-        public bool allowWallJump;
-        public bool allowDoubleJump;
         public float jumpScaleMultiplier = 1f;
         public float startJumpUpSpeed = 2.5f;
         public float endJumpUpSpeed = 10f;
@@ -142,9 +140,6 @@ namespace SDK
         private float _timeSinceLastAbleToJump;
         private bool _jumpingMovingUp;
         private bool _fallingMovingDown;
-        private bool _doubleJumpConsumed;
-        private bool _canWallJump;
-        private Vector3 _wallJumpNormal;
         private Vector3 _jumpDirection = Vector3.zero;
 
 
@@ -198,6 +193,38 @@ namespace SDK
         private bool _isSliding;
         private float _internalSlideSpeed;
         private float _lastSlideTime;
+        
+        
+        [Header("Wall Running")]
+        public bool enableWallRunning;
+        public LayerMask wallLayer;
+        public LayerMask groundLayer;
+        public float wallRunSpeed;
+        private bool _wallRunning;
+        public float maxWallRunTime;
+        private float _wallRunTimer;
+        public float wallCheckDistance;
+        public float minJumpHeight;
+        public bool useGravity;
+        public float wallRunGravity;
+        public Transform playerOrientation;
+        private RaycastHit _leftWallCheckHit;
+        private RaycastHit _rightWallCheckHit;
+        private bool _wallLeft;
+        private bool _wallRight;
+        private bool _wallForward;
+        
+        
+        [Header("Wall Jumping")]
+        public bool enableWallJump;
+        public bool snapToWall;
+        public float wallJumpUpForce;
+        public float wallJumpSideForce;
+        public float exitWallTime;
+        private bool _wallJumpConsumed;
+        private bool _wallCheckRadius;
+        private bool _exitingWall = false;
+        private float _exitWallTimer;
 
 
         [Header("Air Movement")]
@@ -210,6 +237,7 @@ namespace SDK
         [Space(5)]
         [Header("Gravity")]
         public Vector3 gravity = new(0, -30f, 0);
+        private Vector3 _internalGravity;
         public EBonusOrientationMethod bonusOrientationMethod = EBonusOrientationMethod.TowardsGravity;
         public float bonusOrientationSharpness = 10;
 
@@ -221,6 +249,7 @@ namespace SDK
         public bool useFramePerfectRotation;
         public List<Collider> ignoredColliders = new();
         private readonly Collider[] _probedColliders = new Collider[8];
+        private Rigidbody _rigidbody;
 
         #endregion Class Declarations
 
@@ -301,6 +330,8 @@ namespace SDK
             _normalCapsuleSize = new Vector3(kinematicMotor.CapsuleRadius, kinematicMotor.CapsuleHeight, kinematicMotor.CapsuleYOffset);
             _crouchedCapsuleSize = new Vector3(kinematicMotor.CapsuleRadius,  kinematicMotor.CapsuleHeight / crouchedCapsuleHeightDivisor,  kinematicMotor.CapsuleYOffset / crouchedCapsuleHeightDivisor);
             _lastSlideTime = 0;
+            _internalGravity = gravity;
+            _rigidbody = gameObject.GetComponent<Rigidbody>();
         }
 
         /// <summary>
@@ -691,6 +722,15 @@ namespace SDK
                         //! Handle jumping
                         currentVelocity = HandleJump(currentVelocity, deltaTime);
                         
+                        //! Handle Wall Running
+
+                        if (enableWallRunning)
+                        {
+                            WallRunningStateMachine(currentVelocity, deltaTime);
+                            CheckForWall();
+                            if (_wallRunning) currentVelocity = WallRunningMovement(currentVelocity, deltaTime);
+                        }
+                        
                         break;
                     }
                 case ECharacterState.PhoneMode:
@@ -802,7 +842,6 @@ namespace SDK
 
         #endregion Velocity
 
-
         #region Jumping
 
         private Vector3 HandleJump(Vector3 currentVelocity, float deltaTime)
@@ -822,7 +861,23 @@ namespace SDK
                     {
                         if (!_jumpConsumed)
                         {
-                            if (kinematicMotor.GroundingStatus.IsStableOnGround || _timeSinceLastAbleToJump <= jumpPostGroundingGraceTime)
+                            if ((_wallCheckRadius) && _moveInputVector.z > 0 && AboveGround() && enableWallJump)
+                            {
+                                _exitingWall = true;
+                                _exitWallTimer = exitWallTime;
+                                
+                                Vector3 wallNormal = _wallRight ? _rightWallCheckHit.normal : _leftWallCheckHit.normal;
+                                Vector3 forceToApply = transform.up * wallJumpUpForce + wallNormal * wallJumpSideForce;
+                                _jumpDirection = forceToApply;
+
+                                _wallRunning = false;
+                                _wallJumpConsumed = true;
+                                _jumpRequested = false;
+                                _jumpConsumed = true;
+                                _jumpedThisFrame = true;
+            
+                            }
+                            else if (kinematicMotor.GroundingStatus.IsStableOnGround || _timeSinceLastAbleToJump <= jumpPostGroundingGraceTime)
                             {
                                 //Jump
                                 _jumpDirection = Vector3.up;
@@ -839,7 +894,37 @@ namespace SDK
                         }
                     }
 
-                    if (_jumpButtonHeld && _jumpConsumed)
+                    if (_wallJumpConsumed)
+                    {
+                        Debug.Log("Wall Jump");
+                        _jumpedThisFrame = false;
+                        _timeSinceJumpRequested += deltaTime;
+                        
+                        // Calculate jump direction before 
+                        gameObject.transform.rotation = Quaternion.LookRotation(_jumpDirection);
+
+                        // Makes the character skip ground probing/snapping on its next update.
+                        // If this line weren't here, the character would remain snapped to the ground when trying to jump.
+                        // Try commenting this line out and see.
+                        kinematicMotor.ForceUnground(0.1f);
+
+                        // Add to the return velocity and reset jump state
+                        currentVelocity += (_jumpDirection * startJumpUpSpeed) - Vector3.Project(currentVelocity, kinematicMotor.CharacterUp);
+                        _jumpRequested = false;
+                        _jumpConsumed = true;
+                        _jumpedThisFrame = true;
+
+                        // Reset wall jump
+                        _wallJumpConsumed = false;
+
+                        // Take into account additive velocity
+                        if (_internalVelocityAdd.sqrMagnitude > 0f)
+                        {
+                            currentVelocity += _internalVelocityAdd;
+                            _internalVelocityAdd = Vector3.zero;
+                        }
+                    }
+                    else if (_jumpButtonHeld && _jumpConsumed)
                     {
                         _holdDurationJump = Mathf.Clamp(_holdDurationJump + Time.fixedDeltaTime, 0, timeForMaxHeightJump);
 
@@ -968,6 +1053,118 @@ namespace SDK
         }
 
         #endregion Launching
+        
+        #region Wall Running
+        
+        private void CheckForWall()
+        {
+            _wallForward = Physics.Raycast(transform.position, playerOrientation.forward, out _rightWallCheckHit, wallCheckDistance, wallLayer);
+            _wallRight = Physics.Raycast(transform.position, playerOrientation.right, out _rightWallCheckHit, wallCheckDistance, wallLayer);
+            _wallLeft = Physics.Raycast(transform.position, -playerOrientation.right, out _leftWallCheckHit, wallCheckDistance, wallLayer);
+            _wallCheckRadius = Physics.CheckSphere(transform.position, wallCheckDistance, wallLayer);
+        }
+
+        private bool AboveGround()
+        {
+            return !kinematicMotor.LastGroundingStatus.IsStableOnGround && !Physics.Raycast(transform.position, Vector3.down, minJumpHeight, groundLayer);
+        }
+
+        private void WallRunningStateMachine(Vector3 currentVelocity, float deltaTime)
+        {
+            // _moveInputVector.x = horz
+            // _moveInputVector.z = vert
+            
+            // Wall Running
+            if ((_wallLeft || _wallRight ) && _moveInputVector.z > 0 && AboveGround() && !_exitingWall)
+            {
+                //Start Wall run
+                if (!_wallRunning)
+                {
+                    StartWallRun();
+                }
+
+                if (_wallRunTimer > 0)
+                {
+                    _wallRunTimer -= deltaTime;
+                }
+
+                if (_wallRunTimer <= 0 && _wallRunning)
+                {
+                    _exitingWall = true;
+                    _exitWallTimer = exitWallTime;
+                }
+            }
+            
+            // Exiting Wall Running
+            else if (_exitingWall)
+            {
+                if (_wallRunning)
+                {
+                    StopWallRun();
+                }
+
+                if (_exitWallTimer > 0)
+                {
+                    _exitWallTimer -= deltaTime;
+                }
+
+                if (_exitWallTimer <= 0)
+                {
+                    _exitingWall = false;
+                }
+                
+            }
+
+            // Stop Wall Running
+            else
+            {
+                StopWallRun();
+            }
+        }
+
+        private void StartWallRun()
+        {
+            _wallRunning = true;
+            _internalMaxSpeed = wallRunSpeed;
+
+            _wallRunTimer = maxWallRunTime;
+        }
+
+        private Vector3 WallRunningMovement(Vector3 currentVelocity, float deltaTime)
+        {
+            gravity = Vector3.zero;
+            Vector3 wallNormal = _wallRight ? _rightWallCheckHit.normal : _leftWallCheckHit.normal;
+
+            Vector3 wallForward = Vector3.Cross(wallNormal, transform.up);
+
+            if ((playerOrientation.forward - wallForward).magnitude > (playerOrientation.forward - (-wallForward)).magnitude)
+            {
+                wallForward = -wallForward;
+            }
+
+            // // Push into wall
+            if (snapToWall)
+            {
+                if (!(_wallLeft && _moveInputVector.x > 0) && !(_wallRight && _moveInputVector.x < 0))
+                {
+                    Vector3.MoveTowards(this.gameObject.transform.position, -wallNormal, deltaTime * wallRunSpeed);
+                    // _rigidbody.AddForce(-wallNormal * 100, ForceMode.Force);
+                }
+            }
+            
+            return (playerOrientation.forward * _internalMaxSpeed) +
+                   (useGravity ? transform.up * wallRunGravity : Vector3.zero);
+
+        }
+        
+        private void StopWallRun()
+        {
+            _wallRunning = false;
+            gravity = _internalGravity;
+            _internalMaxSpeed = maxStableMoveSpeed;
+        }
+        
+        #endregion Wall Running
 
         #region Post-Update
         /// <summary>
@@ -995,7 +1192,7 @@ namespace SDK
                                 // If we're on a ground surface, reset jumping values
                                 if (!_jumpedThisFrame)
                                 {
-                                    _doubleJumpConsumed = false;
+                                    _wallJumpConsumed = false;
                                     _jumpConsumed = false;
                                 }
                                 _timeSinceLastAbleToJump = 0f;
@@ -1064,14 +1261,6 @@ namespace SDK
             switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
-                    {
-                        if (allowWallJump && !kinematicMotor.GroundingStatus.IsStableOnGround && !hitStabilityReport.IsStable)
-                        {
-                            _canWallJump = true;
-                            _wallJumpNormal = hitNormal;
-                        }
-                        break;
-                    }
                 case ECharacterState.PhoneMode:
                     break;
                 default:
@@ -1136,6 +1325,16 @@ namespace SDK
         }
         
     #endregion Methods
+
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            Debug.DrawRay(transform.position, playerOrientation.right * wallCheckDistance);
+            Debug.DrawRay(transform.position, -playerOrientation.right * wallCheckDistance);
+            
+            Gizmos.color = Color.red;
+            Debug.DrawRay(transform.position, Vector3.down * minJumpHeight);
+        }
     
     }
 }

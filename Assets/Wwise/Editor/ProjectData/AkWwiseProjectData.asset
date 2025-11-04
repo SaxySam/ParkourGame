@@ -24,7 +24,7 @@ MonoBehaviour:
     ParentPath: Virtual Acoustics\Default Work Unit
     guid: 71d3a02edde1554583a25a4de0697369
     GuidInternal: 
-    m_lastTime: -8584394829110621194
+    m_lastTime: -8584393557080355943
     List: []
   AuxBusWwu:
   - PhysicalPath: Master-Mixer Hierarchy\Default Work Unit.wwu
@@ -38,7 +38,7 @@ MonoBehaviour:
     ParentPath: Master-Mixer Hierarchy\Default Work Unit
     guid: 36da80a478f9964093bd9f72474f9325
     GuidInternal: 
-    m_lastTime: -8584394829115711105
+    m_lastTime: -8584393557083982471
     List:
     - name: Master Audio Bus
       guid: d8a41415a61d2a41a17e75ca0c2149f3
@@ -66,7 +66,7 @@ MonoBehaviour:
     ParentPath: SoundBanks\Default Work Unit
     guid: 48d103e8bb1f2745aca472d938ac4b03
     GuidInternal: 
-    m_lastTime: -8584394829110641229
+    m_lastTime: -8584393557080380986
     List:
     - name: Ambience
       guid: 8831b34919bfad4486417ab42e7c053e
@@ -108,7 +108,7 @@ MonoBehaviour:
     ParentPath: Events\Default Work Unit
     guid: dcb31bd4c1475a4e9ffd20a82cd71df4
     GuidInternal: 
-    m_lastTime: -8584394829117015818
+    m_lastTime: -8584393557084858783
     List:
     - name: Ambience
       guid: 41943be4432d5a47b3e1960aa1c1082a
@@ -356,7 +356,7 @@ MonoBehaviour:
     ParentPath: Game Parameters\Default Work Unit
     guid: 72884d895c95f64bb7c87f0a751641a3
     GuidInternal: 
-    m_lastTime: -8584394829117015818
+    m_lastTime: -8584393557084858783
     List: []
   StateWwu:
   - PhysicalPath: States\Default Work Unit.wwu
@@ -370,7 +370,7 @@ MonoBehaviour:
     ParentPath: States\Default Work Unit
     guid: c12e931776ff68478b0c9b1c4ff176df
     GuidInternal: 
-    m_lastTime: -8584394829110631160
+    m_lastTime: -8584393557080370990
     List: []
   SwitchWwu:
   - PhysicalPath: Switches\Default Work Unit.wwu
@@ -384,7 +384,7 @@ MonoBehaviour:
     ParentPath: Switches\Default Work Unit
     guid: c4b14eb1d422a3468811e13b1501fb4a
     GuidInternal: 
-    m_lastTime: -8584394829110631160
+    m_lastTime: -8584393557080370990
     List:
     - name: Land
       guid: d5a82aa37a0b344ca5b0fbbd7ff7ae7e
@@ -530,7 +530,7 @@ MonoBehaviour:
     ParentPath: Triggers\Default Work Unit
     guid: ccadfd91f4fcf64e8c5ca3f4fdaef5a3
     GuidInternal: 
-    m_lastTime: -8584394829110621194
+    m_lastTime: -8584393557080370990
     List: []
   ExpandedFileSystemItemIds: 
   ExpandedWaapiItemIds: 07000000080000000b0000000c0000000d0000000e00000012000000b6000000b7000000b8000000
