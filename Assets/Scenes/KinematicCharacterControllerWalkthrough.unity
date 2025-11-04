@@ -7537,7 +7537,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: slideSpeedMultiplier
-      value: 1
+      value: 1.05
       objectReference: {fileID: 0}
     - target: {fileID: 3337589402284316885, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: m_AnchorMax.x

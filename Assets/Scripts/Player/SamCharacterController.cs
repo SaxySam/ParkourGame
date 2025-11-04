@@ -759,6 +759,7 @@ namespace SDK
                     {
                         Debug.Log("<b><color=green>Finished Sliding</b>");
                         _isSliding = false;
+                        GameManager.SlideStopEvent();
                         playerAnimator.SetBool(Sliding, false);
                         _internalSlideSpeed = maxStableMoveSpeed * slideSpeedMultiplier;
                         _internalOrientationSharpness = towardsMovementOrientationSharpness;
