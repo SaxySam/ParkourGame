@@ -2,10 +2,12 @@
 
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using KinematicCharacterController;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
@@ -225,6 +227,13 @@ namespace SDK
         private bool _wallCheckRadius;
         private bool _exitingWall = false;
         private float _exitWallTimer;
+        
+        
+        [Header("Ledge Mantle")]
+        public LayerMask vaultLayer;
+        
+        
+        [Header("Ledge Grab Temp")]
 
 
         [Header("Air Movement")]
@@ -332,6 +341,7 @@ namespace SDK
             _lastSlideTime = 0;
             _internalGravity = gravity;
             _rigidbody = gameObject.GetComponent<Rigidbody>();
+            vaultLayer = ~vaultLayer;
         }
 
         /// <summary>
@@ -839,6 +849,25 @@ namespace SDK
             return Vector3.ProjectOnPlane(moveDirection, _slopeOutHit.normal).normalized;
         }
         #endregion Sliding
+        
+        #region Mantle/Vault
+
+        void CheckVault()
+        {
+            if (Physics.Raycast(transform.position, transform.forward, out RaycastHit firstHit, 1f, vaultLayer))
+            {
+                if (Physics.Raycast(
+                        firstHit.point + (transform.forward * kinematicMotor.CapsuleRadius) +
+                        (Vector3.up * (0.6f * kinematicMotor.CapsuleHeight)),
+                        Vector3.down, out RaycastHit secondHit, kinematicMotor.CapsuleHeight))
+                {
+                    StartCoroutine(LerpVault(secondHit.point, 0.5f));
+                }
+            }
+        }
+        
+        #endregion
+        
 
         #endregion Velocity
 
@@ -1316,6 +1345,20 @@ namespace SDK
         public void OnDiscreteCollisionDetected(Collider hitCollider)
         {
             // This is called by the motor when it is detecting a collision that did not result from a "movement hit".
+        }
+
+        private IEnumerator LerpVault(Vector3 targetPositon, float duration)
+        {
+            float time = 0;
+            Vector3 startPosition = transform.position;
+
+            while (time < duration)
+            {
+                transform.position = Vector3.Lerp(startPosition, targetPositon, time / duration);
+                time += Time.deltaTime;
+                yield return null;
+            }
+            transform.position = targetPositon;
         }
 
         [ContextMenu("Do Something?")]
