@@ -8,8 +8,8 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Quaternion = UnityEngine.Quaternion;
-using Vector3 = UnityEngine.Vector3;
 using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 
 namespace SDK
@@ -450,10 +450,6 @@ namespace SDK
                                 }
 
                             }
-                            else
-                            {
-                                GameManager.SlideStopEvent();
-                            }
                             
                         }
                         else
@@ -461,6 +457,7 @@ namespace SDK
                             _shouldBeCrouching = false;
                             _launchButtonHeld = false;
                             _isSliding = false;
+                            GameManager.SlideStopEvent();
                             _internalSlideSpeed = maxStableMoveSpeed * slideSpeedMultiplier;
                             _internalOrientationSharpness = towardsMovementOrientationSharpness;
                             _internalJumpScaleMultiplier = jumpScaleMultiplier;
@@ -740,7 +737,7 @@ namespace SDK
             switch (_isSliding)
             {
                 //! Sliding
-                case true:
+                case true when kinematicMotor.GroundingStatus.IsStableOnGround:
                 {
                     playerAnimator.SetBool(Sliding, true);
 
@@ -943,7 +940,7 @@ namespace SDK
                 return;
             }
 
-            Vector3 surfacePoint = hit.point + (Vector3.up * 0.01f);
+            Vector3 surfacePoint = hit.point + (Vector3.up * 0.1f);
             if (Physics.Raycast(surfacePoint, kinematicMotor.CharacterForward, maxDistanceFromLedge))
             {
                 return;

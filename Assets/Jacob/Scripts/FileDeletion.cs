@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 
+[AddComponentMenu("Parkour Game/GameManager")]
 public class FileDeletion : MonoBehaviour
 {
     public void DeletePhotoFile()
