@@ -9,6 +9,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -188,7 +189,7 @@ namespace SDK
         public float minimumSlideSpeed;
         public float slideCooldownTime = 1f;
         public float slideDecelerationRate = 2.5f;
-        public float gravityMultiplier;
+        public float slidGravityMultiplier;
         public float movementRestrictionMultiplier;
         public float maxSlopeDetectionAngle = 45f;
         private RaycastHit _slopeOutHit;
@@ -704,7 +705,7 @@ namespace SDK
                             // Add move input
                             if (_multipliedMoveInputVector.sqrMagnitude > 0f)
                             {
-                                _internalMaxAirSpeed = !_isSliding ? maxAirMoveSpeed : maxAirMoveSpeed + _internalSlideSpeed;
+                                _internalMaxAirSpeed = maxAirMoveSpeed;
 
                                 Vector3 targetMovementVelocity = _multipliedMoveInputVector * _internalMaxAirSpeed;
 
@@ -720,7 +721,7 @@ namespace SDK
                             }
 
                             //! Gravity
-                            currentVelocity += !_isSliding ? gravity * deltaTime : deltaTime * gravityMultiplier * gravity;
+                            currentVelocity += _isSliding ? deltaTime * (slidGravityMultiplier * gravity) : gravity * deltaTime;
 
                             //! Drag
                             currentVelocity *= 1f / (1f + (drag * deltaTime));
