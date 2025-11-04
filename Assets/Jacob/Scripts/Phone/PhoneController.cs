@@ -62,6 +62,7 @@ namespace Phone
         {
             phonePanel.SetActive(false);
             firstPersonCamera.Priority = 2;
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         public void OpenGallery()
@@ -70,6 +71,13 @@ namespace Phone
             phonePanel.SetActive(false);
             Debug.Log("Invoking galleryOpenEvent");
             GameManager.GalleryOpenEvent();
+        }
+
+        public void CloseGallery()
+        {
+            galleryPanel.SetActive(false);
+            phonePanel.SetActive(true);
+            GameManager.GalleryCloseEvent();
         }
 
         public void EnableDisablePhone()

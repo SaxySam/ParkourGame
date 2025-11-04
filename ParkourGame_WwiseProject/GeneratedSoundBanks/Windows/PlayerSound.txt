@@ -1,0 +1,56 @@
+Event	ID	Name			Wwise Object Path	Notes
+	2822207957	Play_Run			\Default Work Unit\Movement\Play_Run	
+	3098380875	Play_Slide_end			\Default Work Unit\Movement\Play_Slide_end	
+	3715669161	Play_Slide			\Default Work Unit\Movement\Play_Slide	
+	4285282925	Play_Land			\Default Work Unit\Movement\Play_Land	
+
+Switch Group	ID	Name			Wwise Object Path	Notes
+	674522502	Land			\Default Work Unit\Land	
+	712161704	Run			\Default Work Unit\Run	
+
+Switch	ID	Name	Switch Group			Notes
+	2058049674	Wood	Land			
+	2473969246	Metal	Land			
+	3720716446	Conc	Land			
+	2058049674	Wood	Run			
+	2473969246	Metal	Run			
+	3720716446	Conc	Run			
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	4982395	Wood run-002	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\28\{2860193D-6387-A2E5-74E5-B93278D1CB72}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Wood\Wood run-002		45148
+	24723936	Metal land-004	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\D3\{D37FC5ED-E9B4-A071-91EA-899778F6E2BC}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Landing\Metal\Metal land-004		69000
+	72094210	Wood land-001	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\8B\{8B786729-5C0A-CF25-DFF1-B6AE292DDE2D}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Landing\Wood\Wood land-001		69212
+	96296928	Wood run-005	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\5D\{5DC590BE-C8F3-E9BF-1CDB-1343B0A4054F}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Wood\Wood run-005		41052
+	129102080	Shoe squeek-001	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\8A\{8A2B4EDF-7FBA-94AE-ADC1-3768C7E87209}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Shoe\Shoe squeek-001		15100
+	134925356	slide kick	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\DF\{DF71BB40-4A12-791C-AE08-B8986744B24C}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Slide\slide kick		23728
+	146374850	Metal run-004	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\C9\{C902DF7F-C278-CD7C-97EA-391ACBF112EC}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Metal\Metal run-004		44836
+	162920540	Shoe squeek-004	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\2F\{2F69D0C8-B284-4D01-87CE-B4C2B683BC44}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Shoe\Shoe squeek-004		13788
+	183433375	Conc run-006	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\1E\{1E0F4ABF-A7B7-0AFF-E5F4-06133B80955B}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Conc\Conc run-006		25920
+	224178977	Metal run-005	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\B4\{B446C721-9659-DB96-8C83-68D3356A8DC4}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Metal\Metal run-005		48968
+	315424311	Metal run-003	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\8D\{8D6D1C10-2B1B-8A5F-18BD-27A6894D9E3F}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Metal\Metal run-003		52372
+	341252727	Wood land-002	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\EB\{EB4209A9-39D0-FA11-A490-9A057483BE31}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Landing\Wood\Wood land-002		53340
+	363241921	Wood run-006	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\31\{316D2584-3585-D33E-2AEA-B9CE02453D66}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Wood\Wood run-006		43100
+	375487175	Shoe squeek-003	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\A3\{A343EACD-BDA7-D1C3-3821-941057A150E0}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Shoe\Shoe squeek-003		13788
+	396187271	Metal run-002	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\2D\{2D34F593-F460-9C27-FCF4-C7413B61E4AF}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Metal\Metal run-002		50488
+	470338847	Wood land-004	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\48\{480B9C25-EDE3-17C0-D528-A34582F8DED9}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Landing\Wood\Wood land-004		62556
+	564466704	Wood run-004	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\92\{92642AE8-6BC6-BA74-0249-071B393BBB36}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Wood\Wood run-004		45792
+	565673920	Conc land-001	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\22\{227F43A2-3206-F2CC-2D0D-EEB30F72DFC0}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Landing\Conc\Conc land-001		51380
+	567393773	Metal run-001	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\18\{18F55832-F810-665B-3933-4A185BCD813B}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Metal\Metal run-001		49780
+	591319716	Metal land-003	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\3E\{3E32AE07-046D-02FD-F6B8-C8F60C458454}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Landing\Metal\Metal land-003		59748
+	612889696	Conc run-003	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\1A\{1AFA77BF-F0CC-A195-A8FB-4E57B5DA70C0}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Conc\Conc run-003		30284
+	615947526	Conc run-004	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\90\{90D1F441-87EC-5F92-CC63-420ABA65ED92}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Conc\Conc run-004		27376
+	617883078	Shoe squeek-002	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\C6\{C612E076-FCBE-91C1-3166-5C337C3B4EFB}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Shoe\Shoe squeek-002		14740
+	625391335	Metal land-001	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\20\{20451199-8CB6-D544-E5D5-FD5F2E944957}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Landing\Metal\Metal land-001		59748
+	627683548	Wood run-001	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\FF\{FF57E37C-9BD2-780F-99DC-9E3715F34C89}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Wood\Wood run-001		48732
+	648718615	Conc run-001	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\FF\{FF167FD6-51AA-A691-723A-91ABB388138A}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Conc\Conc run-001		21164
+	771168195	Conc run-005	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\E7\{E70A0127-4E25-6EAB-3356-56DE843F6961}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Conc\Conc run-005		28832
+	791345759	Conc land-003	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\6C\{6CA1537A-96AF-1DE0-DD62-D4EB920F6F4E}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Landing\Conc\Conc land-003		41924
+	814392097	Conc run-002	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\B8\{B8B79DCE-0AB1-E373-BAC8-AFB0125CE46F}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Conc\Conc run-002		27012
+	872936210	Conc land-004	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\65\{659F33D7-6F10-4027-3314-6508DF2CB3D0}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Landing\Conc\Conc land-004		40468
+	879151700	Wood land-003	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\64\{64CB89C8-2C79-F03E-72C0-466D9DBBB047}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Landing\Wood\Wood land-003		68700
+	894916133	Conc land-002	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\75\{7511E797-7C6A-05BA-47B6-973D3200777E}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Landing\Conc\Conc land-002		34244
+	982878298	Metal land-002	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\DA\{DA4B5E21-7F07-5BBB-285B-554D9538D80D}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Landing\Metal\Metal land-002		64840
+	999558839	Wood run-003	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\83\{83C80862-7690-8C71-C4C6-2852460B0BC2}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Wood\Wood run-003		42588
+	1019534507	slide	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\86\{86C87431-A9B3-242C-07C2-AF1066F4E82C}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Slide\slide		666336
+	1025488269	Metal run-006	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\8A\{8A0AC958-5007-C76E-76FE-813C7001353D}.wem		\Actor-Mixer Hierarchy\Default Work Unit\Movement\Run\Metal\Metal run-006		55804
+

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{B14EB1C4-22D4-46A3-8811-E13B1501FB4A}" SchemaVersion="123">
+	<Switches>
+		<WorkUnit Name="Default Work Unit" ID="{B14EB1C4-22D4-46A3-8811-E13B1501FB4A}" PersistMode="Standalone">
+			<ChildrenList>
+				<SwitchGroup Name="Land" ID="{A32AA8D5-0B7A-4C34-A5B0-FBBD7FF7AE7E}">
+					<PropertyList>
+						<Property Name="UseGameParameter" Type="bool" Value="True"/>
+					</PropertyList>
+					<ChildrenList>
+						<Switch Name="Conc" ID="{EF4EED0B-DA91-48C7-97FE-995ABB3C680D}"/>
+						<Switch Name="Wood" ID="{597F011E-024A-4317-A677-5A4A3316EF21}"/>
+						<Switch Name="Metal" ID="{3091CE30-D5BC-4871-847C-F02183D3CB8B}"/>
+					</ChildrenList>
+				</SwitchGroup>
+				<SwitchGroup Name="Run" ID="{CA8929FF-2E56-40B5-A7D9-3263DD50A7D8}">
+					<PropertyList>
+						<Property Name="UseGameParameter" Type="bool" Value="True"/>
+					</PropertyList>
+					<ChildrenList>
+						<Switch Name="Conc" ID="{D8969FE9-FD01-4458-A97F-AE371D36B976}"/>
+						<Switch Name="Metal" ID="{39341EF1-474E-4F0F-A63E-FCB42333404B}"/>
+						<Switch Name="Wood" ID="{0A013610-9995-45AB-AA8B-752D4E3F9F7E}"/>
+					</ChildrenList>
+				</SwitchGroup>
+			</ChildrenList>
+		</WorkUnit>
+	</Switches>
+</WwiseDocument>

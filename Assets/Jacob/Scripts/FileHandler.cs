@@ -6,6 +6,7 @@ namespace EditiorTools
 {
     public class FileHandler
     {
+        [MenuItem("Tools/Delete Photo File")]
         private static void DeletePhotoFile()
         {
             string filePath = Path.Combine(Application.persistentDataPath, "photos.txt");

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace PhotoCamera
 {
-    
     [AddComponentMenu("Parkour Game/PhotoImage")]
     public class PhotoImage : MonoBehaviour
     {
@@ -26,11 +25,11 @@ namespace PhotoCamera
             }
             else
             {
-                photoList = gameObject.AddComponent<PhotoList>();
+                photoList = new PhotoList();
             }
 
             byte[] bytes = newPhoto.EncodeToPNG();
-            PhotoData newPhotoData = gameObject.AddComponent<PhotoData>();
+            PhotoData newPhotoData = new PhotoData { pngData = bytes };
             photoList.photos.Add(newPhotoData);
 
             string updatedJson = JsonUtility.ToJson(photoList);

@@ -71,6 +71,8 @@ namespace PhotoCamera
         public Transform cameraFollowPoint;
         public bool useFramePerfectRotation = false;
         public List<Collider> ignoredColliders = new();
+        public GameObject phoneUI;
+        public GameObject galleryUI;
 
         [Header("Privates")]
         private Collider[] _probedColliders = new Collider[8];
@@ -154,7 +156,7 @@ namespace PhotoCamera
         private void TakePhoto(InputAction.CallbackContext context)
         {
             Debug.Log("Take Photo");
-            if (_photoCamera == null)
+            if (_photoCamera != null && _canTakePhoto())
             {
                 _photoCamera.TakePhoto();
             }
@@ -326,6 +328,15 @@ namespace PhotoCamera
             }
 
             return !ignoredColliders.Contains(coll);
+        }
+
+        private bool _canTakePhoto()
+        {
+            if (phoneUI.activeSelf || galleryUI.activeSelf)
+            {
+                return false;
+            }
+            return true;
         }
 
         public void OnGroundHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)

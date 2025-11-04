@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{D41BB3DC-47C1-4E5A-9FFD-20A82CD71DF4}" SchemaVersion="123">
+	<Events>
+		<WorkUnit Name="Default Work Unit" ID="{D41BB3DC-47C1-4E5A-9FFD-20A82CD71DF4}" PersistMode="Standalone">
+			<ChildrenList>
+				<Folder Name="Ambience" ID="{E43B9441-2D43-475A-B3E1-960AA1C1082A}" ShortID="390263457">
+					<ChildrenList>
+						<Event Name="Play_Pipe" ID="{74C39DDC-40E5-4427-BAD4-FA662CF677F7}">
+							<ChildrenList>
+								<Action Name="" ID="{1F776A27-0A7F-401A-901A-0F11F18A1EED}" ShortID="287696901">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="water pipe" ID="{FE7E8359-EF33-4E67-8118-7555B919A921}" WorkUnitID="{429E710C-6F62-449D-A8F6-7AB0872625C9}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_Birds" ID="{2619D865-D336-467F-9ACF-863143AC5738}">
+							<ChildrenList>
+								<Action Name="" ID="{84DE744D-FEFF-4152-A8A5-32B3DB411D3D}" ShortID="209042360">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Bird song" ID="{7F22F666-3271-4854-ADBA-9951FD0C70C6}" WorkUnitID="{429E710C-6F62-449D-A8F6-7AB0872625C9}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_Crows" ID="{5525FA0D-CC9E-44F4-9F58-EE5633AD3566}">
+							<ChildrenList>
+								<Action Name="" ID="{0D976C0D-7FC8-497B-803F-3D6C05B4D807}" ShortID="776512249">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Crows" ID="{D9AD66BD-F6CF-4366-8D12-0E97E953024D}" WorkUnitID="{429E710C-6F62-449D-A8F6-7AB0872625C9}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Stop_Birds" ID="{85A79104-2C97-4139-B343-3D2CE4E15C26}">
+							<ChildrenList>
+								<Action Name="" ID="{ACD3914C-C7F2-4179-9A0B-E0C5B3BB1823}" ShortID="103259294">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="2"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Bird song" ID="{7F22F666-3271-4854-ADBA-9951FD0C70C6}" WorkUnitID="{429E710C-6F62-449D-A8F6-7AB0872625C9}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Stop_Crows" ID="{608DB4DB-13B6-4B55-B240-0887F550FF2F}">
+							<ChildrenList>
+								<Action Name="" ID="{AEEA3F66-DF24-4A64-8E2B-975926B22767}" ShortID="231866176">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="2"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Crows" ID="{D9AD66BD-F6CF-4366-8D12-0E97E953024D}" WorkUnitID="{429E710C-6F62-449D-A8F6-7AB0872625C9}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Stop_Pipe" ID="{288FA6D2-50CD-433B-9D9E-E1BB17C24484}">
+							<ChildrenList>
+								<Action Name="" ID="{7C719CE3-3EAC-427F-AE7D-B695A246ED41}" ShortID="65179079">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="2"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="water pipe" ID="{FE7E8359-EF33-4E67-8118-7555B919A921}" WorkUnitID="{429E710C-6F62-449D-A8F6-7AB0872625C9}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+					</ChildrenList>
+				</Folder>
+				<Folder Name="Movement" ID="{8682D38D-24D0-4574-87EB-24AD7C784A96}" ShortID="465121042">
+					<ChildrenList>
+						<Event Name="Play_Slide_end" ID="{F6D51A93-3B73-4012-819B-9651C81E45B8}">
+							<ChildrenList>
+								<Action Name="" ID="{8002C3A8-350D-4522-984F-A2459DDAA26D}" ShortID="1033576860">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="2"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="slide" ID="{952C0E1C-ACDE-489C-8554-F127C6B7DC1D}" WorkUnitID="{429E710C-6F62-449D-A8F6-7AB0872625C9}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{4B4DD87E-BE91-47EB-9F81-33420EBBAE78}" ShortID="977364081">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="slide kick" ID="{8CF19BB4-5364-4253-9C3A-AE5B1CBDCE11}" WorkUnitID="{429E710C-6F62-449D-A8F6-7AB0872625C9}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_Run" ID="{CE5FE259-5330-49BB-8605-9A6D3E74244B}">
+							<ChildrenList>
+								<Action Name="" ID="{1A760D03-32F9-4B9E-B4DC-9234170BA8A6}" ShortID="710775755">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Run" ID="{01879226-D19F-465D-81BB-9E165F4CBA65}" WorkUnitID="{429E710C-6F62-449D-A8F6-7AB0872625C9}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_Land" ID="{2CCC7320-38C7-4FFF-8E8F-08A825833BC1}">
+							<ChildrenList>
+								<Action Name="" ID="{4C827E3D-8EEF-4B55-B6FA-46801ABF98CC}" ShortID="586671357">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Landing" ID="{76840449-3138-4AD1-B2AA-6047DAB19B3B}" WorkUnitID="{429E710C-6F62-449D-A8F6-7AB0872625C9}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_Slide" ID="{998F3EEE-25EF-4D7E-A391-71B3209069D7}">
+							<ChildrenList>
+								<Action Name="" ID="{BBC42D24-1C0F-4EFE-88F5-DA62C7955C03}" ShortID="761315205">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="slide" ID="{952C0E1C-ACDE-489C-8554-F127C6B7DC1D}" WorkUnitID="{429E710C-6F62-449D-A8F6-7AB0872625C9}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+					</ChildrenList>
+				</Folder>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>

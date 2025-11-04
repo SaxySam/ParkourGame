@@ -1,0 +1,305 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Windows",
+  "BasePlatform": "Windows",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "154",
+  "SoundBanks": [
+   {
+    "Id": "85412153",
+    "Type": "User",
+    "GUID": "{49B33188-BF19-44AD-8641-7AB42E7C053E}",
+    "Language": "SFX",
+    "Hash": "{9E0F603D-B3DC-DFA1-066D-A1EBD4FF2764}",
+    "ObjectPath": "\\SoundBanks\\Default Work Unit\\Ambience",
+    "ShortName": "Ambience",
+    "Path": "Ambience.bnk",
+    "Media": [
+     {
+      "Id": "23856464",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Bird song-009.wav",
+      "CachePath": "E3/{E385D993-AA8A-0B21-DEBE-4E75FF75A7FB}.wem"
+     },
+     {
+      "Id": "29124492",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Metal growns-002.wav",
+      "CachePath": "DC/{DCD054A3-C12C-9AED-D19E-35D0C1CEE4FE}.wem"
+     },
+     {
+      "Id": "37349968",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Bird song-004.wav",
+      "CachePath": "63/{636A8DC5-9905-5B52-2734-E1776C91688D}.wem"
+     },
+     {
+      "Id": "48355240",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "crow-005.wav",
+      "CachePath": "6B/{6B13398D-80EE-2ECF-A621-6EAF061AFF95}.wem"
+     },
+     {
+      "Id": "59316557",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Metal growns-001.wav",
+      "CachePath": "F6/{F635B0BC-AE05-BDBC-51B5-959D0BE2AF87}.wem"
+     },
+     {
+      "Id": "103903480",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "crow-003.wav",
+      "CachePath": "FE/{FEF5BB1F-506E-1002-4EA4-FB90FDC95014}.wem"
+     },
+     {
+      "Id": "116668413",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "crow-001.wav",
+      "CachePath": "4B/{4B0F5CF6-0C16-FFD1-6B5E-EFDA8A47596F}.wem"
+     },
+     {
+      "Id": "143131632",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Bird song-007.wav",
+      "CachePath": "46/{46AF9A07-6BE6-F442-16C3-D40A1AD95769}.wem"
+     },
+     {
+      "Id": "174550267",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Water flow.wav",
+      "CachePath": "48/{48281704-248D-AC2F-F59F-A714A3CBA3F7}.wem"
+     },
+     {
+      "Id": "188162195",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Bird song-002.wav",
+      "CachePath": "C0/{C072E3C0-3E36-F61E-2C72-797997AC5906}.wem"
+     },
+     {
+      "Id": "259045145",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Bird song-003.wav",
+      "CachePath": "57/{573B6CB6-3DFE-33CE-D6FD-0BCC7BE80C5D}.wem"
+     },
+     {
+      "Id": "302440887",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Bird song-006.wav",
+      "CachePath": "B8/{B88EB2C2-CC8B-049E-5683-5DA0F561C0E2}.wem"
+     },
+     {
+      "Id": "432699908",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Bird song-001.wav",
+      "CachePath": "68/{686946ED-E5A0-277A-BCCB-CB436808AB21}.wem"
+     },
+     {
+      "Id": "519335066",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Metal growns-003.wav",
+      "CachePath": "F7/{F7C49A34-A4D9-89DB-643B-45F97C17688A}.wem"
+     },
+     {
+      "Id": "561447000",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "crow-006.wav",
+      "CachePath": "83/{836AEF5E-DC26-77E8-FD03-9D378E70D480}.wem"
+     },
+     {
+      "Id": "648525959",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "crow-002.wav",
+      "CachePath": "B0/{B047404D-A07C-3EEA-A2B3-0AA38F5533BC}.wem"
+     },
+     {
+      "Id": "664490745",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Metal growns-004.wav",
+      "CachePath": "21/{21E45F51-92D5-99F4-7310-F89071F9DADE}.wem"
+     },
+     {
+      "Id": "687876781",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Bird song-005.wav",
+      "CachePath": "16/{16E6133F-E697-EEC7-FEAC-EA807A3CF238}.wem"
+     },
+     {
+      "Id": "925911802",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Bird song-008.wav",
+      "CachePath": "C6/{C6A7ADE4-5953-690B-E269-7D738B44DB65}.wem"
+     },
+     {
+      "Id": "929362422",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "crow-004.wav",
+      "CachePath": "72/{72CF7ED9-A034-6266-A3C7-FA8675305A1C}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "3025897706",
+      "Name": "Play_Birds",
+      "ObjectPath": "\\Events\\Default Work Unit\\Ambience\\Play_Birds",
+      "GUID": "{2619D865-D336-467F-9ACF-863143AC5738}",
+      "MaxAttenuation": "50",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "23856464"
+       },
+       {
+        "Id": "37349968"
+       },
+       {
+        "Id": "143131632"
+       },
+       {
+        "Id": "188162195"
+       },
+       {
+        "Id": "259045145"
+       },
+       {
+        "Id": "302440887"
+       },
+       {
+        "Id": "432699908"
+       },
+       {
+        "Id": "687876781"
+       },
+       {
+        "Id": "925911802"
+       }
+      ]
+     },
+     {
+      "Id": "639442158",
+      "Name": "Play_Crows",
+      "ObjectPath": "\\Events\\Default Work Unit\\Ambience\\Play_Crows",
+      "GUID": "{5525FA0D-CC9E-44F4-9F58-EE5633AD3566}",
+      "MaxAttenuation": "50",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "48355240"
+       },
+       {
+        "Id": "103903480"
+       },
+       {
+        "Id": "116668413"
+       },
+       {
+        "Id": "561447000"
+       },
+       {
+        "Id": "648525959"
+       },
+       {
+        "Id": "929362422"
+       }
+      ]
+     },
+     {
+      "Id": "1601844230",
+      "Name": "Play_Pipe",
+      "ObjectPath": "\\Events\\Default Work Unit\\Ambience\\Play_Pipe",
+      "GUID": "{74C39DDC-40E5-4427-BAD4-FA662CF677F7}",
+      "MaxAttenuation": "50",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "29124492"
+       },
+       {
+        "Id": "59316557"
+       },
+       {
+        "Id": "174550267"
+       },
+       {
+        "Id": "519335066"
+       },
+       {
+        "Id": "664490745"
+       }
+      ]
+     },
+     {
+      "Id": "1698272256",
+      "Name": "Stop_Birds",
+      "ObjectPath": "\\Events\\Default Work Unit\\Ambience\\Stop_Birds",
+      "GUID": "{85A79104-2C97-4139-B343-3D2CE4E15C26}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "3801807580",
+      "Name": "Stop_Crows",
+      "ObjectPath": "\\Events\\Default Work Unit\\Ambience\\Stop_Crows",
+      "GUID": "{608DB4DB-13B6-4B55-B240-0887F550FF2F}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "3403220764",
+      "Name": "Stop_Pipe",
+      "ObjectPath": "\\Events\\Default Work Unit\\Ambience\\Stop_Pipe",
+      "GUID": "{288FA6D2-50CD-433B-9D9E-E1BB17C24484}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{59132DFB-5652-F038-5571-FBEF14BD03B1}"
+ }
+}

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{0EA3C27C-5BA0-4362-998D-109760D6D71F}" SchemaVersion="123">
+	<SoundcasterSessions>
+		<WorkUnit Name="Default Work Unit" ID="{0EA3C27C-5BA0-4362-998D-109760D6D71F}" PersistMode="Standalone">
+			<ChildrenList>
+				<SoundcasterSession Name="Parkor" ID="{DC5D08B2-E648-4583-9483-70D543D3137C}">
+					<ModuleList>
+						<Module>
+							<ObjectRef Name="Play_Land" ID="{2CCC7320-38C7-4FFF-8E8F-08A825833BC1}" WorkUnitID="{D41BB3DC-47C1-4E5A-9FFD-20A82CD71DF4}"/>
+							<Position X="0" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_Run" ID="{CE5FE259-5330-49BB-8605-9A6D3E74244B}" WorkUnitID="{D41BB3DC-47C1-4E5A-9FFD-20A82CD71DF4}"/>
+							<Position X="0" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_Slide" ID="{998F3EEE-25EF-4D7E-A391-71B3209069D7}" WorkUnitID="{D41BB3DC-47C1-4E5A-9FFD-20A82CD71DF4}"/>
+							<Position X="1" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_Slide_end" ID="{F6D51A93-3B73-4012-819B-9651C81E45B8}" WorkUnitID="{D41BB3DC-47C1-4E5A-9FFD-20A82CD71DF4}"/>
+							<Position X="1" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_Birds" ID="{2619D865-D336-467F-9ACF-863143AC5738}" WorkUnitID="{D41BB3DC-47C1-4E5A-9FFD-20A82CD71DF4}"/>
+							<Position X="2" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_Crows" ID="{5525FA0D-CC9E-44F4-9F58-EE5633AD3566}" WorkUnitID="{D41BB3DC-47C1-4E5A-9FFD-20A82CD71DF4}"/>
+							<Position X="2" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_Pipe" ID="{74C39DDC-40E5-4427-BAD4-FA662CF677F7}" WorkUnitID="{D41BB3DC-47C1-4E5A-9FFD-20A82CD71DF4}"/>
+							<Position X="2" Y="2"/>
+						</Module>
+					</ModuleList>
+					<RTPCValueList ShowAll="true"/>
+					<CurrentStateList ShowAll="true"/>
+					<CurrentSwitchList ShowAll="true"/>
+				</SoundcasterSession>
+			</ChildrenList>
+		</WorkUnit>
+	</SoundcasterSessions>
+</WwiseDocument>
