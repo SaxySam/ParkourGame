@@ -66,7 +66,7 @@ MonoBehaviour:
     ParentPath: SoundBanks\Default Work Unit
     guid: 48d103e8bb1f2745aca472d938ac4b03
     GuidInternal: 
-    m_lastTime: -8584393093280312228
+    m_lastTime: -8584392913322568072
     List:
     - name: Ambience
       guid: 8831b34919bfad4486417ab42e7c053e
@@ -108,7 +108,7 @@ MonoBehaviour:
     ParentPath: Events\Default Work Unit
     guid: dcb31bd4c1475a4e9ffd20a82cd71df4
     GuidInternal: 
-    m_lastTime: -8584393093285625516
+    m_lastTime: -8584392913472939599
     List:
     - name: Ambience
       guid: 41943be4432d5a47b3e1960aa1c1082a
@@ -284,6 +284,26 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: 0.12308333
       minDuration: 0.12308333
+    - name: Play_Wind
+      guid: 0058d5d337bfd249bd92943bd4724962
+      id: 1020223172
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: dcb31bd4c1475a4e9ffd20a82cd71df4
+      - ElementName: Ambience
+        ObjectType: 4
+        guid: 41943be4432d5a47b3e1960aa1c1082a
+      - ElementName: Play_Wind
+        ObjectType: 3
+        guid: 0058d5d337bfd249bd92943bd4724962
+      Path: Events\Default Work Unit\Ambience\Play_Wind
+      maxAttenuation: 50
+      maxDuration: 0
+      minDuration: 0
     - name: Stop_Birds
       guid: 0491a785972c3941b3433d2ce4e15c26
       id: 1698272256
@@ -533,7 +553,7 @@ MonoBehaviour:
     m_lastTime: -8584393093280312228
     List: []
   ExpandedFileSystemItemIds: 
-  ExpandedWaapiItemIds: 07000000080000000b0000000c0000000d0000000e00000012000000b6000000b7000000b8000000
+  ExpandedWaapiItemIds: 0600000007000000080000000b0000000c0000000d0000000e00000012000000b6000000b7000000b8000000
   AutoSyncSelection: 0
   autoPopulateEnabled: 1
   currentDataSource: 0

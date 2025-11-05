@@ -20,6 +20,7 @@
 						<ObjectRef Name="Play_Pipe" ID="{74C39DDC-40E5-4427-BAD4-FA662CF677F7}" WorkUnitID="{D41BB3DC-47C1-4E5A-9FFD-20A82CD71DF4}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Play_Crows" ID="{5525FA0D-CC9E-44F4-9F58-EE5633AD3566}" WorkUnitID="{D41BB3DC-47C1-4E5A-9FFD-20A82CD71DF4}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Play_Birds" ID="{2619D865-D336-467F-9ACF-863143AC5738}" WorkUnitID="{D41BB3DC-47C1-4E5A-9FFD-20A82CD71DF4}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Play_Wind" ID="{D3D55800-BF37-49D2-BD92-943BD4724962}" WorkUnitID="{D41BB3DC-47C1-4E5A-9FFD-20A82CD71DF4}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Stop_Crows" ID="{608DB4DB-13B6-4B55-B240-0887F550FF2F}" WorkUnitID="{D41BB3DC-47C1-4E5A-9FFD-20A82CD71DF4}" Origin="Manual" Filter="7"/>
 					</ObjectInclusionList>
 					<ObjectExclusionList/>
