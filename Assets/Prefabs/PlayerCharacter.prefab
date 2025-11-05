@@ -86,7 +86,7 @@ MonoBehaviour:
   kinematicMotor: {fileID: 277347096623532543}
   <CurrentCharacterState>k__BackingField: 0
   playerAnimator: {fileID: 5838343785673483433}
-  maxStableMoveSpeed: 50
+  maxStableMoveSpeed: 106.4
   accelerationRate: 3.75
   decelerationRate: 0.25
   groundMovementFriction: 16
@@ -116,13 +116,15 @@ MonoBehaviour:
   crouchedCapsuleHeightDivisor: 2
   crouchedJumpMultiplier: 0.75
   enableSliding: 1
-  startSlideSpeedThreshold: 3
-  slideSpeedMultiplier: 0.45
-  minimumSlideSpeed: 8
+  startSlideSpeedThreshold: 8
+  startSlideSpeed: 10
+  endSlideSpeed: 0
+  timeTillEndSlideSpeed: 1
+  slideDecelerationRate: 30
+  minimumSlideSpeed: 10
   slideCooldownTime: 0.5
-  slideDecelerationRate: 1.8
   slidGravityMultiplier: 2
-  movementRestrictionMultiplier: 15
+  camraMovementRestrictionMultiplier: 0
   maxSlopeDetectionAngle: 90
   enableWallRunning: 1
   wallLayer:
@@ -145,7 +147,7 @@ MonoBehaviour:
   exitWallTime: 0.2
   vaultLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   maxAirMoveSpeed: 8
   airAccelerationSpeed: 7.65
   drag: 0.1
