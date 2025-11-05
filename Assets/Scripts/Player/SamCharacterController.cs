@@ -185,16 +185,19 @@ namespace SDK
         [Header("Sliding")]
         public bool enableSliding = true;
         public float startSlideSpeedThreshold;
-        public float slideSpeedMultiplier;
+        public float startSlideSpeed = 0.4f;
+        public float endSlideSpeed = -1;
+        public float timeTillEndSlideSpeed = 1;
+        public float slideDecelerationRate = 2.5f;
         public float minimumSlideSpeed;
         public float slideCooldownTime = 1f;
-        public float slideDecelerationRate = 2.5f;
         public float slidGravityMultiplier;
-        public float movementRestrictionMultiplier;
+        public float camraMovementRestrictionMultiplier;
         public float maxSlopeDetectionAngle = 45f;
+        private float _holdDurationSlide;
         private RaycastHit _slopeOutHit;
         private bool _isSliding;
-        private float _internalSlideSpeed;
+        private Vector3 _slideDirection;
         private float _lastSlideTime;
         
         
@@ -334,7 +337,6 @@ namespace SDK
         {
             // Assign to motor
             kinematicMotor.CharacterController = this;
-            _internalSlideSpeed = maxStableMoveSpeed * slideSpeedMultiplier;
             _internalOrientationSharpness = towardsMovementOrientationSharpness;
             _internalJumpScaleMultiplier = jumpScaleMultiplier;
             _normalCapsuleSize = new Vector3(kinematicMotor.CapsuleRadius, kinematicMotor.CapsuleHeight, kinematicMotor.CapsuleYOffset);
@@ -471,19 +473,20 @@ namespace SDK
                                 {
                                     if (Time.time - _lastSlideTime >= slideCooldownTime)
                                     {
-                                        playerAnimator.SetBool(Sliding, true);
                                         _isSliding = true;
+                                        playerAnimator.SetBool(Sliding, true);
                                         kinematicMotor.SetCapsuleDimensions(_crouchedCapsuleSize.x, _crouchedCapsuleSize.y, _crouchedCapsuleSize.z);
                                         _internalJumpScaleMultiplier = crouchedJumpMultiplier;
                                         _lastSlideTime = Time.time;
+                                        _slideDirection = kinematicMotor.CharacterForward;
                                     }
                                 }
                                 else
                                 {
                                     _isCrouching = true;
+                                    playerAnimator.SetBool(Crouching, true);
                                     kinematicMotor.SetCapsuleDimensions(_crouchedCapsuleSize.x, _crouchedCapsuleSize.y, _crouchedCapsuleSize.z);
                                     _internalJumpScaleMultiplier = crouchedJumpMultiplier;
-                                    playerAnimator.SetBool(Crouching, true);
 
                                     if (enableSquishyCrouch)
                                     {
@@ -504,12 +507,13 @@ namespace SDK
                             _launchButtonHeld = false;
                             _isSliding = false;
                             GameManager.SlideStopEvent();
-                            _internalSlideSpeed = maxStableMoveSpeed * slideSpeedMultiplier;
                             _internalOrientationSharpness = towardsMovementOrientationSharpness;
                             _internalJumpScaleMultiplier = jumpScaleMultiplier;
+                            kinematicMotor.SetCapsuleDimensions(_normalCapsuleSize.x, _normalCapsuleSize.y, _normalCapsuleSize.z);
                             playerAnimator.SetBool(Crouching, false);
                             playerAnimator.SetBool(Sliding, false);
                             _holdDurationLaunch = 0;
+                            _holdDurationSlide = 0;
                         }
 
                         break;
@@ -789,33 +793,27 @@ namespace SDK
         #region  Sliding
         private Vector3 HandleSlide(Vector3 currentVelocity, float deltaTime)
         {
-            switch (_isSliding)
+            if (kinematicMotor.GroundingStatus.IsStableOnGround && _isSliding)
             {
-                //! Sliding
-                case true when kinematicMotor.GroundingStatus.IsStableOnGround:
+                _holdDurationSlide += Time.fixedDeltaTime;
+                
+                float slideAcceleration = Mathf.Lerp(startSlideSpeed, endSlideSpeed,  Mathf.InverseLerp(0, timeTillEndSlideSpeed, _holdDurationSlide));
+                
+                _internalOrientationSharpness = towardsMovementOrientationSharpness / camraMovementRestrictionMultiplier;
+                if (kinematicMotor.Velocity.magnitude <= minimumSlideSpeed)
                 {
-                    _internalSlideSpeed = Mathf.Lerp(_internalSlideSpeed, 0, slideDecelerationRate * deltaTime);
-                                
-                    _internalOrientationSharpness = towardsMovementOrientationSharpness / movementRestrictionMultiplier;
-                    currentVelocity = gameObject.transform.forward * _internalSlideSpeed;
-                    
-                    if (_internalSlideSpeed <= minimumSlideSpeed)
-                    {
-                        Debug.Log("<b><color=green>Finished Sliding</b>");
-                        _isSliding = false;
-                        GameManager.SlideStopEvent();
-                        playerAnimator.SetBool(Sliding, false);
-                        _internalSlideSpeed = maxStableMoveSpeed * slideSpeedMultiplier;
-                        _internalOrientationSharpness = towardsMovementOrientationSharpness;
-                    }
-                    
-                    break;
+                    Debug.Log("<b><color=green>Finished Sliding</b>");
+                    _isSliding = false;
+                    GameManager.SlideStopEvent();
+                    playerAnimator.SetBool(Sliding, false);
+                    _internalOrientationSharpness = towardsMovementOrientationSharpness;
                 }
-                case false when !_isCrouching:
-                    kinematicMotor.SetCapsuleDimensions(_normalCapsuleSize.x, _normalCapsuleSize.y, _normalCapsuleSize.z);
-                    break;
+                
+                currentVelocity += _slideDirection * slideAcceleration;
+                currentVelocity *= 1f / (1f + (slideDecelerationRate * deltaTime));
+
             }
-            
+
             return currentVelocity;
         }
         
