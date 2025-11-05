@@ -471,6 +471,7 @@ namespace SDK
                                 {
                                     if (Time.time - _lastSlideTime >= slideCooldownTime)
                                     {
+                                        playerAnimator.SetBool(Sliding, true);
                                         _isSliding = true;
                                         kinematicMotor.SetCapsuleDimensions(_crouchedCapsuleSize.x, _crouchedCapsuleSize.y, _crouchedCapsuleSize.z);
                                         _internalJumpScaleMultiplier = crouchedJumpMultiplier;
@@ -490,7 +491,6 @@ namespace SDK
                                         playerAnimator.SetBool(Crouching, true);
                                     }
                                 }
-
                             }
                             else
                             {
@@ -794,18 +794,7 @@ namespace SDK
                 //! Sliding
                 case true when kinematicMotor.GroundingStatus.IsStableOnGround:
                 {
-                    playerAnimator.SetBool(Sliding, true);
-
                     _internalSlideSpeed = Mathf.Lerp(_internalSlideSpeed, 0, slideDecelerationRate * deltaTime);
-                                
-                    /*if (!OnSlope() || currentVelocity.y > -0.1f)
-                    {
-                        
-                    }
-                    else
-                    {
-                        _internalSlideSpeed = minimumSlideSpeed + (decelerationRate * Time.deltaTime);
-                    }*/
                                 
                     _internalOrientationSharpness = towardsMovementOrientationSharpness / movementRestrictionMultiplier;
                     currentVelocity = gameObject.transform.forward * _internalSlideSpeed;
@@ -820,8 +809,6 @@ namespace SDK
                         _internalOrientationSharpness = towardsMovementOrientationSharpness;
                     }
                     
-                    // Debug.Log($"<b><color=yellow>Currently Sliding, Speed: {currentVelocity.magnitude}</b>");
-
                     break;
                 }
                 case false when !_isCrouching:

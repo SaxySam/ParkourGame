@@ -7700,10 +7700,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 49793540719768315, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: m_IsKinematic
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 606752517965790641, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
       propertyPath: m_Name
       value: PlayerCharacter
@@ -7748,108 +7744,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: gravity.y
-      value: -58
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: useGravity
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: canWallJump
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: orientation
-      value: 
-      objectReference: {fileID: 1088616263}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: exitWallTime
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: wallRunForce
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: wallRunSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: minJumpHeight
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: enableWallJump
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: enbaleWallJump
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: maxWallRunTime
-      value: 1.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: wallRunGravity
-      value: -2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: rootOrientation
-      value: 
-      objectReference: {fileID: 1930657520900112387}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: wallJumpUpForce
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: startJumpUpSpeed
-      value: 3.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: wallLayer.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: wallRunGravity.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: enableWallRunning
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: playerOrientation
-      value: 
-      objectReference: {fileID: 1088616263}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: wallCheckDistance
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: wallJumpSideForce
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565790318435667513, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: groundLayer.m_Bits
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5851183439827807944, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: rayDirection
-      value: 4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
---- !u!4 &1930657520900112387 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1580252296338831588, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-  m_PrefabInstance: {fileID: 1930657520900112386}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7098824147190142135
 PrefabInstance:
   m_ObjectHideFlags: 0
