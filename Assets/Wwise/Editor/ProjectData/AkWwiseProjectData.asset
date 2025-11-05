@@ -66,7 +66,7 @@ MonoBehaviour:
     ParentPath: SoundBanks\Default Work Unit
     guid: 48d103e8bb1f2745aca472d938ac4b03
     GuidInternal: 
-    m_lastTime: -8584392706818435816
+    m_lastTime: -8584392285940578345
     List:
     - name: Ambience
       guid: 8831b34919bfad4486417ab42e7c053e
@@ -108,7 +108,7 @@ MonoBehaviour:
     ParentPath: Events\Default Work Unit
     guid: dcb31bd4c1475a4e9ffd20a82cd71df4
     GuidInternal: 
-    m_lastTime: -8584392706819924932
+    m_lastTime: -8584392285943886984
     List:
     - name: Ambience
       guid: 41943be4432d5a47b3e1960aa1c1082a
