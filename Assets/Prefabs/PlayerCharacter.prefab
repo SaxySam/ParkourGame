@@ -101,7 +101,7 @@ MonoBehaviour:
   timeForMaxHeightJump: 0.3
   jumpPreGroundingGraceTime: 0.1
   jumpPostGroundingGraceTime: 0.1
-  enableLaunching: 0
+  enableLaunching: 1
   maxDistanceFromLedge: 2
   minPlayerVelocityToLaunch: 1
   minLedgeHeight: 1
@@ -116,14 +116,14 @@ MonoBehaviour:
   crouchedCapsuleHeightDivisor: 2
   crouchedJumpMultiplier: 0.75
   enableSliding: 1
-  startSlideSpeedThreshold: 3
-  slideSpeedMultiplier: 0.45
-  minimumSlideSpeed: 8
-  slideCooldownTime: 0.5
-  slideDecelerationRate: 1.8
-  slidGravityMultiplier: 2
+  startSlideSpeedThreshold: 7
+  slideSpeedMultiplier: 1.05
+  minimumSlideSpeed: 5
+  slideCooldownTime: 2
+  slideDecelerationRate: 1.5
+  gravityMultiplier: 1.5
   movementRestrictionMultiplier: 15
-  maxSlopeDetectionAngle: 90
+  maxSlopeDetectionAngle: 45
   enableWallRunning: 1
   wallLayer:
     serializedVersion: 2
@@ -145,7 +145,7 @@ MonoBehaviour:
   exitWallTime: 0.2
   vaultLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   maxAirMoveSpeed: 8
   airAccelerationSpeed: 7.65
   drag: 0.1
