@@ -25,7 +25,6 @@ namespace SDK
         PhoneMode = 1
     }
 
-
     public enum EOrientationMethod
     {
         TowardsCamera = 0,
@@ -192,7 +191,7 @@ namespace SDK
         public float minimumSlideSpeed;
         public float slideCooldownTime = 1f;
         public float slidGravityMultiplier;
-        public float camraMovementRestrictionMultiplier;
+        public float cameraMovementRestrictionMultiplier;
         public float maxSlopeDetectionAngle = 45f;
         private float _holdDurationSlide;
         private RaycastHit _slopeOutHit;
@@ -799,7 +798,7 @@ namespace SDK
                 
                 float slideAcceleration = Mathf.Lerp(startSlideSpeed, endSlideSpeed,  Mathf.InverseLerp(0, timeTillEndSlideSpeed, _holdDurationSlide));
                 
-                _internalOrientationSharpness = towardsMovementOrientationSharpness / camraMovementRestrictionMultiplier;
+                _internalOrientationSharpness = towardsMovementOrientationSharpness / cameraMovementRestrictionMultiplier;
                 if (kinematicMotor.Velocity.magnitude <= minimumSlideSpeed)
                 {
                     Debug.Log("<b><color=green>Finished Sliding</b>");
