@@ -84,8 +84,7 @@ namespace SDK
         // TODO - Look Sensitivity
 
 
-        [Space(5)]
-        [Header("Animation")]
+        [Space(5)] [Header("Animation")]
         public Animator playerAnimator;
         private static readonly int PlayerSpeedX = Animator.StringToHash("PlayerSpeedX");
         private static readonly int PlayerSpeedZ = Animator.StringToHash("PlayerSpeedZ");
@@ -98,8 +97,7 @@ namespace SDK
         private static readonly int Launch = Animator.StringToHash("Launch");
         private static readonly int IsGrounded = Animator.StringToHash("IsGrounded");
         
-        [Space(5)]
-        [Header("Stable Movement")]
+        [Space(5)] [Header("Stable Movement")]
         public float maxStableMoveSpeed = 10f;
         public float accelerationRate = 5f;
         public float decelerationRate = 5f;
@@ -119,16 +117,14 @@ namespace SDK
         private Vector3 _vectorVelocity;
         private Vector3 _internalVelocityAdd = Vector3.zero;
 
-        [Space(5)]
-        [Header("Camera")]
+        [Space(5)] [Header("Camera")]
         public Transform cameraFollowPoint;
         public CinemachineCamera playerThirdPersonCameraBrain;
         public float slidingCameraFOV = 100f;
         public float readjustmentTime = 50f;
         private float _defaultFOV;
 
-        [Space(5)]
-        [Header("Jumping")]
+        [Space(5)] [Header("Jumping")]
         public bool allowJumpingWhenSliding;
         public float jumpScaleMultiplier = 1f;
         public float startJumpUpSpeed = 2.5f;
@@ -151,8 +147,7 @@ namespace SDK
         private Vector3 _jumpDirection = Vector3.zero;
 
 
-        [Space(5)]
-        [Header("Launch")]
+        [Space(5)] [Header("Launch")]
         public bool enableLaunching = true;
         public float maxDistanceFromLedge = 5.0f;
         public float minPlayerVelocityToLaunch = 1.0f;
@@ -174,8 +169,7 @@ namespace SDK
         private Vector3 _launchDirection = Vector3.zero;
 
 
-        [Space(5)]
-        [Header("Crouch")]
+        [Space(5)] [Header("Crouch")]
         public float maxCrouchSpeed = 5f;
         public bool enableSquishyCrouch = true;
         public float crouchedCapsuleHeightDivisor = 2f;
@@ -186,8 +180,7 @@ namespace SDK
         private Vector3 _crouchedCapsuleSize;
         
 
-        [Space(5)]
-        [Header("Sliding")]
+        [Space(5)] [Header("Sliding")]
         public bool enableSliding = true;
         public float startSlideSpeedThreshold;
         public float startSlideSpeed = 0.4f;
@@ -206,8 +199,7 @@ namespace SDK
         private float _lastSlideTime;
         
         
-        [Space(5)]
-        [Header("Wall Running")]
+        [Space(5)] [Header("Wall Running")]
         public bool enableWallRunning;
         public LayerMask wallLayer;
         public LayerMask groundLayer;
@@ -227,8 +219,7 @@ namespace SDK
         private bool _wallForward;
         
         
-        [Space(5)]
-        [Header("Wall Jumping")]
+        [Space(5)] [Header("Wall Jumping")]
         public bool enableWallJump;
         public bool snapToWall;
         public float wallJumpUpForce;
@@ -238,33 +229,32 @@ namespace SDK
         private bool _wallCheckRadius;
         private bool _exitingWall = false;
         private float _exitWallTimer;
-        
-        
-        [Space(5)]
-        [Header("Ledge Mantle")]
+
+
+        [Space(5)] [Header("Ledge Grab")]
+        public bool enableLedgeGrab;
         public LayerMask vaultLayer;
+        public float downwardsVelocityThreshold = -1f;
+        public float transformForwardLineCastScale = 0.5f;
+        public float lineForwardOffset = 0.1f;
+        private bool _isHanging;
         
-        
-        [Header("Ledge Grab Temp")]
 
-
-        [Header("Air Movement")]
+        [Space(5)] [Header("Air Movement")]
         public float maxAirMoveSpeed = 10f;
         public float airAccelerationSpeed = 5f;
         public float drag = 0.1f;
         private float _internalMaxAirSpeed;
 
 
-        [Space(5)]
-        [Header("Gravity")]
+        [Space(5)] [Header("Gravity")]
         public Vector3 gravity = new(0, -30f, 0);
         private Vector3 _internalGravity;
         public EBonusOrientationMethod bonusOrientationMethod = EBonusOrientationMethod.TowardsGravity;
         public float bonusOrientationSharpness = 10;
 
 
-        [Space(5)]
-        [Header("Misc")]
+        [Space(5)] [Header("Misc")]
         public Transform meshRoot;
         public bool useFramePerfectRotation;
         public List<Collider> ignoredColliders = new();
@@ -351,7 +341,7 @@ namespace SDK
             _lastSlideTime = 0;
             _internalGravity = gravity;
             _rigidbody = gameObject.GetComponent<Rigidbody>();
-            vaultLayer = ~vaultLayer;
+            // vaultLayer = ~vaultLayer;
             _defaultFOV = playerThirdPersonCameraBrain.Lens.FieldOfView;
         }
 
@@ -433,6 +423,13 @@ namespace SDK
             playerAnimator.SetFloat(PlayerSpeedX, _moveInputVector.x);
             playerAnimator.SetFloat(PlayerSpeedZ, _moveInputVector.z);
             playerAnimator.SetFloat(PlayerInputVelocity, _moveInputVector.magnitude);
+            
+            if (_isHanging)
+            {
+                _isHanging = false;
+                gravity = _internalGravity;
+            }
+            
         }
 
         private void Jump(InputAction.CallbackContext context)
@@ -505,7 +502,7 @@ namespace SDK
                             }
                             else
                             {
-                                // GameManager.SlideStopEvent();
+                                GameManager.SlideStopEvent();
                             }
                             
                         }
@@ -514,7 +511,7 @@ namespace SDK
                             _shouldBeCrouching = false;
                             _launchButtonHeld = false;
                             _isSliding = false;
-                            // GameManager.SlideStopEvent();
+                            GameManager.SlideStopEvent();
                             _internalOrientationSharpness = towardsMovementOrientationSharpness;
                             _internalJumpScaleMultiplier = jumpScaleMultiplier;
                             kinematicMotor.SetCapsuleDimensions(_normalCapsuleSize.x, _normalCapsuleSize.y, _normalCapsuleSize.z);
@@ -733,7 +730,14 @@ namespace SDK
                             }
 
                             //! Gravity
-                            currentVelocity += _isSliding ? deltaTime * (slideGravityMultiplier * gravity) : gravity * deltaTime;
+                            if (!_isHanging)
+                            {
+                                currentVelocity += _isSliding ? deltaTime * (slideGravityMultiplier * gravity) : gravity * deltaTime;
+                            }
+                            else
+                            {
+                                currentVelocity = Vector3.zero;
+                            }
 
                             //! Drag
                             currentVelocity *= 1f / (1f + (drag * deltaTime));
@@ -746,13 +750,15 @@ namespace SDK
                         currentVelocity = HandleJump(currentVelocity, deltaTime);
                         
                         //! Handle Wall Running
-
                         if (enableWallRunning)
                         {
                             WallRunningStateMachine(currentVelocity, deltaTime);
                             CheckForWall();
                             if (_wallRunning) currentVelocity = WallRunningMovement(currentVelocity, deltaTime);
                         }
+                        
+                        //! Handle Ledge Grab
+                        if (enableLedgeGrab) LedgeGrab();
 
                         if (!_isSliding && !Mathf.Approximately(playerThirdPersonCameraBrain.Lens.FieldOfView, _defaultFOV))
                         {
@@ -852,16 +858,38 @@ namespace SDK
         
         #region Mantle/Vault
 
-        void CheckVault()
+        void LedgeGrab()
         {
-            if (Physics.Raycast(transform.position, transform.forward, out RaycastHit firstHit, 1f, vaultLayer))
+            if (kinematicMotor.Velocity.y < downwardsVelocityThreshold && !_isHanging)
             {
-                if (Physics.Raycast(
-                        firstHit.point + (transform.forward * kinematicMotor.CapsuleRadius) +
-                        (Vector3.up * (0.6f * kinematicMotor.CapsuleHeight)),
-                        Vector3.down, out RaycastHit secondHit, kinematicMotor.CapsuleHeight))
+                RaycastHit downHit;
+                Vector3 lineDownStart = (transform.position + (Vector3.up * kinematicMotor.CapsuleHeight)) + transform.forward * transformForwardLineCastScale;
+                Vector3 lineDownEnd = (transform.position + (Vector3.up * (kinematicMotor.CapsuleHeight / 2))) + transform.forward * transformForwardLineCastScale;
+                Physics.Linecast(lineDownStart, lineDownEnd, out downHit, vaultLayer);
+                Debug.DrawLine(lineDownStart, lineDownEnd, Color.red);
+
+                if (downHit.collider != null)
                 {
-                    StartCoroutine(LerpVault(secondHit.point, 0.5f));
+                    RaycastHit forwardHit;
+                    Vector3 lineForwardStart = new Vector3(transform.position.x, downHit.point.y - lineForwardOffset, transform.position.z);
+                    Vector3 lineForwardEnd = new Vector3(transform.position.x, downHit.point.y - lineForwardOffset, transform.position.z) + transform.forward * transformForwardLineCastScale;
+                    Physics.Linecast(lineForwardStart, lineForwardEnd, out forwardHit, vaultLayer);
+                    Debug.DrawLine(lineForwardStart, lineForwardEnd, Color.blue);
+
+                    if (forwardHit.collider != null)
+                    {
+                        gravity = Vector3.zero;
+                        
+                        _isHanging = true;
+                        
+                        // Hanging Anim
+                        Vector3 hangingPosition = new Vector3(forwardHit.point.x, downHit.point.y, forwardHit.point.z);
+                        Vector3 offset = transform.forward * -0.1f + transform.up * -1f;
+                        hangingPosition += offset;
+                        kinematicMotor.SetPosition(hangingPosition);
+                        transform.forward = -forwardHit.normal;
+                        Debug.Log("Found a Ledge! Lets grab it!");
+                    }
                 }
             }
         }
@@ -905,6 +933,23 @@ namespace SDK
                                 _jumpConsumed = true;
                                 _jumpedThisFrame = true;
             
+                            }
+                            else if (_isHanging)
+                            {
+                                _isHanging = false;
+                                gravity = _internalGravity;
+                                
+                                _jumpDirection = Vector3.up;
+
+                                // Makes the character skip ground probing/snapping on its next update.
+                                // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
+                                kinematicMotor.ForceUnground(0.1f);
+
+                                _jumpRequested = false;
+                                _jumpConsumed = true;
+                                _jumpedThisFrame = true;
+                                playerAnimator.SetBool(Jumping, true);
+                                
                             }
                             else if (kinematicMotor.GroundingStatus.IsStableOnGround || _timeSinceLastAbleToJump <= jumpPostGroundingGraceTime)
                             {
@@ -1317,6 +1362,7 @@ namespace SDK
         {
             Debug.Log("<b><color=cyan>Landed</b>");
             playerAnimator.SetBool(Falling, false);
+            _isHanging = false;
             GameManager.PlayerLandedEvent();
         }
 
@@ -1345,20 +1391,6 @@ namespace SDK
         public void OnDiscreteCollisionDetected(Collider hitCollider)
         {
             // This is called by the motor when it is detecting a collision that did not result from a "movement hit".
-        }
-
-        private IEnumerator LerpVault(Vector3 targetPositon, float duration)
-        {
-            float time = 0;
-            Vector3 startPosition = transform.position;
-
-            while (time < duration)
-            {
-                transform.position = Vector3.Lerp(startPosition, targetPositon, time / duration);
-                time += Time.deltaTime;
-                yield return null;
-            }
-            transform.position = targetPositon;
         }
 
         [ContextMenu("Do Something?")]

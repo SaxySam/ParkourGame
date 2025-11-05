@@ -8,13 +8,11 @@ public class FootstepParticle : MonoBehaviour
     
     void SpawnLeftFootstepParticleEffect()
     {
-        Debug.Log("*Left Particle Effect*");
         leftFootstepParticle.Play();
     }
 
     void SpawnRightFootstepParticleEffect()
     {
-        Debug.Log("*Right Particle Effect*");
         rightFootstepParticle.Play();
     }
 
@@ -23,5 +21,4 @@ public class FootstepParticle : MonoBehaviour
         leftFootstepParticle.Play();
         rightFootstepParticle.Play();
     }
-    
 }
