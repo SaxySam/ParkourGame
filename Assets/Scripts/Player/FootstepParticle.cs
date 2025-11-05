@@ -20,7 +20,8 @@ public class FootstepParticle : MonoBehaviour
 
     void SpawnSlideParticleEffect()
     {
-        
+        leftFootstepParticle.Play();
+        rightFootstepParticle.Play();
     }
     
 }

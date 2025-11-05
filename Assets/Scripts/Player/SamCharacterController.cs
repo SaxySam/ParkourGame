@@ -108,7 +108,6 @@ namespace SDK
         public float towardsCameraOrientationSharpness = 50;
         public float towardsMovementOrientationSharpness = 15;
         private float _internalOrientationSharpness;
-        [SerializeField] private CinemachineCamera playerThirdPersonCamera;
 
         private float _internalMaxSpeed;
         private Vector3 _cameraPlanarDirection;
@@ -120,6 +119,13 @@ namespace SDK
         private Vector3 _vectorVelocity;
         private Vector3 _internalVelocityAdd = Vector3.zero;
 
+        [Space(5)]
+        [Header("Camera")]
+        public Transform cameraFollowPoint;
+        public CinemachineCamera playerThirdPersonCameraBrain;
+        public float slidingCameraFOV = 100f;
+        public float readjustmentTime = 50f;
+        private float _defaultFOV;
 
         [Space(5)]
         [Header("Jumping")]
@@ -190,7 +196,7 @@ namespace SDK
         public float slideDecelerationRate = 2.5f;
         public float minimumSlideSpeed;
         public float slideCooldownTime = 1f;
-        public float slidGravityMultiplier;
+        public float slideGravityMultiplier;
         public float cameraMovementRestrictionMultiplier;
         public float maxSlopeDetectionAngle = 45f;
         private float _holdDurationSlide;
@@ -200,6 +206,7 @@ namespace SDK
         private float _lastSlideTime;
         
         
+        [Space(5)]
         [Header("Wall Running")]
         public bool enableWallRunning;
         public LayerMask wallLayer;
@@ -220,6 +227,7 @@ namespace SDK
         private bool _wallForward;
         
         
+        [Space(5)]
         [Header("Wall Jumping")]
         public bool enableWallJump;
         public bool snapToWall;
@@ -232,6 +240,7 @@ namespace SDK
         private float _exitWallTimer;
         
         
+        [Space(5)]
         [Header("Ledge Mantle")]
         public LayerMask vaultLayer;
         
@@ -257,7 +266,6 @@ namespace SDK
         [Space(5)]
         [Header("Misc")]
         public Transform meshRoot;
-        public Transform cameraFollowPoint;
         public bool useFramePerfectRotation;
         public List<Collider> ignoredColliders = new();
         private readonly Collider[] _probedColliders = new Collider[8];
@@ -344,6 +352,7 @@ namespace SDK
             _internalGravity = gravity;
             _rigidbody = gameObject.GetComponent<Rigidbody>();
             vaultLayer = ~vaultLayer;
+            _defaultFOV = playerThirdPersonCameraBrain.Lens.FieldOfView;
         }
 
         /// <summary>
@@ -398,7 +407,7 @@ namespace SDK
             {
                 case ECharacterState.ParkourMode:
                     {
-                        Quaternion cameraRotation = playerThirdPersonCamera.transform.rotation;
+                        Quaternion cameraRotation = playerThirdPersonCameraBrain.transform.rotation;
 
                         // Calculate camera direction and rotation on the character plane
                         _cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.forward, kinematicMotor.CharacterUp).normalized;
@@ -496,7 +505,7 @@ namespace SDK
                             }
                             else
                             {
-                                GameManager.SlideStopEvent();
+                                // GameManager.SlideStopEvent();
                             }
                             
                         }
@@ -505,7 +514,7 @@ namespace SDK
                             _shouldBeCrouching = false;
                             _launchButtonHeld = false;
                             _isSliding = false;
-                            GameManager.SlideStopEvent();
+                            // GameManager.SlideStopEvent();
                             _internalOrientationSharpness = towardsMovementOrientationSharpness;
                             _internalJumpScaleMultiplier = jumpScaleMultiplier;
                             kinematicMotor.SetCapsuleDimensions(_normalCapsuleSize.x, _normalCapsuleSize.y, _normalCapsuleSize.z);
@@ -724,7 +733,7 @@ namespace SDK
                             }
 
                             //! Gravity
-                            currentVelocity += _isSliding ? deltaTime * (slidGravityMultiplier * gravity) : gravity * deltaTime;
+                            currentVelocity += _isSliding ? deltaTime * (slideGravityMultiplier * gravity) : gravity * deltaTime;
 
                             //! Drag
                             currentVelocity *= 1f / (1f + (drag * deltaTime));
@@ -743,6 +752,11 @@ namespace SDK
                             WallRunningStateMachine(currentVelocity, deltaTime);
                             CheckForWall();
                             if (_wallRunning) currentVelocity = WallRunningMovement(currentVelocity, deltaTime);
+                        }
+
+                        if (!_isSliding && !Mathf.Approximately(playerThirdPersonCameraBrain.Lens.FieldOfView, _defaultFOV))
+                        {
+                            playerThirdPersonCameraBrain.Lens.FieldOfView = Mathf.MoveTowards(playerThirdPersonCameraBrain.Lens.FieldOfView, _defaultFOV, readjustmentTime * Time.deltaTime);
                         }
                         
                         break;
@@ -797,13 +811,14 @@ namespace SDK
                 _holdDurationSlide += Time.fixedDeltaTime;
                 
                 float slideAcceleration = Mathf.Lerp(startSlideSpeed, endSlideSpeed,  Mathf.InverseLerp(0, timeTillEndSlideSpeed, _holdDurationSlide));
+                playerThirdPersonCameraBrain.Lens.FieldOfView = Mathf.Lerp(_defaultFOV, slidingCameraFOV, Mathf.InverseLerp(0, timeTillEndSlideSpeed, _holdDurationSlide));
                 
                 _internalOrientationSharpness = towardsMovementOrientationSharpness / cameraMovementRestrictionMultiplier;
                 if (kinematicMotor.Velocity.magnitude <= minimumSlideSpeed)
                 {
                     Debug.Log("<b><color=green>Finished Sliding</b>");
                     _isSliding = false;
-                    GameManager.SlideStopEvent();
+                    // GameManager.SlideStopEvent();
                     playerAnimator.SetBool(Sliding, false);
                     _internalOrientationSharpness = towardsMovementOrientationSharpness;
                 }

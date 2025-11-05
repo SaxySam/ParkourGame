@@ -199107,13 +199107,13 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.20833333
-    functionName: SpawnFootstepParticleEffect
+    functionName: SpawnSlideParticleEffect
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.25
+  - time: 0.5
     functionName: OnStopSlide
     data: 
     objectReferenceParameter: {fileID: 0}
