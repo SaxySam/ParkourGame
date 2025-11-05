@@ -79,14 +79,15 @@ namespace SDK
 
         private PlayerInput _playerInputComponent;
 
-        [Space(5)] [Header("Sensitivity")]
-        // TODO - Look Sensitivity
+        [Space(5)] [Header("Sensitivity - Not Functional")]
+        // TODO - Look Sensitivity with new InputSystem Processors
         public Vector2 mouseSensitivity = new (12, 8);
         public Vector2 joyStickSensitivity = new (200, 200);
 
 
         [Space(5)] [Header("Animation")]
         public Animator playerAnimator;
+        
         private static readonly int PlayerSpeedX = Animator.StringToHash("PlayerSpeedX");
         private static readonly int PlayerSpeedZ = Animator.StringToHash("PlayerSpeedZ");
         private static readonly int PlayerInputVelocity = Animator.StringToHash("PlayerInputVelocity");
@@ -98,6 +99,7 @@ namespace SDK
         private static readonly int Launch = Animator.StringToHash("Launch");
         private static readonly int IsGrounded = Animator.StringToHash("IsGrounded");
         
+        
         [Space(5)] [Header("Stable Movement")]
         public float maxStableMoveSpeed = 10f;
         public float accelerationRate = 5f;
@@ -106,8 +108,8 @@ namespace SDK
         [EnumButtons] public EOrientationMethod orientationMethod = EOrientationMethod.TowardsMovement;
         public float towardsCameraOrientationSharpness = 50;
         public float towardsMovementOrientationSharpness = 15;
+        
         private float _internalOrientationSharpness;
-
         private float _internalMaxSpeed;
         private Vector3 _cameraPlanarDirection;
         private Quaternion _cameraPlanarRotation;
@@ -118,13 +120,16 @@ namespace SDK
         private Vector3 _vectorVelocity;
         private Vector3 _internalVelocityAdd = Vector3.zero;
 
+        
         [Space(5)] [Header("Camera")]
         public Transform cameraFollowPoint;
         public CinemachineCamera playerThirdPersonCameraBrain;
         public float slidingCameraFOV = 100f;
         public float readjustmentTime = 50f;
+        
         private float _defaultFOV;
 
+        
         [Space(5)] [Header("Jumping")]
         public bool allowJumpingWhenSliding;
         public float jumpScaleMultiplier = 1f;
@@ -175,6 +180,7 @@ namespace SDK
         public bool enableSquishyCrouch = true;
         public float crouchedCapsuleHeightDivisor = 2f;
         public float crouchedJumpMultiplier = 0.5f;
+        
         private bool _shouldBeCrouching;
         private bool _isCrouching;
         private Vector3 _normalCapsuleSize;
@@ -193,6 +199,7 @@ namespace SDK
         public float slideGravityMultiplier;
         public float cameraMovementRestrictionMultiplier;
         public float maxSlopeDetectionAngle = 45f;
+        
         private float _holdDurationSlide;
         private RaycastHit _slopeOutHit;
         private bool _isSliding;
@@ -202,19 +209,20 @@ namespace SDK
         
         [Space(5)] [Header("Wall Running")]
         public bool enableWallRunning;
+        public Transform playerOrientation;
         public LayerMask wallLayer;
         public LayerMask groundLayer;
         public float wallRunSpeed;
-        private bool _wallRunning;
         public float maxWallRunTime;
-        private float _wallRunTimer;
         public float wallCheckDistance;
         public float minJumpHeight;
         public bool useGravity;
         public float wallRunGravity;
-        public Transform playerOrientation;
+        
         private RaycastHit _leftWallCheckHit;
         private RaycastHit _rightWallCheckHit;
+        private float _wallRunTimer;
+        private bool _wallRunning;
         private bool _wallLeft;
         private bool _wallRight;
         private bool _wallForward;
@@ -226,6 +234,7 @@ namespace SDK
         public float wallJumpUpForce;
         public float wallJumpSideForce;
         public float exitWallTime;
+        
         private bool _wallJumpConsumed;
         private bool _wallCheckRadius;
         private bool _exitingWall = false;
@@ -238,13 +247,15 @@ namespace SDK
         public float downwardsVelocityThreshold = -1f;
         public float transformForwardLineCastScale = 0.5f;
         public float lineForwardOffset = 0.1f;
-        public bool _isHanging;
+        
+        private bool _isHanging;
         
 
         [Space(5)] [Header("Air Movement")]
         public float maxAirMoveSpeed = 10f;
         public float airAccelerationSpeed = 5f;
         public float drag = 0.1f;
+        
         private float _internalMaxAirSpeed;
 
 
@@ -259,6 +270,7 @@ namespace SDK
         public Transform meshRoot;
         public bool useFramePerfectRotation;
         public List<Collider> ignoredColliders = new();
+        
         private readonly Collider[] _probedColliders = new Collider[8];
         private Rigidbody _rigidbody;
 
@@ -343,7 +355,6 @@ namespace SDK
             _lastSlideTime = 0;
             _internalGravity = gravity;
             _rigidbody = gameObject.GetComponent<Rigidbody>();
-            // vaultLayer = ~vaultLayer;
             _defaultFOV = playerThirdPersonCameraBrain.Lens.FieldOfView;
         }
 
@@ -531,17 +542,17 @@ namespace SDK
             }
         }
 
-        private void Pause(InputAction.CallbackContext context)
+        private static void Pause(InputAction.CallbackContext context)
         {
             GameManager.PhoneOpenEvent?.Invoke();
         }
 
-        private void LockMouse(InputAction.CallbackContext context)
+        private static void LockMouse(InputAction.CallbackContext context)
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        private void Exit(InputAction.CallbackContext context)
+        private static void Exit(InputAction.CallbackContext context)
         {
             Cursor.lockState = CursorLockMode.None;
         }
@@ -752,7 +763,7 @@ namespace SDK
                             //! Gravity
                             if (!_isHanging)
                             {
-                                currentVelocity += _isSliding ? deltaTime * (slideGravityMultiplier * gravity) : gravity * deltaTime;
+                                currentVelocity += _isSliding ? gravity * (deltaTime * slideGravityMultiplier) : gravity * deltaTime;
                             }
                             else
                             {
@@ -877,7 +888,7 @@ namespace SDK
         
         #region Mantle/Vault
 
-        void LedgeGrab()
+        private void LedgeGrab()
         {
             if (kinematicMotor.Velocity.y < downwardsVelocityThreshold && !_isHanging)
             {
@@ -887,7 +898,7 @@ namespace SDK
                 Physics.Linecast(lineDownStart, lineDownEnd, out downHit, vaultLayer);
                 Debug.DrawLine(lineDownStart, lineDownEnd, Color.red);
 
-                if (downHit.collider != null)
+                if (downHit.collider is not null)
                 {
                     RaycastHit forwardHit;
                     Vector3 lineForwardStart = new Vector3(transform.position.x, downHit.point.y - lineForwardOffset, transform.position.z);
@@ -895,13 +906,14 @@ namespace SDK
                     Physics.Linecast(lineForwardStart, lineForwardEnd, out forwardHit, vaultLayer);
                     Debug.DrawLine(lineForwardStart, lineForwardEnd, Color.blue);
 
-                    if (forwardHit.collider != null)
+                    if (forwardHit.collider is not null)
                     {
                         gravity = Vector3.zero;
                         
                         _isHanging = true;
                         
-                        // Hanging Anim
+                        // Hanging Anim if applicable
+                        
                         Vector3 hangingPosition = new Vector3(forwardHit.point.x, downHit.point.y, forwardHit.point.z);
                         Vector3 offset = transform.forward * -0.1f + transform.up * -1f;
                         hangingPosition += offset;
@@ -1241,7 +1253,6 @@ namespace SDK
                 if (!(_wallLeft && _moveInputVector.x > 0) && !(_wallRight && _moveInputVector.x < 0))
                 {
                     Vector3.MoveTowards(this.gameObject.transform.position, -wallNormal, deltaTime * wallRunSpeed);
-                    // _rigidbody.AddForce(-wallNormal * 100, ForceMode.Force);
                 }
             }
             

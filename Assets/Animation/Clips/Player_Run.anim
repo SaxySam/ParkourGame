@@ -197242,14 +197242,14 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.5
-    functionName: OnFootstep
+    functionName: SpawnRightFootstepParticleEffect
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.5
-    functionName: SpawnRightFootstepParticleEffect
+    functionName: OnFootstep
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

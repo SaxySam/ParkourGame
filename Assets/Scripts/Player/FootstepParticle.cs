@@ -6,17 +6,17 @@ public class FootstepParticle : MonoBehaviour
     public ParticleSystem leftFootstepParticle;
     public ParticleSystem rightFootstepParticle;
     
-    void SpawnLeftFootstepParticleEffect()
+    public void SpawnLeftFootstepParticleEffect()
     {
         leftFootstepParticle.Play();
     }
 
-    void SpawnRightFootstepParticleEffect()
+    public void SpawnRightFootstepParticleEffect()
     {
         rightFootstepParticle.Play();
     }
 
-    void SpawnSlideParticleEffect()
+    public void SpawnDoubleParticleEffect()
     {
         leftFootstepParticle.Play();
         rightFootstepParticle.Play();
