@@ -79,9 +79,10 @@ namespace SDK
 
         private PlayerInput _playerInputComponent;
 
-        // [Space(5)]
-        // [Header("Sensitivity")]
+        [Space(5)] [Header("Sensitivity")]
         // TODO - Look Sensitivity
+        public Vector2 mouseSensitivity = new (12, 8);
+        public Vector2 joyStickSensitivity = new (200, 200);
 
 
         [Space(5)] [Header("Animation")]
@@ -284,6 +285,7 @@ namespace SDK
 
             _playerInputs.LookAction = _playerInputComponent.actions["Look"];
             _playerInputs.LookAction.performed += Look;
+            // SetSensitivity();
 
             _playerInputs.MoveAction = _playerInputComponent.actions["Move"];
             _playerInputs.MoveAction.performed += Move;
@@ -571,6 +573,24 @@ namespace SDK
                 rot = Quaternion.LookRotation(_lookInputVector, kinematicMotor.CharacterUp);
             }
         }
+        private void SetSensitivity()
+        {
+            // _playerInputs.LookAction.ChangeBinding("<Gamepad>/rightStick")
+            //     .WithProcessor($"ScaleVector2(x={joyStickSensitivity.x},y={joyStickSensitivity.y})");
+            //
+            // _playerInputs.LookAction.ChangeBinding("<Pointer>/delta")
+            //     .WithProcessor($"ScaleVector2(x={mouseSensitivity.x},y={mouseSensitivity.y})");
+            
+            // _playerInputs.LookAction.ApplyBindingOverride(new InputBinding { overrideProcessors = ($"ScaleVector2(x={joyStickSensitivity.x},y={joyStickSensitivity.y})") });
+            // _playerInputs.LookAction.ApplyBindingOverride(new InputBinding { overrideProcessors = ($"ScaleVector2(x={mouseSensitivity.x},y={mouseSensitivity.y})") });
+            
+            // _playerInputs.LookAction = new InputAction(binding: "<Gamepad>/rightStick", processors: $"ScaleVector2(x={joyStickSensitivity.x},y={joyStickSensitivity.y})");
+            // _playerInputs.LookAction = new InputAction(binding: "<Pointer>/delta", processors: $"ScaleVector2(x={mouseSensitivity.x},y={mouseSensitivity.y})");
+            
+            _playerInputs.LookAction.ApplyParameterOverride($"ScaleVector2(x={mouseSensitivity.x},y={mouseSensitivity.y})", 0f, InputBinding.MaskByGroup("Keyboard&Mouse"));
+            _playerInputs.LookAction.ApplyParameterOverride($"ScaleVector2(x={joyStickSensitivity.x},y={joyStickSensitivity.y})", 0f, InputBinding.MaskByGroup("Gamepad"));
+
+        }
 
         /// <summary>
         /// (Called by KinematicCharacterMotor during its update cycle)
@@ -668,6 +688,7 @@ namespace SDK
                     throw new ArgumentOutOfRangeException();
             }
         }
+
         #endregion Rotation
 
         #region Velocity
@@ -742,11 +763,15 @@ namespace SDK
                             currentVelocity *= 1f / (1f + (drag * deltaTime));
                         }
                         
-                        //! Handle Sliding
-                        if (enableSliding) currentVelocity = HandleSlide(currentVelocity, deltaTime);
-                        
                         //! Handle jumping
                         currentVelocity = HandleJump(currentVelocity, deltaTime);
+                        
+                        //! Handle Sliding
+                        if (enableSliding) currentVelocity = HandleSlide(currentVelocity, deltaTime);
+                        if (!_isSliding && !Mathf.Approximately(playerThirdPersonCameraBrain.Lens.FieldOfView, _defaultFOV))
+                        {
+                            playerThirdPersonCameraBrain.Lens.FieldOfView =Mathf.MoveTowards(playerThirdPersonCameraBrain.Lens.FieldOfView, _defaultFOV, readjustmentTime * Time.deltaTime);
+                        }
                         
                         //! Handle Wall Running
                         if (enableWallRunning)
@@ -758,11 +783,6 @@ namespace SDK
                         
                         //! Handle Ledge Grab
                         if (enableLedgeGrab) LedgeGrab();
-
-                        if (!_isSliding && !Mathf.Approximately(playerThirdPersonCameraBrain.Lens.FieldOfView, _defaultFOV))
-                        {
-                            playerThirdPersonCameraBrain.Lens.FieldOfView = Mathf.MoveTowards(playerThirdPersonCameraBrain.Lens.FieldOfView, _defaultFOV, readjustmentTime * Time.deltaTime);
-                        }
                         
                         break;
                     }
