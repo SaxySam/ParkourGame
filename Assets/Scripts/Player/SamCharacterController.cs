@@ -237,7 +237,7 @@ namespace SDK
         public float downwardsVelocityThreshold = -1f;
         public float transformForwardLineCastScale = 0.5f;
         public float lineForwardOffset = 0.1f;
-        private bool _isHanging;
+        public bool _isHanging;
         
 
         [Space(5)] [Header("Air Movement")]
@@ -427,7 +427,6 @@ namespace SDK
             if (_isHanging)
             {
                 _isHanging = false;
-                gravity = _internalGravity;
             }
             
         }
@@ -1234,7 +1233,11 @@ namespace SDK
         private void StopWallRun()
         {
             _wallRunning = false;
-            gravity = _internalGravity;
+            if (!_isHanging)
+            {
+                gravity = _internalGravity;
+            }
+
             _internalMaxSpeed = maxStableMoveSpeed;
         }
         

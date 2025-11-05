@@ -86,7 +86,7 @@ MonoBehaviour:
   kinematicMotor: {fileID: 277347096623532543}
   <CurrentCharacterState>k__BackingField: 0
   playerAnimator: {fileID: 5838343785673483433}
-  maxStableMoveSpeed: 106.4
+  maxStableMoveSpeed: 105
   accelerationRate: 3.75
   decelerationRate: 0.25
   groundMovementFriction: 16
@@ -148,9 +148,14 @@ MonoBehaviour:
   wallJumpUpForce: 0.75
   wallJumpSideForce: 2
   exitWallTime: 0.2
+  enableLedgeGrab: 1
   vaultLayer:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 128
+  downwardsVelocityThreshold: -1
+  transformForwardLineCastScale: 0.5
+  lineForwardOffset: 0.1
+  _isHanging: 0
   maxAirMoveSpeed: 8
   airAccelerationSpeed: 7.65
   drag: 0.1
@@ -7728,15 +7733,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3348362126804008179, guid: d4aa026ef9feb1c4ab9beea37088dc4c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.1
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 3348362126804008179, guid: d4aa026ef9feb1c4ab9beea37088dc4c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 3348362126804008179, guid: d4aa026ef9feb1c4ab9beea37088dc4c, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.1
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 3348362126804008179, guid: d4aa026ef9feb1c4ab9beea37088dc4c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7831,15 +7836,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3348362126804008179, guid: d4aa026ef9feb1c4ab9beea37088dc4c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.1
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 3348362126804008179, guid: d4aa026ef9feb1c4ab9beea37088dc4c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 3348362126804008179, guid: d4aa026ef9feb1c4ab9beea37088dc4c, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.1
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 3348362126804008179, guid: d4aa026ef9feb1c4ab9beea37088dc4c, type: 3}
       propertyPath: m_LocalPosition.x
