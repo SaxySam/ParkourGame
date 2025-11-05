@@ -1836,6 +1836,41 @@
 												</Reference>
 											</ReferenceList>
 										</BlendContainer>
+										<Sound Name="Wind" ID="{C4C4DA94-67CA-49ED-B0FA-66AAC565889F}" ShortID="890791484">
+											<PropertyList>
+												<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+												<Property Name="Volume" Type="Real64">
+													<ValueList>
+														<Value>-10</Value>
+													</ValueList>
+												</Property>
+											</PropertyList>
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{27C20A46-ACC3-477A-9648-EE755BBAAA92}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{A480DA36-F978-4096-93BD-9F72474F9325}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="spooky-wind-429221" ID="{F016906B-94A4-4BA1-A259-342228D191D8}">
+													<PropertyList>
+														<Property Name="FadeInDuration" Type="Real64" Value="0.249605702107989"/>
+														<Property Name="FadeOutDuration" Type="Real64" Value="0.196118765941993"/>
+														<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+													</PropertyList>
+													<Language>SFX</Language>
+													<AudioFile>spooky-wind-429221.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="726342727"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="spooky-wind-429221" ID="{F016906B-94A4-4BA1-A259-342228D191D8}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
 									</ChildrenList>
 								</ActorMixer>
 							</ChildrenList>

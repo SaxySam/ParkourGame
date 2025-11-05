@@ -2,11 +2,14 @@
 
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using KinematicCharacterController;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -21,7 +24,6 @@ namespace SDK
         ParkourMode = 0,
         PhoneMode = 1
     }
-
 
     public enum EOrientationMethod
     {
@@ -77,14 +79,15 @@ namespace SDK
 
         private PlayerInput _playerInputComponent;
 
-        // [Space(5)]
-        // [Header("Sensitivity")]
-        // TODO - Look Sensitivity
+        [Space(5)] [Header("Sensitivity - Not Functional")]
+        // TODO - Look Sensitivity with new InputSystem Processors
+        public Vector2 mouseSensitivity = new (12, 8);
+        public Vector2 joyStickSensitivity = new (200, 200);
 
 
-        [Space(5)]
-        [Header("Animation")]
+        [Space(5)] [Header("Animation")]
         public Animator playerAnimator;
+        
         private static readonly int PlayerSpeedX = Animator.StringToHash("PlayerSpeedX");
         private static readonly int PlayerSpeedZ = Animator.StringToHash("PlayerSpeedZ");
         private static readonly int PlayerInputVelocity = Animator.StringToHash("PlayerInputVelocity");
@@ -96,8 +99,8 @@ namespace SDK
         private static readonly int Launch = Animator.StringToHash("Launch");
         private static readonly int IsGrounded = Animator.StringToHash("IsGrounded");
         
-        [Space(5)]
-        [Header("Stable Movement")]
+        
+        [Space(5)] [Header("Stable Movement")]
         public float maxStableMoveSpeed = 10f;
         public float accelerationRate = 5f;
         public float decelerationRate = 5f;
@@ -105,9 +108,8 @@ namespace SDK
         [EnumButtons] public EOrientationMethod orientationMethod = EOrientationMethod.TowardsMovement;
         public float towardsCameraOrientationSharpness = 50;
         public float towardsMovementOrientationSharpness = 15;
+        
         private float _internalOrientationSharpness;
-        [SerializeField] private CinemachineCamera playerThirdPersonCamera;
-
         private float _internalMaxSpeed;
         private Vector3 _cameraPlanarDirection;
         private Quaternion _cameraPlanarRotation;
@@ -118,12 +120,18 @@ namespace SDK
         private Vector3 _vectorVelocity;
         private Vector3 _internalVelocityAdd = Vector3.zero;
 
+        
+        [Space(5)] [Header("Camera")]
+        public Transform cameraFollowPoint;
+        public CinemachineCamera playerThirdPersonCameraBrain;
+        public float slidingCameraFOV = 100f;
+        public float readjustmentTime = 50f;
+        
+        private float _defaultFOV;
 
-        [Space(5)]
-        [Header("Jumping")]
+        
+        [Space(5)] [Header("Jumping")]
         public bool allowJumpingWhenSliding;
-        public bool allowWallJump;
-        public bool allowDoubleJump;
         public float jumpScaleMultiplier = 1f;
         public float startJumpUpSpeed = 2.5f;
         public float endJumpUpSpeed = 10f;
@@ -142,14 +150,10 @@ namespace SDK
         private float _timeSinceLastAbleToJump;
         private bool _jumpingMovingUp;
         private bool _fallingMovingDown;
-        private bool _doubleJumpConsumed;
-        private bool _canWallJump;
-        private Vector3 _wallJumpNormal;
         private Vector3 _jumpDirection = Vector3.zero;
 
 
-        [Space(5)]
-        [Header("Launch")]
+        [Space(5)] [Header("Launch")]
         public bool enableLaunching = true;
         public float maxDistanceFromLedge = 5.0f;
         public float minPlayerVelocityToLaunch = 1.0f;
@@ -171,56 +175,104 @@ namespace SDK
         private Vector3 _launchDirection = Vector3.zero;
 
 
-        [Space(5)]
-        [Header("Crouch")]
+        [Space(5)] [Header("Crouch")]
         public float maxCrouchSpeed = 5f;
         public bool enableSquishyCrouch = true;
         public float crouchedCapsuleHeightDivisor = 2f;
         public float crouchedJumpMultiplier = 0.5f;
+        
         private bool _shouldBeCrouching;
         private bool _isCrouching;
         private Vector3 _normalCapsuleSize;
         private Vector3 _crouchedCapsuleSize;
         
 
-        [Space(5)]
-        [Header("Sliding")]
+        [Space(5)] [Header("Sliding")]
         public bool enableSliding = true;
         public float startSlideSpeedThreshold;
-        public float slideSpeedMultiplier;
+        public float startSlideSpeed = 0.4f;
+        public float endSlideSpeed = -1;
+        public float timeTillEndSlideSpeed = 1;
+        public float slideDecelerationRate = 2.5f;
         public float minimumSlideSpeed;
         public float slideCooldownTime = 1f;
-        public float slideDecelerationRate = 2.5f;
-        public float gravityMultiplier;
-        public float movementRestrictionMultiplier;
+        public float slideGravityMultiplier;
+        public float cameraMovementRestrictionMultiplier;
         public float maxSlopeDetectionAngle = 45f;
+        
+        private float _holdDurationSlide;
         private RaycastHit _slopeOutHit;
         private bool _isSliding;
-        private float _internalSlideSpeed;
+        private Vector3 _slideDirection;
         private float _lastSlideTime;
+        
+        
+        [Space(5)] [Header("Wall Running")]
+        public bool enableWallRunning;
+        public Transform playerOrientation;
+        public LayerMask wallLayer;
+        public LayerMask groundLayer;
+        public float wallRunSpeed;
+        public float maxWallRunTime;
+        public float wallCheckDistance;
+        public float minJumpHeight;
+        public bool useGravity;
+        public float wallRunGravity;
+        
+        private RaycastHit _leftWallCheckHit;
+        private RaycastHit _rightWallCheckHit;
+        private float _wallRunTimer;
+        private bool _wallRunning;
+        private bool _wallLeft;
+        private bool _wallRight;
+        private bool _wallForward;
+        
+        
+        [Space(5)] [Header("Wall Jumping")]
+        public bool enableWallJump;
+        public bool snapToWall;
+        public float wallJumpUpForce;
+        public float wallJumpSideForce;
+        public float exitWallTime;
+        
+        private bool _wallJumpConsumed;
+        private bool _wallCheckRadius;
+        private bool _exitingWall = false;
+        private float _exitWallTimer;
 
 
-        [Header("Air Movement")]
+        [Space(5)] [Header("Ledge Grab")]
+        public bool enableLedgeGrab;
+        public LayerMask vaultLayer;
+        public float downwardsVelocityThreshold = -1f;
+        public float transformForwardLineCastScale = 0.5f;
+        public float lineForwardOffset = 0.1f;
+        
+        private bool _isHanging;
+        
+
+        [Space(5)] [Header("Air Movement")]
         public float maxAirMoveSpeed = 10f;
         public float airAccelerationSpeed = 5f;
         public float drag = 0.1f;
+        
         private float _internalMaxAirSpeed;
 
 
-        [Space(5)]
-        [Header("Gravity")]
+        [Space(5)] [Header("Gravity")]
         public Vector3 gravity = new(0, -30f, 0);
+        private Vector3 _internalGravity;
         public EBonusOrientationMethod bonusOrientationMethod = EBonusOrientationMethod.TowardsGravity;
         public float bonusOrientationSharpness = 10;
 
 
-        [Space(5)]
-        [Header("Misc")]
+        [Space(5)] [Header("Misc")]
         public Transform meshRoot;
-        public Transform cameraFollowPoint;
         public bool useFramePerfectRotation;
         public List<Collider> ignoredColliders = new();
+        
         private readonly Collider[] _probedColliders = new Collider[8];
+        private Rigidbody _rigidbody;
 
         #endregion Class Declarations
 
@@ -245,6 +297,7 @@ namespace SDK
 
             _playerInputs.LookAction = _playerInputComponent.actions["Look"];
             _playerInputs.LookAction.performed += Look;
+            // SetSensitivity();
 
             _playerInputs.MoveAction = _playerInputComponent.actions["Move"];
             _playerInputs.MoveAction.performed += Move;
@@ -295,12 +348,14 @@ namespace SDK
         {
             // Assign to motor
             kinematicMotor.CharacterController = this;
-            _internalSlideSpeed = maxStableMoveSpeed * slideSpeedMultiplier;
             _internalOrientationSharpness = towardsMovementOrientationSharpness;
             _internalJumpScaleMultiplier = jumpScaleMultiplier;
             _normalCapsuleSize = new Vector3(kinematicMotor.CapsuleRadius, kinematicMotor.CapsuleHeight, kinematicMotor.CapsuleYOffset);
             _crouchedCapsuleSize = new Vector3(kinematicMotor.CapsuleRadius,  kinematicMotor.CapsuleHeight / crouchedCapsuleHeightDivisor,  kinematicMotor.CapsuleYOffset / crouchedCapsuleHeightDivisor);
             _lastSlideTime = 0;
+            _internalGravity = gravity;
+            _rigidbody = gameObject.GetComponent<Rigidbody>();
+            _defaultFOV = playerThirdPersonCameraBrain.Lens.FieldOfView;
         }
 
         /// <summary>
@@ -355,7 +410,7 @@ namespace SDK
             {
                 case ECharacterState.ParkourMode:
                     {
-                        Quaternion cameraRotation = playerThirdPersonCamera.transform.rotation;
+                        Quaternion cameraRotation = playerThirdPersonCameraBrain.transform.rotation;
 
                         // Calculate camera direction and rotation on the character plane
                         _cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.forward, kinematicMotor.CharacterUp).normalized;
@@ -381,6 +436,12 @@ namespace SDK
             playerAnimator.SetFloat(PlayerSpeedX, _moveInputVector.x);
             playerAnimator.SetFloat(PlayerSpeedZ, _moveInputVector.z);
             playerAnimator.SetFloat(PlayerInputVelocity, _moveInputVector.magnitude);
+            
+            if (_isHanging)
+            {
+                _isHanging = false;
+            }
+            
         }
 
         private void Jump(InputAction.CallbackContext context)
@@ -430,17 +491,19 @@ namespace SDK
                                     if (Time.time - _lastSlideTime >= slideCooldownTime)
                                     {
                                         _isSliding = true;
+                                        playerAnimator.SetBool(Sliding, true);
                                         kinematicMotor.SetCapsuleDimensions(_crouchedCapsuleSize.x, _crouchedCapsuleSize.y, _crouchedCapsuleSize.z);
                                         _internalJumpScaleMultiplier = crouchedJumpMultiplier;
                                         _lastSlideTime = Time.time;
+                                        _slideDirection = kinematicMotor.CharacterForward;
                                     }
                                 }
                                 else
                                 {
                                     _isCrouching = true;
+                                    playerAnimator.SetBool(Crouching, true);
                                     kinematicMotor.SetCapsuleDimensions(_crouchedCapsuleSize.x, _crouchedCapsuleSize.y, _crouchedCapsuleSize.z);
                                     _internalJumpScaleMultiplier = crouchedJumpMultiplier;
-                                    playerAnimator.SetBool(Crouching, true);
 
                                     if (enableSquishyCrouch)
                                     {
@@ -448,7 +511,6 @@ namespace SDK
                                         playerAnimator.SetBool(Crouching, true);
                                     }
                                 }
-
                             }
                             else
                             {
@@ -462,12 +524,13 @@ namespace SDK
                             _launchButtonHeld = false;
                             _isSliding = false;
                             GameManager.SlideStopEvent();
-                            _internalSlideSpeed = maxStableMoveSpeed * slideSpeedMultiplier;
                             _internalOrientationSharpness = towardsMovementOrientationSharpness;
                             _internalJumpScaleMultiplier = jumpScaleMultiplier;
+                            kinematicMotor.SetCapsuleDimensions(_normalCapsuleSize.x, _normalCapsuleSize.y, _normalCapsuleSize.z);
                             playerAnimator.SetBool(Crouching, false);
                             playerAnimator.SetBool(Sliding, false);
                             _holdDurationLaunch = 0;
+                            _holdDurationSlide = 0;
                         }
 
                         break;
@@ -479,17 +542,17 @@ namespace SDK
             }
         }
 
-        private void Pause(InputAction.CallbackContext context)
+        private static void Pause(InputAction.CallbackContext context)
         {
             GameManager.PhoneOpenEvent?.Invoke();
         }
 
-        private void LockMouse(InputAction.CallbackContext context)
+        private static void LockMouse(InputAction.CallbackContext context)
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        private void Exit(InputAction.CallbackContext context)
+        private static void Exit(InputAction.CallbackContext context)
         {
             Cursor.lockState = CursorLockMode.None;
         }
@@ -520,6 +583,24 @@ namespace SDK
             {
                 rot = Quaternion.LookRotation(_lookInputVector, kinematicMotor.CharacterUp);
             }
+        }
+        private void SetSensitivity()
+        {
+            // _playerInputs.LookAction.ChangeBinding("<Gamepad>/rightStick")
+            //     .WithProcessor($"ScaleVector2(x={joyStickSensitivity.x},y={joyStickSensitivity.y})");
+            //
+            // _playerInputs.LookAction.ChangeBinding("<Pointer>/delta")
+            //     .WithProcessor($"ScaleVector2(x={mouseSensitivity.x},y={mouseSensitivity.y})");
+            
+            // _playerInputs.LookAction.ApplyBindingOverride(new InputBinding { overrideProcessors = ($"ScaleVector2(x={joyStickSensitivity.x},y={joyStickSensitivity.y})") });
+            // _playerInputs.LookAction.ApplyBindingOverride(new InputBinding { overrideProcessors = ($"ScaleVector2(x={mouseSensitivity.x},y={mouseSensitivity.y})") });
+            
+            // _playerInputs.LookAction = new InputAction(binding: "<Gamepad>/rightStick", processors: $"ScaleVector2(x={joyStickSensitivity.x},y={joyStickSensitivity.y})");
+            // _playerInputs.LookAction = new InputAction(binding: "<Pointer>/delta", processors: $"ScaleVector2(x={mouseSensitivity.x},y={mouseSensitivity.y})");
+            
+            _playerInputs.LookAction.ApplyParameterOverride($"ScaleVector2(x={mouseSensitivity.x},y={mouseSensitivity.y})", 0f, InputBinding.MaskByGroup("Keyboard&Mouse"));
+            _playerInputs.LookAction.ApplyParameterOverride($"ScaleVector2(x={joyStickSensitivity.x},y={joyStickSensitivity.y})", 0f, InputBinding.MaskByGroup("Gamepad"));
+
         }
 
         /// <summary>
@@ -618,6 +699,7 @@ namespace SDK
                     throw new ArgumentOutOfRangeException();
             }
         }
+
         #endregion Rotation
 
         #region Velocity
@@ -663,7 +745,7 @@ namespace SDK
                             // Add move input
                             if (_multipliedMoveInputVector.sqrMagnitude > 0f)
                             {
-                                _internalMaxAirSpeed = !_isSliding ? maxAirMoveSpeed : maxAirMoveSpeed + _internalSlideSpeed;
+                                _internalMaxAirSpeed = maxAirMoveSpeed;
 
                                 Vector3 targetMovementVelocity = _multipliedMoveInputVector * _internalMaxAirSpeed;
 
@@ -679,17 +761,39 @@ namespace SDK
                             }
 
                             //! Gravity
-                            currentVelocity += !_isSliding ? gravity * deltaTime : deltaTime * gravityMultiplier * gravity;
+                            if (!_isHanging)
+                            {
+                                currentVelocity += _isSliding ? gravity * (deltaTime * slideGravityMultiplier) : gravity * deltaTime;
+                            }
+                            else
+                            {
+                                currentVelocity = Vector3.zero;
+                            }
 
                             //! Drag
                             currentVelocity *= 1f / (1f + (drag * deltaTime));
                         }
                         
-                        //! Handle Sliding
-                        if (enableSliding) currentVelocity = HandleSlide(currentVelocity, deltaTime);
-                        
                         //! Handle jumping
                         currentVelocity = HandleJump(currentVelocity, deltaTime);
+                        
+                        //! Handle Sliding
+                        if (enableSliding) currentVelocity = HandleSlide(currentVelocity, deltaTime);
+                        if (!_isSliding && !Mathf.Approximately(playerThirdPersonCameraBrain.Lens.FieldOfView, _defaultFOV))
+                        {
+                            playerThirdPersonCameraBrain.Lens.FieldOfView =Mathf.MoveTowards(playerThirdPersonCameraBrain.Lens.FieldOfView, _defaultFOV, readjustmentTime * Time.deltaTime);
+                        }
+                        
+                        //! Handle Wall Running
+                        if (enableWallRunning)
+                        {
+                            WallRunningStateMachine(currentVelocity, deltaTime);
+                            CheckForWall();
+                            if (_wallRunning) currentVelocity = WallRunningMovement(currentVelocity, deltaTime);
+                        }
+                        
+                        //! Handle Ledge Grab
+                        if (enableLedgeGrab) LedgeGrab();
                         
                         break;
                     }
@@ -738,46 +842,28 @@ namespace SDK
         #region  Sliding
         private Vector3 HandleSlide(Vector3 currentVelocity, float deltaTime)
         {
-            switch (_isSliding)
+            if (kinematicMotor.GroundingStatus.IsStableOnGround && _isSliding)
             {
-                //! Sliding
-                case true when kinematicMotor.GroundingStatus.IsStableOnGround:
+                _holdDurationSlide += Time.fixedDeltaTime;
+                
+                float slideAcceleration = Mathf.Lerp(startSlideSpeed, endSlideSpeed,  Mathf.InverseLerp(0, timeTillEndSlideSpeed, _holdDurationSlide));
+                playerThirdPersonCameraBrain.Lens.FieldOfView = Mathf.Lerp(_defaultFOV, slidingCameraFOV, Mathf.InverseLerp(0, timeTillEndSlideSpeed, _holdDurationSlide));
+                
+                _internalOrientationSharpness = towardsMovementOrientationSharpness / cameraMovementRestrictionMultiplier;
+                if (kinematicMotor.Velocity.magnitude <= minimumSlideSpeed)
                 {
-                    playerAnimator.SetBool(Sliding, true);
-
-                    _internalSlideSpeed = Mathf.Lerp(_internalSlideSpeed, 0, slideDecelerationRate * deltaTime);
-                                
-                    /*if (!OnSlope() || currentVelocity.y > -0.1f)
-                    {
-                        
-                    }
-                    else
-                    {
-                        _internalSlideSpeed = minimumSlideSpeed + (decelerationRate * Time.deltaTime);
-                    }*/
-                                
-                    _internalOrientationSharpness = towardsMovementOrientationSharpness / movementRestrictionMultiplier;
-                    currentVelocity = gameObject.transform.forward * _internalSlideSpeed;
-                    
-                    if (_internalSlideSpeed <= minimumSlideSpeed)
-                    {
-                        Debug.Log("<b><color=green>Finished Sliding</b>");
-                        _isSliding = false;
-                        GameManager.SlideStopEvent();
-                        playerAnimator.SetBool(Sliding, false);
-                        _internalSlideSpeed = maxStableMoveSpeed * slideSpeedMultiplier;
-                        _internalOrientationSharpness = towardsMovementOrientationSharpness;
-                    }
-                    
-                    // Debug.Log($"<b><color=yellow>Currently Sliding, Speed: {currentVelocity.magnitude}</b>");
-
-                    break;
+                    Debug.Log("<b><color=green>Finished Sliding</b>");
+                    _isSliding = false;
+                    // GameManager.SlideStopEvent();
+                    playerAnimator.SetBool(Sliding, false);
+                    _internalOrientationSharpness = towardsMovementOrientationSharpness;
                 }
-                case false when !_isCrouching:
-                    kinematicMotor.SetCapsuleDimensions(_normalCapsuleSize.x, _normalCapsuleSize.y, _normalCapsuleSize.z);
-                    break;
+                
+                currentVelocity += _slideDirection * slideAcceleration;
+                currentVelocity *= 1f / (1f + (slideDecelerationRate * deltaTime));
+
             }
-            
+
             return currentVelocity;
         }
         
@@ -799,9 +885,50 @@ namespace SDK
             return Vector3.ProjectOnPlane(moveDirection, _slopeOutHit.normal).normalized;
         }
         #endregion Sliding
+        
+        #region Mantle/Vault
+
+        private void LedgeGrab()
+        {
+            if (kinematicMotor.Velocity.y < downwardsVelocityThreshold && !_isHanging)
+            {
+                RaycastHit downHit;
+                Vector3 lineDownStart = (transform.position + (Vector3.up * kinematicMotor.CapsuleHeight)) + transform.forward * transformForwardLineCastScale;
+                Vector3 lineDownEnd = (transform.position + (Vector3.up * (kinematicMotor.CapsuleHeight / 2))) + transform.forward * transformForwardLineCastScale;
+                Physics.Linecast(lineDownStart, lineDownEnd, out downHit, vaultLayer);
+                Debug.DrawLine(lineDownStart, lineDownEnd, Color.red);
+
+                if (downHit.collider is not null)
+                {
+                    RaycastHit forwardHit;
+                    Vector3 lineForwardStart = new Vector3(transform.position.x, downHit.point.y - lineForwardOffset, transform.position.z);
+                    Vector3 lineForwardEnd = new Vector3(transform.position.x, downHit.point.y - lineForwardOffset, transform.position.z) + transform.forward * transformForwardLineCastScale;
+                    Physics.Linecast(lineForwardStart, lineForwardEnd, out forwardHit, vaultLayer);
+                    Debug.DrawLine(lineForwardStart, lineForwardEnd, Color.blue);
+
+                    if (forwardHit.collider is not null)
+                    {
+                        gravity = Vector3.zero;
+                        
+                        _isHanging = true;
+                        
+                        // Hanging Anim if applicable
+                        
+                        Vector3 hangingPosition = new Vector3(forwardHit.point.x, downHit.point.y, forwardHit.point.z);
+                        Vector3 offset = transform.forward * -0.1f + transform.up * -1f;
+                        hangingPosition += offset;
+                        kinematicMotor.SetPosition(hangingPosition);
+                        transform.forward = -forwardHit.normal;
+                        Debug.Log("Found a Ledge! Lets grab it!");
+                    }
+                }
+            }
+        }
+        
+        #endregion
+        
 
         #endregion Velocity
-
 
         #region Jumping
 
@@ -822,7 +949,40 @@ namespace SDK
                     {
                         if (!_jumpConsumed)
                         {
-                            if (kinematicMotor.GroundingStatus.IsStableOnGround || _timeSinceLastAbleToJump <= jumpPostGroundingGraceTime)
+                            if ((_wallCheckRadius) && _moveInputVector.z > 0 && AboveGround() && enableWallJump)
+                            {
+                                _exitingWall = true;
+                                _exitWallTimer = exitWallTime;
+                                
+                                Vector3 wallNormal = _wallRight ? _rightWallCheckHit.normal : _leftWallCheckHit.normal;
+                                Vector3 forceToApply = transform.up * wallJumpUpForce + wallNormal * wallJumpSideForce;
+                                _jumpDirection = forceToApply;
+
+                                _wallRunning = false;
+                                _wallJumpConsumed = true;
+                                _jumpRequested = false;
+                                _jumpConsumed = true;
+                                _jumpedThisFrame = true;
+            
+                            }
+                            else if (_isHanging)
+                            {
+                                _isHanging = false;
+                                gravity = _internalGravity;
+                                
+                                _jumpDirection = Vector3.up;
+
+                                // Makes the character skip ground probing/snapping on its next update.
+                                // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
+                                kinematicMotor.ForceUnground(0.1f);
+
+                                _jumpRequested = false;
+                                _jumpConsumed = true;
+                                _jumpedThisFrame = true;
+                                playerAnimator.SetBool(Jumping, true);
+                                
+                            }
+                            else if (kinematicMotor.GroundingStatus.IsStableOnGround || _timeSinceLastAbleToJump <= jumpPostGroundingGraceTime)
                             {
                                 //Jump
                                 _jumpDirection = Vector3.up;
@@ -839,7 +999,37 @@ namespace SDK
                         }
                     }
 
-                    if (_jumpButtonHeld && _jumpConsumed)
+                    if (_wallJumpConsumed)
+                    {
+                        Debug.Log("Wall Jump");
+                        _jumpedThisFrame = false;
+                        _timeSinceJumpRequested += deltaTime;
+                        
+                        // Calculate jump direction before 
+                        gameObject.transform.rotation = Quaternion.LookRotation(_jumpDirection);
+
+                        // Makes the character skip ground probing/snapping on its next update.
+                        // If this line weren't here, the character would remain snapped to the ground when trying to jump.
+                        // Try commenting this line out and see.
+                        kinematicMotor.ForceUnground(0.1f);
+
+                        // Add to the return velocity and reset jump state
+                        currentVelocity += (_jumpDirection * startJumpUpSpeed) - Vector3.Project(currentVelocity, kinematicMotor.CharacterUp);
+                        _jumpRequested = false;
+                        _jumpConsumed = true;
+                        _jumpedThisFrame = true;
+
+                        // Reset wall jump
+                        _wallJumpConsumed = false;
+
+                        // Take into account additive velocity
+                        if (_internalVelocityAdd.sqrMagnitude > 0f)
+                        {
+                            currentVelocity += _internalVelocityAdd;
+                            _internalVelocityAdd = Vector3.zero;
+                        }
+                    }
+                    else if (_jumpButtonHeld && _jumpConsumed)
                     {
                         _holdDurationJump = Mathf.Clamp(_holdDurationJump + Time.fixedDeltaTime, 0, timeForMaxHeightJump);
 
@@ -968,6 +1158,121 @@ namespace SDK
         }
 
         #endregion Launching
+        
+        #region Wall Running
+        
+        private void CheckForWall()
+        {
+            _wallForward = Physics.Raycast(transform.position, playerOrientation.forward, out _rightWallCheckHit, wallCheckDistance, wallLayer);
+            _wallRight = Physics.Raycast(transform.position, playerOrientation.right, out _rightWallCheckHit, wallCheckDistance, wallLayer);
+            _wallLeft = Physics.Raycast(transform.position, -playerOrientation.right, out _leftWallCheckHit, wallCheckDistance, wallLayer);
+            _wallCheckRadius = Physics.CheckSphere(transform.position, wallCheckDistance, wallLayer);
+        }
+
+        private bool AboveGround()
+        {
+            return !kinematicMotor.LastGroundingStatus.IsStableOnGround && !Physics.Raycast(transform.position, Vector3.down, minJumpHeight, groundLayer);
+        }
+
+        private void WallRunningStateMachine(Vector3 currentVelocity, float deltaTime)
+        {
+            // _moveInputVector.x = horz
+            // _moveInputVector.z = vert
+            
+            // Wall Running
+            if ((_wallLeft || _wallRight ) && _moveInputVector.z > 0 && AboveGround() && !_exitingWall)
+            {
+                //Start Wall run
+                if (!_wallRunning)
+                {
+                    StartWallRun();
+                }
+
+                if (_wallRunTimer > 0)
+                {
+                    _wallRunTimer -= deltaTime;
+                }
+
+                if (_wallRunTimer <= 0 && _wallRunning)
+                {
+                    _exitingWall = true;
+                    _exitWallTimer = exitWallTime;
+                }
+            }
+            
+            // Exiting Wall Running
+            else if (_exitingWall)
+            {
+                if (_wallRunning)
+                {
+                    StopWallRun();
+                }
+
+                if (_exitWallTimer > 0)
+                {
+                    _exitWallTimer -= deltaTime;
+                }
+
+                if (_exitWallTimer <= 0)
+                {
+                    _exitingWall = false;
+                }
+                
+            }
+
+            // Stop Wall Running
+            else
+            {
+                StopWallRun();
+            }
+        }
+
+        private void StartWallRun()
+        {
+            _wallRunning = true;
+            _internalMaxSpeed = wallRunSpeed;
+
+            _wallRunTimer = maxWallRunTime;
+        }
+
+        private Vector3 WallRunningMovement(Vector3 currentVelocity, float deltaTime)
+        {
+            gravity = Vector3.zero;
+            Vector3 wallNormal = _wallRight ? _rightWallCheckHit.normal : _leftWallCheckHit.normal;
+
+            Vector3 wallForward = Vector3.Cross(wallNormal, transform.up);
+
+            if ((playerOrientation.forward - wallForward).magnitude > (playerOrientation.forward - (-wallForward)).magnitude)
+            {
+                wallForward = -wallForward;
+            }
+
+            // // Push into wall
+            if (snapToWall)
+            {
+                if (!(_wallLeft && _moveInputVector.x > 0) && !(_wallRight && _moveInputVector.x < 0))
+                {
+                    Vector3.MoveTowards(this.gameObject.transform.position, -wallNormal, deltaTime * wallRunSpeed);
+                }
+            }
+            
+            return (playerOrientation.forward * _internalMaxSpeed) +
+                   (useGravity ? transform.up * wallRunGravity : Vector3.zero);
+
+        }
+        
+        private void StopWallRun()
+        {
+            _wallRunning = false;
+            if (!_isHanging)
+            {
+                gravity = _internalGravity;
+            }
+
+            _internalMaxSpeed = maxStableMoveSpeed;
+        }
+        
+        #endregion Wall Running
 
         #region Post-Update
         /// <summary>
@@ -995,7 +1300,7 @@ namespace SDK
                                 // If we're on a ground surface, reset jumping values
                                 if (!_jumpedThisFrame)
                                 {
-                                    _doubleJumpConsumed = false;
+                                    _wallJumpConsumed = false;
                                     _jumpConsumed = false;
                                 }
                                 _timeSinceLastAbleToJump = 0f;
@@ -1064,14 +1369,6 @@ namespace SDK
             switch (CurrentCharacterState)
             {
                 case ECharacterState.ParkourMode:
-                    {
-                        if (allowWallJump && !kinematicMotor.GroundingStatus.IsStableOnGround && !hitStabilityReport.IsStable)
-                        {
-                            _canWallJump = true;
-                            _wallJumpNormal = hitNormal;
-                        }
-                        break;
-                    }
                 case ECharacterState.PhoneMode:
                     break;
                 default:
@@ -1099,6 +1396,7 @@ namespace SDK
         {
             Debug.Log("<b><color=cyan>Landed</b>");
             playerAnimator.SetBool(Falling, false);
+            _isHanging = false;
             GameManager.PlayerLandedEvent();
         }
 
@@ -1136,6 +1434,16 @@ namespace SDK
         }
         
     #endregion Methods
+
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            Debug.DrawRay(transform.position, playerOrientation.right * wallCheckDistance);
+            Debug.DrawRay(transform.position, -playerOrientation.right * wallCheckDistance);
+            
+            Gizmos.color = Color.red;
+            Debug.DrawRay(transform.position, Vector3.down * minJumpHeight);
+        }
     
     }
 }

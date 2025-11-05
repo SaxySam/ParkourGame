@@ -80,6 +80,17 @@
 								</Action>
 							</ChildrenList>
 						</Event>
+						<Event Name="Play_Wind" ID="{D3D55800-BF37-49D2-BD92-943BD4724962}">
+							<ChildrenList>
+								<Action Name="" ID="{8530B52A-DABB-4FDC-9439-D7CB20C7885A}" ShortID="722873425">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Wind" ID="{C4C4DA94-67CA-49ED-B0FA-66AAC565889F}" WorkUnitID="{429E710C-6F62-449D-A8F6-7AB0872625C9}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
 					</ChildrenList>
 				</Folder>
 				<Folder Name="Movement" ID="{8682D38D-24D0-4574-87EB-24AD7C784A96}" ShortID="465121042">

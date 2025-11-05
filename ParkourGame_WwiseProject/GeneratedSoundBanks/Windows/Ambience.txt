@@ -1,5 +1,6 @@
 Event	ID	Name			Wwise Object Path	Notes
 	639442158	Play_Crows			\Default Work Unit\Ambience\Play_Crows	
+	1020223172	Play_Wind			\Default Work Unit\Ambience\Play_Wind	
 	1601844230	Play_Pipe			\Default Work Unit\Ambience\Play_Pipe	
 	1698272256	Stop_Birds			\Default Work Unit\Ambience\Stop_Birds	
 	3025897706	Play_Birds			\Default Work Unit\Ambience\Play_Birds	
@@ -7,24 +8,25 @@ Event	ID	Name			Wwise Object Path	Notes
 	3801807580	Stop_Crows			\Default Work Unit\Ambience\Stop_Crows	
 
 In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
-	23856464	Bird song-009	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\E3\{E385D993-AA8A-0B21-DEBE-4E75FF75A7FB}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\Birds 2\Bird song-009		200052
-	29124492	Metal growns-002	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\DC\{DCD054A3-C12C-9AED-D19E-35D0C1CEE4FE}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\water pipe\Metal\Metal growns-002		389000
-	37349968	Bird song-004	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\63\{636A8DC5-9905-5B52-2734-E1776C91688D}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\birds 1\Bird song-004		207388
-	48355240	crow-005	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\6B\{6B13398D-80EE-2ECF-A621-6EAF061AFF95}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Crows\crow-005		91820
-	59316557	Metal growns-001	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\F6\{F635B0BC-AE05-BDBC-51B5-959D0BE2AF87}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\water pipe\Metal\Metal growns-001		753272
-	103903480	crow-003	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\FE\{FEF5BB1F-506E-1002-4EA4-FB90FDC95014}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Crows\crow-003		104660
-	116668413	crow-001	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\4B\{4B0F5CF6-0C16-FFD1-6B5E-EFDA8A47596F}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Crows\crow-001		99156
-	143131632	Bird song-007	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\46\{46AF9A07-6BE6-F442-16C3-D40A1AD95769}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\Birds 2\Bird song-007		190880
-	174550267	Water flow	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\48\{48281704-248D-AC2F-F59F-A714A3CBA3F7}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\water pipe\Water flow		9787572
-	188162195	Bird song-002	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\C0\{C072E3C0-3E36-F61E-2C72-797997AC5906}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\birds 1\Bird song-002		278932
-	259045145	Bird song-003	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\57\{573B6CB6-3DFE-33CE-D6FD-0BCC7BE80C5D}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\birds 1\Bird song-003		190880
-	302440887	Bird song-006	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\B8\{B88EB2C2-CC8B-049E-5683-5DA0F561C0E2}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\Birds 2\Bird song-006		168864
-	432699908	Bird song-001	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\68\{686946ED-E5A0-277A-BCCB-CB436808AB21}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\birds 1\Bird song-001		267924
-	519335066	Metal growns-003	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\F7\{F7C49A34-A4D9-89DB-643B-45F97C17688A}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\water pipe\Metal\Metal growns-003		525224
-	561447000	crow-006	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\83\{836AEF5E-DC26-77E8-FD03-9D378E70D480}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Crows\crow-006		97320
-	648525959	crow-002	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\B0\{B047404D-A07C-3EEA-A2B3-0AA38F5533BC}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Crows\crow-002		108328
-	664490745	Metal growns-004	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\21\{21E45F51-92D5-99F4-7310-F89071F9DADE}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\water pipe\Metal\Metal growns-004		1373308
-	687876781	Bird song-005	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\16\{16E6133F-E697-EEC7-FEAC-EA807A3CF238}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\Birds 2\Bird song-005		209224
-	925911802	Bird song-008	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\C6\{C6A7ADE4-5953-690B-E269-7D738B44DB65}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\Birds 2\Bird song-008		198216
-	929362422	crow-004	C:\Users\jacob\Git\2025\DISC380\ParkourGame\ParkourGame_WwiseProject\.cache\72\{72CF7ED9-A034-6266-A3C7-FA8675305A1C}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Crows\crow-004		99156
+	23856464	Bird song-009	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\E3\{E385D993-AA8A-0B21-DEBE-4E75FF75A7FB}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\Birds 2\Bird song-009		200052
+	29124492	Metal growns-002	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\DC\{DCD054A3-C12C-9AED-D19E-35D0C1CEE4FE}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\water pipe\Metal\Metal growns-002		389000
+	37349968	Bird song-004	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\63\{636A8DC5-9905-5B52-2734-E1776C91688D}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\birds 1\Bird song-004		207388
+	48355240	crow-005	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\6B\{6B13398D-80EE-2ECF-A621-6EAF061AFF95}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Crows\crow-005		91820
+	59316557	Metal growns-001	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\F6\{F635B0BC-AE05-BDBC-51B5-959D0BE2AF87}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\water pipe\Metal\Metal growns-001		753272
+	103903480	crow-003	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\FE\{FEF5BB1F-506E-1002-4EA4-FB90FDC95014}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Crows\crow-003		104660
+	116668413	crow-001	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\4B\{4B0F5CF6-0C16-FFD1-6B5E-EFDA8A47596F}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Crows\crow-001		99156
+	143131632	Bird song-007	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\46\{46AF9A07-6BE6-F442-16C3-D40A1AD95769}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\Birds 2\Bird song-007		190880
+	174550267	Water flow	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\48\{48281704-248D-AC2F-F59F-A714A3CBA3F7}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\water pipe\Water flow		9787572
+	188162195	Bird song-002	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\C0\{C072E3C0-3E36-F61E-2C72-797997AC5906}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\birds 1\Bird song-002		278932
+	259045145	Bird song-003	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\57\{573B6CB6-3DFE-33CE-D6FD-0BCC7BE80C5D}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\birds 1\Bird song-003		190880
+	302440887	Bird song-006	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\B8\{B88EB2C2-CC8B-049E-5683-5DA0F561C0E2}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\Birds 2\Bird song-006		168864
+	432699908	Bird song-001	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\68\{686946ED-E5A0-277A-BCCB-CB436808AB21}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\birds 1\Bird song-001		267924
+	519335066	Metal growns-003	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\F7\{F7C49A34-A4D9-89DB-643B-45F97C17688A}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\water pipe\Metal\Metal growns-003		525224
+	561447000	crow-006	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\83\{836AEF5E-DC26-77E8-FD03-9D378E70D480}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Crows\crow-006		97320
+	648525959	crow-002	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\B0\{B047404D-A07C-3EEA-A2B3-0AA38F5533BC}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Crows\crow-002		108328
+	664490745	Metal growns-004	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\21\{21E45F51-92D5-99F4-7310-F89071F9DADE}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\water pipe\Metal\Metal growns-004		1373308
+	687876781	Bird song-005	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\16\{16E6133F-E697-EEC7-FEAC-EA807A3CF238}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\Birds 2\Bird song-005		209224
+	726342727	Wind	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\9D\{9D43607F-EADA-1FE7-EEBB-26C4240EFB95}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Wind		5764704
+	925911802	Bird song-008	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\C6\{C6A7ADE4-5953-690B-E269-7D738B44DB65}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Bird song\Birds 2\Bird song-008		198216
+	929362422	crow-004	D:\Local\ske131\ParkourGame\ParkourGame_WwiseProject\.cache\72\{72CF7ED9-A034-6266-A3C7-FA8675305A1C}.wem		\Actor-Mixer Hierarchy\Default Work Unit\World\Ambience\In world\Crows\crow-004		99156
 

@@ -33,10 +33,17 @@
 							<ObjectRef Name="Play_Pipe" ID="{74C39DDC-40E5-4427-BAD4-FA662CF677F7}" WorkUnitID="{D41BB3DC-47C1-4E5A-9FFD-20A82CD71DF4}"/>
 							<Position X="2" Y="2"/>
 						</Module>
+						<Module>
+							<ObjectRef Name="Play_Wind" ID="{D3D55800-BF37-49D2-BD92-943BD4724962}" WorkUnitID="{D41BB3DC-47C1-4E5A-9FFD-20A82CD71DF4}"/>
+							<Position X="3" Y="0"/>
+						</Module>
 					</ModuleList>
 					<RTPCValueList ShowAll="true"/>
 					<CurrentStateList ShowAll="true"/>
-					<CurrentSwitchList ShowAll="true"/>
+					<CurrentSwitchList ShowAll="true">
+						<CurrentSwitchRef Name="Conc" ID="{D8969FE9-FD01-4458-A97F-AE371D36B976}"/>
+						<CurrentSwitchRef Name="Conc" ID="{EF4EED0B-DA91-48C7-97FE-995ABB3C680D}"/>
+					</CurrentSwitchList>
 				</SoundcasterSession>
 			</ChildrenList>
 		</WorkUnit>

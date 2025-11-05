@@ -3,7 +3,7 @@
   "Project": {
    "Name": "ParkourGame_WwiseProject",
    "GUID": "{B8473751-8100-440C-8C98-B133BF6BFDE0}",
-   "Generator": "2024.1.9.8920"
+   "Generator": "2024.1.0.8669"
   },
   "CacheRoot": "../.cache",
   "Platforms": [
@@ -24,6 +24,6 @@
     "UseAsStandIn": "true"
    }
   ],
-  "FileHash": "{61E28D3E-DEBE-54E2-D1A1-30EC92284851}"
+  "FileHash": "{ECBD2A58-D7EE-1BDA-2C68-14C82E982069}"
  }
 }

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 909ff8845fe92ff4c83aa58c199a7505, type: 3}
+  m_Name: 2619D865-D336-467F-9ACF-863143AC5738
+  m_EditorClassIdentifier: 
+  objectName: Play_Birds
+  id: 3025897706
+  guid: 2619D865-D336-467F-9ACF-863143AC5738
+  IsInUserDefinedSoundBank: 1

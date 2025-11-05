@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{49B33188-BF19-44AD-8641-7AB42E7C053E}",
     "Language": "SFX",
-    "Hash": "{9E0F603D-B3DC-DFA1-066D-A1EBD4FF2764}",
+    "Hash": "{412E2F74-A8C0-CBDD-9862-104B50480616}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\Ambience",
     "ShortName": "Ambience",
     "Path": "Ambience.bnk",
@@ -160,6 +160,14 @@
       "CachePath": "16/{16E6133F-E697-EEC7-FEAC-EA807A3CF238}.wem"
      },
      {
+      "Id": "726342727",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "spooky-wind-429221.wav",
+      "CachePath": "9D/{9D43607F-EADA-1FE7-EEBB-26C4240EFB95}.wem"
+     },
+     {
       "Id": "925911802",
       "Language": "SFX",
       "Streaming": "false",
@@ -268,6 +276,19 @@
       ]
      },
      {
+      "Id": "1020223172",
+      "Name": "Play_Wind",
+      "ObjectPath": "\\Events\\Default Work Unit\\Ambience\\Play_Wind",
+      "GUID": "{D3D55800-BF37-49D2-BD92-943BD4724962}",
+      "MaxAttenuation": "50",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "726342727"
+       }
+      ]
+     },
+     {
       "Id": "1698272256",
       "Name": "Stop_Birds",
       "ObjectPath": "\\Events\\Default Work Unit\\Ambience\\Stop_Birds",
@@ -300,6 +321,6 @@
     ]
    }
   ],
-  "FileHash": "{59132DFB-5652-F038-5571-FBEF14BD03B1}"
+  "FileHash": "{8FEEB9FE-1A19-1855-9035-812BDCAA753A}"
  }
 }
