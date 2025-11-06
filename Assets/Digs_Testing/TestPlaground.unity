@@ -7214,14 +7214,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1834358478413402603, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: AvoidObstacles.SmoothingTime
-      value: 0.291
-      objectReference: {fileID: 0}
-    - target: {fileID: 1834358478413402603, guid: 0ac51167130a71c49b01edc0fe05b1f0, type: 3}
-      propertyPath: AvoidObstacles.MinimumOcclusionTime
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
