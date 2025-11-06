@@ -908,9 +908,10 @@ namespace SDK
 
                     if (forwardHit.collider is not null)
                     {
-                        gravity = Vector3.zero;
                         
                         _isHanging = true;
+                        
+                        // gravity = Vector3.zero;
                         
                         // Hanging Anim if applicable
                         
