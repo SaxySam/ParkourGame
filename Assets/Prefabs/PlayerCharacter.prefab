@@ -106,7 +106,7 @@ MonoBehaviour:
   timeForMaxHeightJump: 0.3
   jumpPreGroundingGraceTime: 0.1
   jumpPostGroundingGraceTime: 0.1
-  enableLaunching: 0
+  enableLaunching: 1
   maxDistanceFromLedge: 2
   minPlayerVelocityToLaunch: 1
   minLedgeHeight: 1
