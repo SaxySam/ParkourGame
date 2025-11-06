@@ -828,7 +828,6 @@ namespace SDK
                     _jumpingMovingUp = true;
                     _fallingMovingDown = false;
                     playerAnimator.SetTrigger(Jumping);
-
                 }
 
                 if (_fallingMovingDown || !(playerVerticalDirection < 0)) return;
