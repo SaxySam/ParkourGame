@@ -85,6 +85,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   kinematicMotor: {fileID: 277347096623532543}
   <CurrentCharacterState>k__BackingField: 0
+  mouseSensitivity: {x: 12, y: 8}
+  joyStickSensitivity: {x: 200, y: 200}
   playerAnimator: {fileID: 5838343785673483433}
   maxStableMoveSpeed: 105
   accelerationRate: 3.75
@@ -119,17 +121,18 @@ MonoBehaviour:
   crouchedCapsuleHeightDivisor: 2
   crouchedJumpMultiplier: 0.75
   enableSliding: 1
-  startSlideSpeedThreshold: 8
+  startSlideSpeedThreshold: 7
   startSlideSpeed: 15
   endSlideSpeed: 0
   timeTillEndSlideSpeed: 1
   slideDecelerationRate: 30
-  minimumSlideSpeed: 10
+  minimumSlideSpeed: 7
   slideCooldownTime: 1
   slideGravityMultiplier: 1.5
-  cameraMovementRestrictionMultiplier: 0
+  cameraMovementRestrictionMultiplier: 20
   maxSlopeDetectionAngle: 90
   enableWallRunning: 1
+  playerOrientation: {fileID: 681085190567068259}
   wallLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -142,7 +145,6 @@ MonoBehaviour:
   minJumpHeight: 0.75
   useGravity: 1
   wallRunGravity: -2.5
-  playerOrientation: {fileID: 681085190567068259}
   enableWallJump: 1
   snapToWall: 0
   wallJumpUpForce: 0.75
@@ -155,7 +157,6 @@ MonoBehaviour:
   downwardsVelocityThreshold: -1
   transformForwardLineCastScale: 0.5
   lineForwardOffset: 0.1
-  _isHanging: 0
   maxAirMoveSpeed: 8
   airAccelerationSpeed: 7.65
   drag: 0.1
@@ -2300,6 +2301,7 @@ GameObject:
   - component: {fileID: 4973658556362978007}
   - component: {fileID: 5396481700057213082}
   - component: {fileID: 6539710123604342896}
+  - component: {fileID: 1834358478413402603}
   m_Layer: 0
   m_Name: Third Person Camera (Brain)
   m_TagString: Untagged
@@ -2451,7 +2453,7 @@ MonoBehaviour:
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
   TargetOffset: {x: 0, y: 0, z: 0}
-  Damping: {x: 0.8, y: 0.5}
+  Damping: {x: 0, y: 0}
   Lookahead:
     Enabled: 0
     Time: 0.15
@@ -2515,6 +2517,45 @@ MonoBehaviour:
         DecelTime: 0.25
   PlayerIndex: -1
   AutoEnableInputs: 1
+--- !u!114 &1834358478413402603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3456773922741771086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe43d662878a7c43bcd44d43c9e2094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 1
+  IgnoreTag: Player
+  TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  MinimumDistanceFromTarget: 0.3
+  AvoidObstacles:
+    Enabled: 1
+    DistanceLimit: 0.1
+    MinimumOcclusionTime: 0.1
+    CameraRadius: 0.1
+    UseFollowTarget:
+      Enabled: 0
+      YOffset: 0
+    Strategy: 0
+    MaximumEffort: 4
+    SmoothingTime: 0
+    Damping: 0.4
+    DampingWhenOccluded: 0.2
+  ShotQualityEvaluation:
+    Enabled: 0
+    OptimalDistance: 10
+    NearLimit: 5
+    FarLimit: 30
+    MaxQualityBoost: 0.2
 --- !u!1 &3628829389697534096
 GameObject:
   m_ObjectHideFlags: 0
