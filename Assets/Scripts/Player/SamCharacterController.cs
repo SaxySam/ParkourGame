@@ -247,7 +247,12 @@ namespace SDK
         public float downwardsVelocityThreshold = -1f;
         public float transformForwardLineCastScale = 0.5f;
         public float lineForwardOffset = 0.1f;
-        
+        public float offsetForwardMultiplier = -0.1f;
+        public float offsetUpwardsMultiplier = -1f;
+        [Range(-1, 0)] public float pullAwayDropThreshold = -0.15f;
+
+        private Vector3 _wallNormal;
+        private Vector3 _hangingPosition;
         private bool _isHanging;
         
 
@@ -437,10 +442,11 @@ namespace SDK
             playerAnimator.SetFloat(PlayerSpeedZ, _moveInputVector.z);
             playerAnimator.SetFloat(PlayerInputVelocity, _moveInputVector.magnitude);
             
-            if (_isHanging)
-            {
-                _isHanging = false;
-            }
+            // if (_isHanging)
+            // {
+            //     _isHanging = false;
+            // }
+            
             
         }
 
@@ -531,6 +537,11 @@ namespace SDK
                             playerAnimator.SetBool(Sliding, false);
                             _holdDurationLaunch = 0;
                             _holdDurationSlide = 0;
+                        }
+
+                        if (_isHanging)
+                        {
+                            _isHanging = false;
                         }
 
                         break;
@@ -794,6 +805,19 @@ namespace SDK
                         
                         //! Handle Ledge Grab
                         if (enableLedgeGrab) LedgeGrab();
+
+                        if (_isHanging)
+                        {
+                            if (Vector3.Dot(_moveInputVector, _wallNormal) <= pullAwayDropThreshold)
+                            {
+                                _isHanging = false;
+                            }
+                            else
+                            {
+                                kinematicMotor.SetPosition(_hangingPosition);
+                                transform.forward = _wallNormal;
+                            }
+                        }
                         
                         break;
                     }
@@ -828,7 +852,6 @@ namespace SDK
                     _jumpingMovingUp = true;
                     _fallingMovingDown = false;
                     playerAnimator.SetTrigger(Jumping);
-
                 }
 
                 if (_fallingMovingDown || !(playerVerticalDirection < 0)) return;
@@ -908,17 +931,18 @@ namespace SDK
 
                     if (forwardHit.collider is not null)
                     {
-                        gravity = Vector3.zero;
-                        
                         _isHanging = true;
+                        
+                        // gravity = Vector3.zero;
                         
                         // Hanging Anim if applicable
                         
-                        Vector3 hangingPosition = new Vector3(forwardHit.point.x, downHit.point.y, forwardHit.point.z);
-                        Vector3 offset = transform.forward * -0.1f + transform.up * -1f;
-                        hangingPosition += offset;
-                        kinematicMotor.SetPosition(hangingPosition);
-                        transform.forward = -forwardHit.normal;
+                        _hangingPosition = new Vector3(forwardHit.point.x, downHit.point.y, forwardHit.point.z);
+                        Vector3 offset = transform.forward * offsetForwardMultiplier + transform.up * offsetUpwardsMultiplier;
+                        _hangingPosition += offset;
+                        _wallNormal = -forwardHit.normal;
+                        kinematicMotor.SetPosition(_hangingPosition);
+                        transform.forward = _wallNormal;
                         Debug.Log("Found a Ledge! Lets grab it!");
                     }
                 }
@@ -1427,13 +1451,16 @@ namespace SDK
             // This is called by the motor when it is detecting a collision that did not result from a "movement hit".
         }
 
+
         [ContextMenu("Do Something?")]
         private void DoSomething()
         {
             Debug.Log("<b><i><color=darkblue>You found me!</i></b>");
         }
-        
-    #endregion Methods
+
+        #endregion Methods
+
+        #region Gizmos
 
         void OnDrawGizmos()
         {
@@ -1444,6 +1471,8 @@ namespace SDK
             Gizmos.color = Color.red;
             Debug.DrawRay(transform.position, Vector3.down * minJumpHeight);
         }
-    
+
+        #endregion Gizmos
+        
     }
 }
